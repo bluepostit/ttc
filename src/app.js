@@ -29,14 +29,8 @@ fastify.register(require('./views.plugin'))
 fastify.register(require('./auth/plugin'))
 fastify.register(require('./lw-modules/plugin'))
 
+fastify.register(require('./base/routes'))
 fastify.register(require('./auth/routes'))
 fastify.register(require('./lw-modules/routes'))
-
-
-fastify.get('/', (req, reply) => {
-  console.log('HIT ROUTE')
-  reply.view('./views/default.liquid')
-  // reply.view('./default')
-})
 
 module.exports = fastify

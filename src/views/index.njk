@@ -1,0 +1,14 @@
+{% extends "src/views/default.njk" %}
+
+{% block content %}
+<h2>Modules</h2>
+  {% for module in modules.data %}
+    <h3>{{ module.name }}</h3>
+    <ul>
+    {% for unit in module.units %}
+      {% set url = modules.buildUnitURL(module, unit) %}
+      <li><a href="{{ url }}">{{ unit.name }}</a></li>
+    {% endfor %}
+    </ul>
+  {% endfor %}
+{% endblock %}

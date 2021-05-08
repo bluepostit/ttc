@@ -3,6 +3,39 @@ const path = require ('path')
 const fp = require('fastify-plugin')
 const yaml = require('js-yaml')
 
+class Modules {
+  constructor(data) {
+    this.moduleData = data
+  }
+
+  get data() {
+    return this.moduleData
+  }
+
+  getModuleIndex(module) {
+    return this.moduleData.findIndex((_module) => {
+      return _module.name === module.name
+    })
+  }
+
+  getUnitIndex(unit, module) {
+    return module.units.findIndex((_unit) => {
+      return _unit.name === unit.name
+    })
+  }
+
+  buildUnitURL(module, unit) {
+    const moduleIndex = this.getModuleIndex(module)
+    const unitIndex = this.getUnitIndex(unit, module)
+    return `/modules/${moduleIndex}/units/${unitIndex}`
+  }
+
+  buildResourceURL(module, unit, resource) {
+    const prefix = this.buildUnitURL(module, unit)
+    return `${prefix}/${resource.name}`
+  }
+}
+
 const plugin = async (fastify, options, next) => {
   const pathSuffix = process.env.MODULE_MANIFEST_PATH
   const pathPrefix = path.join(__dirname, '..', '..')
@@ -11,7 +44,9 @@ const plugin = async (fastify, options, next) => {
   try {
     const file = fs.readFileSync(modulesFilePath, 'utf8')
     const doc = await yaml.load(file)
-    fastify.decorate('dataModules', doc)
+    console.log(doc)
+    const modules = new Modules(doc)
+    fastify.decorate('dataModules', modules)
   } catch (e) {
     console.log(e)
     console.error('Failed reading module manifest file!')

@@ -1,0 +1,15 @@
+{% extends "src/views/default.njk" %}
+
+{% block content %}
+  <h2>{{ unitIndex }}. {{ unit.name }} </h2>
+  <h3>Resources</h3>
+  <ul>
+    {% for resource in unit.resources %}
+    {{ resource | dump }}
+    {% set url = modules.buildResourceURL(module, unit, resource) %}
+
+    <li><a href="{{ url }}">{{ resource.name }}</a></li>
+    {% endfor %}
+  </ul>
+
+{% endblock %}
