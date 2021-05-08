@@ -33,17 +33,14 @@ const createResourceRoute = (fastify, module, unit, resource, moduleIndex, unitI
   )
   fastify.get(url,
     {
-      // preValidation: fastify.auth.ensureSignedIn
+      preValidation: fastify.auth.ensureSignedIn
     },
-    (_request, reply) => {
+    (request, reply) => {
       try {
         const doc = resourceToMarkdown(moduleIndex, unitIndex, resource)
-        // Doesn't work! Not sure why.
-        // const templatePath = path.join(__dirname, '..', 'views/default.liquid')
-        const templatePath = '/src/views/default.njk'
-        reply.view(templatePath, {
+        reply.view('default', {
           title: resource.title,
-          content: doc
+          content: doc,
         })
       } catch (e) {
         console.log(e)
@@ -70,8 +67,6 @@ const createModuleRoutes = (fastify, module, moduleIndex) => {
 }
 
 const routes = async (fastify) => {
-  console.log('setting up routes...')
-
   // Static route for data assets
   fastify.register(fastifyStatic, {
     root: path.join(__dirname, '../../data/assets'),
@@ -87,15 +82,18 @@ const routes = async (fastify) => {
 
   fastify.get('/modules/:moduleIndex/units/:unitIndex',
     {
-      // preValidation: fastify.auth.ensureSignedIn
+      preValidation: fastify.auth.ensureSignedIn
     },
     (request, reply) => {
       const { moduleIndex, unitIndex } = request.params
       const module = fastify.dataModules.data[moduleIndex]
       const unit = module.units[unitIndex]
 
-      const templatePath = '/src/views/unit.njk'
-      reply.view(templatePath, {
+      if (!unit) {
+        throw fastify.httpErrors.notFound(`Unit ${unitIndex} not found`)
+      }
+
+      reply.view('unit', {
         unit,
         module,
         unitIndex,

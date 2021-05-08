@@ -35,6 +35,13 @@ const schema = {
     SESSION_SECRET: {
       type: 'string',
       minLength: 32
+    },
+    FRIENDLY_ERRORS: {
+      type: 'boolean'
+    },
+    DISABLE_AUTH: {
+      type: 'boolean',
+      default: false
     }
   }
 }
@@ -50,7 +57,7 @@ const plugin = async (fastify) => {
       if (err) {
         console.error(err)
       } else {
-        console.log('Config validated')
+        fastify.log.info('Config validated')
       }
     })
 }

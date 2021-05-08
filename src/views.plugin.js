@@ -6,13 +6,15 @@ const plugin = async (fastify, options) => {
   // const VIEW_PATH = path.join(__dirname, '..', DATA_PATH)
   const VIEW_PATH = path.join(__dirname, 'views')
 
-  console.log(`Template view path: ${VIEW_PATH}`)
+  fastify.log.info(`Template view path: ${VIEW_PATH}`)
 
   const engine = require('nunjucks')
   fastify.register(POV, {
     engine: {
       nunjucks: engine
     },
+    root: VIEW_PATH,
+    viewExt: 'njk',
     options: {
       autoescape: false,
     }

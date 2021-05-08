@@ -19,7 +19,20 @@ const authSchema = {
 
 async function routes(fastify, options) {
   fastify.get('/auth/login', (request, reply) => {
-    reply.view('src/views/login.njk')
+    reply.view('login')
+  })
+
+  fastify.get('/auth/logout', async (request, reply, next) => {
+    if (request.session.authenticated) {
+      try {
+        await request.destroySession()
+        reply.redirect('/auth/login')
+      } catch (error) {
+        console.error(error)
+        throw error
+      }
+    }
+    reply.redirect('/auth/login')
   })
 
   fastify.post('/auth/login',
@@ -37,18 +50,22 @@ async function routes(fastify, options) {
       }
 
       const matchingPassword = await Auth.compare(password, USER.password)
-      if (matchingPassword) {
-        request.session.authenticated = true
-        reply.redirect('/')
+      if (!matchingPassword) {
+        throw fastify.httpErrors.unauthorized()
       }
-      throw fastify.httpErrors.unauthorized()
+
+      request.session.authenticated = true
+      console.info('successful authentication')
+      reply.redirect('/')
     }
   )
 
-  fastify.setErrorHandler((error, request, reply) => {
-    fastify.log.error(error)
-    reply.redirect('/auth/login')
-  })
+  // fastify.setErrorHandler((error, request, reply) => {
+  //   fastify.log.error(error)
+  //   console.log('about to redirect.......')
+  //   reply.code(401)
+  //   reply.redirect('/login')
+  // })
 }
 
 module.exports = routes

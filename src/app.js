@@ -15,7 +15,7 @@ fastify.register(require('./config/plugin'))
 fastify.register(require('fastify-session'), {
   cookieName: 'sessionId',
   secret: process.env.SESSION_SECRET,
-  cookie: { secure: true },
+  cookie: { secure: false },
   expires: 1800000
 })
 

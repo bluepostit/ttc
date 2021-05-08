@@ -40,14 +40,14 @@ const plugin = async (fastify, options, next) => {
   const pathSuffix = process.env.MODULE_MANIFEST_PATH
   const pathPrefix = path.join(__dirname, '..', '..')
   const modulesFilePath = path.join(pathPrefix, pathSuffix)
-  console.log(`Reading modules file at ${modulesFilePath}`)
+  fastify.log.info(`Reading modules file at ${modulesFilePath}`)
   try {
     const file = fs.readFileSync(modulesFilePath, 'utf8')
     const doc = await yaml.load(file)
     const modules = new Modules(doc)
     fastify.decorate('dataModules', modules)
   } catch (e) {
-    console.log(e)
+    console.error(e)
     console.error('Failed reading module manifest file!')
   }
 }

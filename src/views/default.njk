@@ -21,8 +21,14 @@
         <i class="bi bi-house"></i> Home
       </a>
       </div>
-      {% if user %}
-        <a href="/logout">Logout</a>
+      {% if signedIn %}
+        <a href="/logout">
+          <i class="bi bi-door-closed"></i> Sign out
+        </a>
+      {% else %}
+        <a href="/auth/login">
+          <i class="bi bi-door-open"></i> Sign in
+        </a>
       {% endif %}
     </div>
   </nav>
