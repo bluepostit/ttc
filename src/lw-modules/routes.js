@@ -1,10 +1,12 @@
 const path = require('path')
 const fs = require('fs')
-const MarkdownIt = require('markdown-it')()
+const fastifyStatic = require('fastify-static')
+const md = require('markdown-it')
 const emoji = require('markdown-it-emoji')
 const highlightjs = require('markdown-it-highlightjs')
 const VIEW_PATH_PREFIX = path.join(__dirname, '..', '..')
 
+const MarkdownIt = md({ html: true})
 MarkdownIt.use(emoji)
 MarkdownIt.use(highlightjs)
 
@@ -69,6 +71,14 @@ const createModuleRoutes = (fastify, module, moduleIndex) => {
 
 const routes = async (fastify) => {
   console.log('setting up routes...')
+
+  // Static route for data assets
+  fastify.register(fastifyStatic, {
+    root: path.join(__dirname, '../../data/assets'),
+    prefix: '/data/assets/',
+    decorateReply: false
+  })
+
   const dataModules = fastify.dataModules.data
   for (let moduleIdx = 0; moduleIdx < dataModules.length; moduleIdx++) {
     const module = dataModules[moduleIdx]

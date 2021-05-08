@@ -30,6 +30,7 @@
 
 .navbar {
   margin-bottom: 10px;
+  box-shadow: 0 3px 5px rgba(0,0,0,0.1);
 }
 
 .navbar-light {
@@ -52,25 +53,30 @@ h3 {
 
 $gray: #222;
 
-.doc-body table {
+.doc-content table {
   border: 1px solid $gray;
   th {
     text-align: center;
+    background-color: lightgray;
   }
   th, td {
     padding: 5px;
     border: 1px solid $gray;
   }
+  margin-bottom: 0.5rem;
 }
 
 .make-file {
   display: inline-block;
   @extend code;
-  border: 1px $info solid;
+  border: 1px lightslategray solid;
   border-radius: 4px;
   background-color: $gray-300 !important;
   color: $primary !important;
+  padding: 0.2rem 0.5rem;
+  margin-bottom: 0.4rem;
   // font-weight: bold !important;
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
 
   &:before {
     content: "📄️";
@@ -84,4 +90,8 @@ $gray: #222;
   max-width: 400px;
   margin: 10px auto;
   display: inherit;
+}
+
+pre code {
+  border-radius: 4px;
 }
