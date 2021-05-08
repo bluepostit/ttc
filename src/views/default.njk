@@ -11,15 +11,26 @@
   </title>
 </head>
 <body>
-  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <a href="/" class="btn btn-outline-info">Home</a>
-    {% if user %}
-      <a href="/logout">Logout</a>
-    {% endif %}
+  <nav class="navbar navbar-light">
+    <div class="container-fluid">
+      <div>
+      <a class="navbar-brand back-button" href="#">
+        <i class="bi bi-chevron-left"></i>
+      </a>
+      <a class="navbar-brand" href="/">
+        <i class="bi bi-house"></i> Home
+      </a>
+      </div>
+      {% if user %}
+        <a href="/logout">Logout</a>
+      {% endif %}
+    </div>
+  </nav>
+  <div class="container doc-content">
+    {% block content %}
+      {{ content }}
+    {% endblock %}
   </div>
-  {% block content %}
-    {{ content }}
-  {% endblock %}
   <script type="text/javascript" src="/client/dist/main.js"></script>
 </body>
 </html>

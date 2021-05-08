@@ -18,6 +18,12 @@ async function routes(fastify, options) {
     prefix: '/client/dist/',
     decorateReply: false
   })
+
+  fastify.register(fastifyStatic, {
+    root: path.join(__dirname, '../../node_modules'),
+    prefix: '/node_modules/',
+    decorateReply: false
+  })
 }
 
 module.exports = routes

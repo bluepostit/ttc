@@ -1,1 +1,87 @@
 @import "bootstrap";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+// Favourite dark themes:
+@import 'highlight.js/scss/agate';
+// @import 'highlight.js/scss/atom-one-dark';
+// @import 'highlight.js/scss/railscasts';
+
+
+// Favourite light themes:
+// @import 'highlight.js/scss/vs2015';
+
+
+
+// @import 'highlight.js/styles/github';
+// @import 'highlight.js/styles/foundation';
+// Brown & black on pale gray/pink
+// @import 'highlight.js/styles/docco';
+// White & turquoise on dark blue background
+// @import 'highlight.js/styles/far';
+// light blue, dull white on very dark gray
+// @import 'highlight.js/styles/hybrid';
+// @import 'highlight.js/scss/monokai-sublime';
+// @import 'highlight.js/scss/vs';
+
+.doc-content {
+  min-height: 100vh;
+  margin-bottom: 400px;
+}
+
+.navbar {
+  margin-bottom: 10px;
+}
+
+.navbar-light {
+  background-color:  #e3f2fd;
+}
+
+a {
+  text-decoration: none;
+}
+
+h2 {
+  text-shadow: 1px 3px 4px gray;
+  color: rgb(20,75,240);
+}
+
+h3 {
+  text-shadow: 1px 3px 6px lightgray;
+  color: rgb(20,160,240)
+}
+
+$gray: #222;
+
+.doc-body table {
+  border: 1px solid $gray;
+  th {
+    text-align: center;
+  }
+  th, td {
+    padding: 5px;
+    border: 1px solid $gray;
+  }
+}
+
+.make-file {
+  display: inline-block;
+  @extend code;
+  border: 1px $info solid;
+  border-radius: 4px;
+  background-color: $gray-300 !important;
+  color: $primary !important;
+  // font-weight: bold !important;
+
+  &:before {
+    content: "📄️";
+    padding-right: 0.4em;
+    font-size: 1.5em;
+    display: inline-block;
+  }
+}
+
+.livecode-img-wrapper img {
+  max-width: 400px;
+  margin: 10px auto;
+  display: inherit;
+}

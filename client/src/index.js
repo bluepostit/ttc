@@ -1,3 +1,7 @@
 import '../style/style.scss'
 
-console.log('hi')
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelector('.back-button').addEventListener('click', (e) => {
+    history.back()
+  })
+})

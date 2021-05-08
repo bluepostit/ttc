@@ -5,6 +5,7 @@
   <h3>Resources</h3>
   <ul>
     {% for resource in unit.resources %}
+    {{ resource | dump }}
     {% set url = modules.buildResourceURL(module, unit, resource) %}
 
     <li><a href="{{ url }}">{{ resource.name }}</a></li>
