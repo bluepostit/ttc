@@ -19,11 +19,6 @@ fastify.register(require('fastify-session'), {
   expires: 1800000
 })
 
-fastify.register(require('fastify-static'), {
-  root: path.join(__dirname, '..', 'public'),
-  prefix: '/public/',
-})
-
 fastify.register(require('./base/plugin'))
 fastify.register(require('./views.plugin'))
 fastify.register(require('./auth/plugin'))

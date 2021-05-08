@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js",
+    "dev": "npm run dev:start && npm run dev:build",
+    "dev:start": "nodemon src/server.js",
+    "dev:build": "webpack --mode=development",
+    "build": "webpack --mode=production",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -29,7 +32,14 @@
     "point-of-view": "^4.14.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "bootstrap": "^5.0.0",
+    "css-loader": "^5.2.4",
+    "nodemon": "^2.0.7",
+    "sass": "^1.32.12",
+    "sass-loader": "^11.0.1",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.36.2",
+    "webpack-cli": "^4.7.0"
   },
   "nodemonConfig": {
     "ext": "js,json,yaml,njk"
