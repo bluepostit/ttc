@@ -1,0 +1,16 @@
+{% extends "src/views/default.njk" %}
+
+{% block content %}
+  <h1 class="text-center text-danger">Something went wrong</h1>
+  {% if error.validation %}
+    <h2>Invalid Input</h1>
+    <h3>{{ error.validationContext | capitalize }}</h2>
+    <ul>
+      {% for issue in error.validation %}
+        <li>{{ issue.message }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>{{ error.message }}</p>
+  {% endif %}
+{% endblock %}

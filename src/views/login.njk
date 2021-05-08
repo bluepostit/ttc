@@ -1,0 +1,20 @@
+{% extends "src/views/default.njk" %}
+
+{% block content %}
+<div class="col-12 col-md-8 justify-content-center">
+  <h1>Login</h1>
+  <form action="/auth/login" method="post">
+    <div class="form-group">
+      <label for="email">User name</label>
+      <input type="text" id="email" name="email"
+              class="form-control" />
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password"
+              class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
+</div>
+{% endblock %}

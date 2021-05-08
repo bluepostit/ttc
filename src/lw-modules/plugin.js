@@ -32,7 +32,7 @@ class Modules {
 
   buildResourceURL(module, unit, resource) {
     const prefix = this.buildUnitURL(module, unit)
-    return `${prefix}/${resource.name}`
+    return `${prefix}/${resource.file || resource.name}`
   }
 }
 

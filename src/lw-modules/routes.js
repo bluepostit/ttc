@@ -13,7 +13,7 @@ const resourceToMarkdown = (moduleIndex, unitIndex, resource) => {
   let docPath = path.join(
     VIEW_PATH_PREFIX,
     DATA_PATH,
-    `${moduleIndex}/${unitIndex}/${resource.name}`
+    `${moduleIndex}/${unitIndex}/${resource.file || resource.name}`
   )
   if (!docPath.endsWith('.md')) {
     docPath += '.md'
@@ -23,8 +23,12 @@ const resourceToMarkdown = (moduleIndex, unitIndex, resource) => {
   return doc
 }
 
-const createResourceRoute = (fastify, resource, moduleIndex, unitIndex) => {
-  const url = `/modules/${moduleIndex}/units/${unitIndex}/${resource.name}`
+const createResourceRoute = (fastify, module, unit, resource, moduleIndex, unitIndex) => {
+  const url = fastify.dataModules.buildResourceURL(
+    module,
+    unit,
+    resource
+  )
   fastify.get(url,
     {
       // preValidation: fastify.auth.ensureSignedIn
@@ -42,14 +46,14 @@ const createResourceRoute = (fastify, resource, moduleIndex, unitIndex) => {
       } catch (e) {
         console.log(e)
         console.error('Failed reading file!')
-        throw reply.internalServerError('Error processing document')
+        throw fastify.httpErrors.internalServerError('Error processing document')
       }
     })
 }
 
-const createUnitRoutes = (fastify, unit, moduleIndex, unitIndex) => {
+const createUnitRoutes = (fastify, module, unit, moduleIndex, unitIndex) => {
   unit.resources.forEach((resource) => {
-    createResourceRoute(fastify, resource, moduleIndex, unitIndex)
+    createResourceRoute(fastify, module, unit, resource, moduleIndex, unitIndex)
   })
 }
 
@@ -59,7 +63,7 @@ const createModuleRoutes = (fastify, module, moduleIndex) => {
 
   for (let unitIndex = 0; unitIndex < units.length; unitIndex++) {
     const unit = units[unitIndex]
-    createUnitRoutes(fastify, unit, moduleIndex, unitIndex)
+    createUnitRoutes(fastify, module, unit, moduleIndex, unitIndex)
   }
 }
 

@@ -19,8 +19,7 @@ const authSchema = {
 
 async function routes(fastify, options) {
   fastify.get('/auth/login', (request, reply) => {
-    reply.type('text/html')
-    reply.sendFile('login.html')
+    reply.view('src/views/login.njk')
   })
 
   fastify.post('/auth/login',
@@ -30,11 +29,11 @@ async function routes(fastify, options) {
     async (request, reply) => {
       const { email, password } = request.body
       if (!email || !password) {
-        throw reply.badRequest('You must provide email and password')
+        throw fastify.httpErrors.badRequest('You must provide email and password')
       }
 
       if (email !== USER.email) {
-        throw reply.unauthorized()
+        throw fastify.httpErrors.unauthorized()
       }
 
       const matchingPassword = await Auth.compare(password, USER.password)
@@ -42,7 +41,7 @@ async function routes(fastify, options) {
         request.session.authenticated = true
         reply.redirect('/')
       }
-      throw reply.unauthorized()
+      throw fastify.httpErrors.unauthorized()
     }
   )
 
