@@ -1,7 +1,8 @@
 {% extends "src/views/default.njk" %}
 
 {% block content %}
-  <h1>{{ unitIndex }}. {{ unit.name }} </h2>
+  <h1 class="text-center">{{ module.name }}</h1>
+  <h2>{{ unitIndex }}. {{ unit.name }} </h2>
   <h3>Resources</h3>
   <ul>
     {% for resource in unit.resources %}

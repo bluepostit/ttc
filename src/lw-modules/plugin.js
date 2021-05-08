@@ -44,7 +44,6 @@ const plugin = async (fastify, options, next) => {
   try {
     const file = fs.readFileSync(modulesFilePath, 'utf8')
     const doc = await yaml.load(file)
-    console.log(doc)
     const modules = new Modules(doc)
     fastify.decorate('dataModules', modules)
   } catch (e) {
