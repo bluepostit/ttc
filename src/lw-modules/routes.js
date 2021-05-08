@@ -1,7 +1,10 @@
 const path = require('path')
 const fs = require('fs')
 const MarkdownIt = require('markdown-it')()
+const emoji = require('markdown-it-emoji')
 const VIEW_PATH_PREFIX = path.join(__dirname, '..', '..')
+
+MarkdownIt.use(emoji)
 
 const resourceToMarkdown = (moduleIndex, unitIndex, resource) => {
   const DATA_PATH = process.env.MODULE_DATA_PATH
