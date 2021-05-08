@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -20,6 +21,16 @@
     "fastify-sensible": "^3.1.1",
     "fastify-session": "^5.2.1",
     "fastify-static": "^4.0.1",
-    "make-promises-safe": "^5.1.0"
+    "js-yaml": "^4.1.0",
+    "liquidjs": "^9.25.0",
+    "make-promises-safe": "^5.1.0",
+    "markdown-it": "^12.0.6",
+    "point-of-view": "^4.14.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  },
+  "nodemonConfig": {
+    "ext": "js,json,yaml"
   }
 }

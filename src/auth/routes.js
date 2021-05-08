@@ -1,4 +1,4 @@
-const Auth = require('../auth')
+const Auth = require('./auth')
 const USER = {
   email: process.env.USER_EMAIL,
   password: process.env.USER_PASSWORD
@@ -45,6 +45,11 @@ async function routes(fastify, options) {
       throw reply.unauthorized()
     }
   )
+
+  fastify.setErrorHandler((error, request, reply) => {
+    fastify.log.error(error)
+    reply.redirect('/auth/login')
+  })
 }
 
 module.exports = routes

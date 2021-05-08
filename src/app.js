@@ -10,7 +10,7 @@ fastify.register(require('fastify-sensible'))
 fastify.register(require('fastify-formbody'))
 fastify.register(require('fastify-cookie'))
 
-fastify.register(require('./config/env.plugin'))
+fastify.register(require('./config/plugin'))
 
 fastify.register(require('fastify-session'), {
   cookieName: 'sessionId',
@@ -19,13 +19,24 @@ fastify.register(require('fastify-session'), {
   expires: 1800000
 })
 
-
 fastify.register(require('fastify-static'), {
   root: path.join(__dirname, '..', 'public'),
   prefix: '/public/',
 })
 
-fastify.register(require('./routes/auth.routes'))
+fastify.register(require('./base/plugin'))
+fastify.register(require('./views.plugin'))
+fastify.register(require('./auth/plugin'))
+fastify.register(require('./lw-modules/plugin'))
 
+fastify.register(require('./auth/routes'))
+fastify.register(require('./lw-modules/routes'))
+
+
+fastify.get('/', (req, reply) => {
+  console.log('HIT ROUTE')
+  reply.view('./views/default.liquid')
+  // reply.view('./default')
+})
 
 module.exports = fastify

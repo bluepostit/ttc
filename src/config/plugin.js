@@ -8,11 +8,21 @@ const schema = {
     'USER_EMAIL',
     'USER_PASSWORD',
     'SESSION_SECRET',
+    'MODULE_MANIFEST_PATH',
+    'MODULE_DATA_PATH',
   ],
   properties: {
     PORT: {
       type: 'string',
-      pattern: `\\d\\d+`
+      pattern: `\\d\\d+`,
+      default: 3000,
+    },
+    MODULE_MANIFEST_PATH: {
+      type: 'string',
+      // default: 'data/modules.yml'
+    },
+    MODULE_DATA_PATH: {
+      type: 'string'
     },
     USER_EMAIL: {
       type: 'string',
@@ -24,7 +34,7 @@ const schema = {
     },
     SESSION_SECRET: {
       type: 'string',
-      minLength: 50
+      minLength: 32
     }
   }
 }
@@ -45,4 +55,6 @@ const plugin = async (fastify) => {
     })
 }
 
-module.exports = fp(plugin)
+module.exports = fp(plugin, {
+  name: 'config-checker'
+})
