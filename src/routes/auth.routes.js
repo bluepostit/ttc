@@ -11,7 +11,7 @@ const authSchema = {
     properties: {
       email: {
         type: 'string',
-        pattern: '\\w[\\w+.]+@(\\w+\\.\\w+)+$'
+        pattern: '\\w[\\w+-.]+@([\\w-]+\\.\\w+)+$'
       }
     }
   }

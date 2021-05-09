@@ -8,7 +8,7 @@
     "dev": "concurrently \"npm run dev:start | pino-pretty\" \"npm run dev:build\"",
     "dev:start": "nodemon src/server.js",
     "dev:build": "webpack --mode=development --watch",
-    "build": "webpack --mode=production",
+    "build": "./node_modules/.bin/webpack --mode=production",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
