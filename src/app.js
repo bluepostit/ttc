@@ -10,7 +10,7 @@ fastify.register(require('fastify-sensible'))
 fastify.register(require('fastify-formbody'))
 fastify.register(require('fastify-cookie'))
 
-fastify.register(require('./config/plugin'))
+fastify.register(require('./plugins/config.plugin'))
 
 fastify.register(require('fastify-session'), {
   cookieName: 'sessionId',
@@ -19,13 +19,13 @@ fastify.register(require('fastify-session'), {
   expires: 1800000
 })
 
-fastify.register(require('./base/plugin'))
-fastify.register(require('./views.plugin'))
-fastify.register(require('./auth/plugin'))
-fastify.register(require('./lw-modules/plugin'))
+fastify.register(require('./plugins/base.plugin'))
+fastify.register(require('./plugins/auth.plugin'))
+fastify.register(require('./plugins/views.plugin'))
+fastify.register(require('./plugins/data-modules.plugin'))
 
-fastify.register(require('./base/routes'))
-fastify.register(require('./auth/routes'))
-fastify.register(require('./lw-modules/routes'))
+fastify.register(require('./routes/base.routes'))
+fastify.register(require('./routes/auth.routes'))
+fastify.register(require('./routes/data-modules.routes'))
 
 module.exports = fastify

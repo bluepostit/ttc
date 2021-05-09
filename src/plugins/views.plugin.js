@@ -4,7 +4,7 @@ const POV = require('point-of-view')
 
 const plugin = async (fastify, options) => {
   // const VIEW_PATH = path.join(__dirname, '..', DATA_PATH)
-  const VIEW_PATH = path.join(__dirname, 'views')
+  const VIEW_PATH = path.join(__dirname, '..', 'views')
 
   fastify.log.info(`Template view path: ${VIEW_PATH}`)
 
