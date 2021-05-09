@@ -99,6 +99,7 @@ const routes = async (fastify) => {
         unitIndex,
         moduleIndex,
         modules: fastify.dataModules,
+        title: unit.name
       })
     })
 }
