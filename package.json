@@ -49,6 +49,6 @@
     "webpack-cli": "^4.7.0"
   },
   "nodemonConfig": {
-    "ext": "js,json,yaml,njk"
+    "ext": "js,json,yaml,njk,scss"
   }
 }
