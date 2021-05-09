@@ -1,0 +1,26 @@
+---
+version: "3"
+services:
+  lwtc:
+    image: bluepostit/lwtc
+    container_name: lwtc
+    environment:
+      - PORT=${LWTC_PORT}
+      - USER_EMAIL=${LWTC_USER_EMAIL}
+      - USER_PASSWORD=${LWTC_USER_PASSWORD}
+      - SESSION_SECRET=${SESSION_SECRET}
+      # Eg. data/modules.yaml
+      - MODULE_MANIFEST_PATH=${MODULE_MANIFEST_PATH}
+      # Eg. data
+      - MODULE_DATA_PATH=${MODULE_DATA_PATH}
+      - DISABLE_AUTH=false
+    volumes:
+      ${MODULE_DATA_HOST_PATH}=/usr/src/app/data
+    networks:
+      - swag
+    restart: unless-stopped
+
+networks:
+  swag:
+    external: true
+    name: swag
