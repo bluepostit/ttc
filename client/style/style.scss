@@ -23,6 +23,11 @@
 // @import 'highlight.js/scss/monokai-sublime';
 // @import 'highlight.js/scss/vs';
 
+$gray: #222;
+
+@import './unit.scss';
+@import './resource.scss';
+
 .doc-content {
   min-height: 100vh;
   margin-bottom: 400px;
@@ -39,73 +44,6 @@
 
 a {
   text-decoration: none;
-}
-
-h2 {
-  text-shadow: 1px 3px 4px gray;
-  color: rgb(20,75,240);
-}
-
-h3 {
-  text-shadow: 1px 3px 6px lightgray;
-  color: rgb(20,160,240)
-}
-
-$gray: #222;
-
-.doc-content table {
-  border: 1px solid $gray;
-  th {
-    text-align: center;
-    background-color: lightgray;
-  }
-  th, td {
-    padding: 5px;
-    border: 1px solid $gray;
-  }
-  margin-bottom: 0.5rem;
-}
-
-.make-file {
-  display: inline-block;
-  @extend code;
-  border: 1px lightslategray solid;
-  border-radius: 4px;
-  background-color: $gray-300 !important;
-  color: $primary !important;
-  padding: 0.2rem 0.5rem;
-  margin-bottom: 0.4rem;
-  // font-weight: bold !important;
-  box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-
-  &:before {
-    content: "📄️";
-    padding-right: 0.4em;
-    font-size: 1.5em;
-    display: inline-block;
-  }
-}
-
-*:not(pre) > code {
-  color: #ac2323;
-  background-color: #eee;
-  overflow-x: auto;
-
-  padding: 0.1em 0.5em;
-}
-
-*:not(h1,h2,h3) > code {
-  font-size: 0.9rem;
-}
-
-.livecode-img-wrapper img {
-  max-width: 400px;
-  margin: 10px auto;
-  display: inherit;
-}
-
-pre code {
-  border-radius: 4px;
 }
 
 #accordionIndex h2 button {

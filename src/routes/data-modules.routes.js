@@ -38,8 +38,8 @@ const createResourceRoute = (fastify, module, unit, resource, moduleIndex, unitI
     (request, reply) => {
       try {
         const doc = resourceToMarkdown(moduleIndex, unitIndex, resource)
-        reply.view('default', {
-          title: resource.title,
+        reply.view('resource', {
+          title: `${unit.name} | ${resource.name}`,
           content: doc,
         })
       } catch (e) {
