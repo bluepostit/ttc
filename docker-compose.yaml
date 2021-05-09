@@ -15,7 +15,7 @@ services:
       - MODULE_DATA_PATH=${MODULE_DATA_PATH}
       - DISABLE_AUTH=false
     volumes:
-      ${MODULE_DATA_HOST_PATH}=/usr/src/app/data
+      - ${MODULE_DATA_HOST_PATH}=/usr/src/app/data
     networks:
       - swag
     restart: unless-stopped
