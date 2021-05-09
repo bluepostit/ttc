@@ -26,7 +26,7 @@ const schema = {
     },
     USER_EMAIL: {
       type: 'string',
-      pattern: '\\w[\\w+.]+@(\\w+\\.\\w+)+$'
+      pattern: '\\w[\\w+-.]+@([\\w-]+\\.\\w+)+$'
     },
     USER_PASSWORD: {
       type: 'string',
