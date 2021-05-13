@@ -69,20 +69,29 @@ class Modules {
   }
 }
 
-const plugin = async (fastify, options, next) => {
+const loadModules = (request, done) => {
   const pathSuffix = process.env.MODULE_MANIFEST_PATH
   const pathPrefix = path.join(__dirname, '..', '..')
   const modulesFilePath = path.join(pathPrefix, pathSuffix)
-  fastify.log.info(`Reading modules file at ${modulesFilePath}`)
+  request.log.info(`Reading modules file at ${modulesFilePath}`)
   try {
     const file = fs.readFileSync(modulesFilePath, 'utf8')
     const doc = yaml.load(file)
-    const modules = new Modules(doc)
-    fastify.decorateRequest('dataModules', modules)
+    request.dataModules = new Modules(doc)
+    done()
   } catch (e) {
     console.error(e)
     console.error('Failed reading module manifest file!')
+    throw e
   }
+}
+
+const plugin = (fastify, _options, next) => {
+  fastify.decorateRequest('dataModules', null)
+  fastify.addHook('preHandler', (request, _reply, done) => {
+    loadModules(request, done)
+  })
+  next()
 }
 
 module.exports = fp(plugin, {
