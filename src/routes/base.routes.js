@@ -1,20 +1,20 @@
 const path = require('path')
 const fastifyStatic = require('fastify-static')
 
-async function routes(fastify, options) {
+async function routes (fastify, options) {
   fastify.get('/',
     {
       preValidation: fastify.auth.ensureSignedIn
     },
     (request, reply) => {
       reply.view('index', {
-        modules: request.dataModules,
+        modules: request.dataModules
       })
     })
 
   fastify.register(fastifyStatic, {
     root: path.join('/public'),
-    prefix: '/public/',
+    prefix: '/public/'
   })
 
   fastify.register(fastifyStatic, {

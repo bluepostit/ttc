@@ -32,7 +32,7 @@ const routes = async (fastify) => {
         const doc = request.parseResourceMarkdown(resource)
         reply.view('resource', {
           title: `${resource.unit.name} | ${resource.name}`,
-          content: doc,
+          content: doc
         })
       } catch (e) {
         console.log(e)

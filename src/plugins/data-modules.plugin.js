@@ -1,9 +1,8 @@
 const fs = require('fs')
-const path = require ('path')
+const path = require('path')
 const fp = require('fastify-plugin')
 const yaml = require('js-yaml')
 const Module = require('../data-modules/module')
-
 
 const buildModules = (data) => {
   return data.map((moduleData) => {
@@ -12,35 +11,35 @@ const buildModules = (data) => {
 }
 
 class Modules {
-  constructor(data) {
+  constructor (data) {
     this.data = data
     this.dataModules = buildModules(data)
   }
 
-  get modules() {
+  get modules () {
     return this.dataModules
   }
 
-  getModuleIndex(module) {
+  getModuleIndex (module) {
     return this.modules.indexOf(module)
   }
 
-  getUnitIndex(unit) {
+  getUnitIndex (unit) {
     return unit.module.units.indexOf(unit)
   }
 
-  buildUnitURL(unit) {
+  buildUnitURL (unit) {
     const moduleIndex = this.getModuleIndex(unit.module)
     const unitIndex = this.getUnitIndex(unit)
     return `/modules/${moduleIndex}/units/${unitIndex}`
   }
 
-  buildResourceURL(resource) {
+  buildResourceURL (resource) {
     const prefix = this.buildUnitURL(resource.unit)
     return `${prefix}/${resource.file || resource.name}`
   }
 
-  buildResourceFilePath(resource) {
+  buildResourceFilePath (resource) {
     const unit = resource.unit
     const moduleIndex = this.getModuleIndex(unit.module)
     const unitIndex = this.getUnitIndex(unit)

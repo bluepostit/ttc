@@ -9,16 +9,16 @@ const schema = {
     'USER_PASSWORD',
     'SESSION_SECRET',
     'MODULE_MANIFEST_PATH',
-    'MODULE_DATA_PATH',
+    'MODULE_DATA_PATH'
   ],
   properties: {
     PORT: {
       type: 'string',
-      pattern: `\\d\\d+`,
-      default: 3000,
+      pattern: '\\d\\d+',
+      default: 3000
     },
     MODULE_MANIFEST_PATH: {
-      type: 'string',
+      type: 'string'
       // default: 'data/modules.yml'
     },
     MODULE_DATA_PATH: {

@@ -7,5 +7,5 @@ const plugin = async (fastify) => {
 }
 
 module.exports = fp(plugin, {
-  name: 'routes-index',
+  name: 'routes-index'
 })

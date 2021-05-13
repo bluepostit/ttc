@@ -1,7 +1,7 @@
 const fp = require('fastify-plugin')
 
 const plugin = async (fastify) => {
-  if(process.env.NODE_ENV !== 'production') {
+  if (process.env.NODE_ENV !== 'production') {
     if (process.env.FRIENDLY_ERRORS) {
       fastify.register(require('fastify-error-page'))
     }

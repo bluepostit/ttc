@@ -8,7 +8,7 @@ const highlightjs = require('markdown-it-highlightjs')
 const VIEW_PATH_PREFIX = path.join(__dirname, '..', '..')
 const DATA_PATH = process.env.MODULE_DATA_PATH
 
-const MarkdownIt = md({ html: true})
+const MarkdownIt = md({ html: true })
 MarkdownIt.use(emoji)
 MarkdownIt.use(highlightjs)
 
@@ -25,7 +25,7 @@ const parseResourceMarkdown = (request, resource) => {
 }
 
 const plugin = async (fastify, options) => {
-  fastify.decorateRequest('parseResourceMarkdown', function(resource) {
+  fastify.decorateRequest('parseResourceMarkdown', function (resource) {
     return parseResourceMarkdown(this, resource)
   })
 }

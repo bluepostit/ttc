@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "concurrently \"npm run dev:start | pino-pretty\" \"npm run dev:build\"",
-    "dev:start": "nodemon src/server.js",
+    "dev": "concurrently --names l,wp,n --prefix \"[{name}] {time}\" --handle-input -t \"HH:mm:ss.SSSS\" -c yellow,cyan,green npm:dev:eslint npm:dev:build npm:dev:start",
+    "dev:start": "nodemon src/server.js | pino-pretty",
     "dev:build": "webpack --mode=development --watch",
+    "dev:eslint": "standard",
     "build": "NODE_ENV=production ./node_modules/.bin/webpack --mode=production",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -39,16 +40,23 @@
   "devDependencies": {
     "bootstrap": "^5.0.0",
     "css-loader": "^5.2.4",
+    "eslint": "^7.26.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1",
     "file-loader": "^6.2.0",
     "mini-css-extract-plugin": "^1.6.0",
     "nodemon": "^2.0.7",
     "sass": "^1.32.12",
     "sass-loader": "^11.0.1",
+    "standard": "^16.0.3",
     "style-loader": "^2.0.0",
     "webpack": "^5.36.2",
     "webpack-cli": "^4.7.0"
   },
   "nodemonConfig": {
-    "ext": "js,json,yaml,njk,scss"
+    "ext": "js,json,yaml,njk,scss,env",
+    "watch": ["*.*",".env"]
   }
 }

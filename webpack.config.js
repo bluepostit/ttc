@@ -17,16 +17,16 @@ module.exports = {
   plugins,
   watch: false,
   watchOptions: {
-    ignored: /node_modules/,
+    ignored: /node_modules/
   },
   module: {
     rules: [
       {
         test: /\.s[ac]ss$/i,
         use: [
-          devMode ? "style-loader" : MiniCssExtractPlugin.loader,
-          "css-loader",
-          "sass-loader",
+          devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader'
         ]
       },
       {
@@ -36,7 +36,7 @@ module.exports = {
             loader: 'file-loader',
             options: {
               name: '[name].[ext]',
-              outputPath: 'fonts/',
+              outputPath: 'fonts/'
             }
           }
         ]

@@ -8,17 +8,17 @@ const buildUnits = (data, module) => {
 }
 
 class Module {
-  constructor(data) {
+  constructor (data) {
     this.data = data
 
     this.dataUnits = buildUnits(data, this)
   }
 
-  get name() {
+  get name () {
     return this.data.name
   }
 
-  get units() {
+  get units () {
     return this.dataUnits
   }
 }

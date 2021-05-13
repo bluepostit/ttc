@@ -1,18 +1,18 @@
 class Resource {
-  constructor(data, unit) {
+  constructor (data, unit) {
     this.data = data
     this.dataUnit = unit
   }
 
-  get unit() {
+  get unit () {
     return this.dataUnit
   }
 
-  get name() {
+  get name () {
     return this.data.name
   }
 
-  get file() {
+  get file () {
     return this.data.file || null
   }
 }

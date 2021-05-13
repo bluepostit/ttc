@@ -8,29 +8,29 @@ const buildResources = (data, unit) => {
 }
 
 class Unit {
-  constructor(data, module) {
+  constructor (data, module) {
     this.data = data
     this.dataModule = module
 
     this.dataResources = buildResources(data, this)
   }
 
-  get module() {
+  get module () {
     return this.dataModule
   }
 
-  get name() {
+  get name () {
     return this.data.name
   }
 
-  get resources() {
+  get resources () {
     return this.dataResources
   }
 
-  findResource(resourceId) {
+  findResource (resourceId) {
     return this.dataResources.find((resource) => {
-      return (resource.name === resourceId)
-        || (resource.file === resourceId)
+      return (resource.name === resourceId) ||
+        (resource.file === resourceId)
     })
   }
 }

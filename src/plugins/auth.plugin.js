@@ -9,7 +9,7 @@ const plugin = async (fastify) => {
         signedIn: true
       }
       return next()
-    } else if (process.env.DISABLE_AUTH == 'true') {
+    } else if (process.env.DISABLE_AUTH === 'true') {
       return next()
     }
 

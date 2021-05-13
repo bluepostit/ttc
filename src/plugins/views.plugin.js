@@ -16,7 +16,7 @@ const plugin = async (fastify, options) => {
     root: VIEW_PATH,
     viewExt: 'njk',
     options: {
-      autoescape: false,
+      autoescape: false
     }
   })
 }

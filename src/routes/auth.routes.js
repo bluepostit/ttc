@@ -17,7 +17,7 @@ const authSchema = {
   }
 }
 
-async function routes(fastify, options) {
+async function routes (fastify, options) {
   fastify.get('/auth/login', (request, reply) => {
     reply.view('login')
   })
@@ -27,7 +27,7 @@ async function routes(fastify, options) {
       request.destroySession((err) => {
         if (err) {
           fastify.log.error(err)
-          throw error
+          throw err
         }
         reply.redirect('/auth/login')
       })
