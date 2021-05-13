@@ -20,14 +20,6 @@ class Modules {
     return this.dataModules
   }
 
-  getModuleIndex (module) {
-    return this.modules.indexOf(module)
-  }
-
-  getUnitIndex (unit) {
-    return unit.module.units.indexOf(unit)
-  }
-
   /**
    * Try to find a Module by its index or path property.
    * @param {string|integer} id
@@ -84,7 +76,7 @@ const plugin = async (fastify, options, next) => {
   fastify.log.info(`Reading modules file at ${modulesFilePath}`)
   try {
     const file = fs.readFileSync(modulesFilePath, 'utf8')
-    const doc = await yaml.load(file)
+    const doc = yaml.load(file)
     const modules = new Modules(doc)
     fastify.decorateRequest('dataModules', modules)
   } catch (e) {
