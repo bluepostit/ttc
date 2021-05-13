@@ -23,6 +23,10 @@ class Unit {
     return this.data.name
   }
 
+  get path () {
+    return this.data.path
+  }
+
   get resources () {
     return this.dataResources
   }
@@ -30,7 +34,7 @@ class Unit {
   findResource (resourceId) {
     return this.dataResources.find((resource) => {
       return (resource.name === resourceId) ||
-        (resource.file === resourceId)
+        (resource.path === resourceId)
     })
   }
 }

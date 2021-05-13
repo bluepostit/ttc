@@ -28,22 +28,52 @@ class Modules {
     return unit.module.units.indexOf(unit)
   }
 
+  /**
+   * Try to find a Module by its index or path property.
+   * @param {string|integer} id
+   */
+  findModule (id) {
+    let module = this.modules.find((module) => {
+      return module.path && module.path === id
+    })
+    if (!module) {
+      module = this.modules[parseInt(id, 10)]
+    }
+    return module
+  }
+
+  /**
+   * Get identifier for this Unit.
+   *
+   * @param {Module} module
+   * @returns the module's `path` property if found, otherwise its index.
+   */
+  getModuleId (module) {
+    if (module.path) {
+      return module.path
+    } else {
+      return this.modules.indexOf(module)
+    }
+  }
+
   buildUnitURL (unit) {
-    const moduleIndex = this.getModuleIndex(unit.module)
-    const unitIndex = this.getUnitIndex(unit)
-    return `/modules/${moduleIndex}/units/${unitIndex}`
+    const module = unit.module
+    const moduleId = this.getModuleId(module)
+    const unitId = module.getUnitId(unit)
+    return `/modules/${moduleId}/units/${unitId}`
   }
 
   buildResourceURL (resource) {
     const prefix = this.buildUnitURL(resource.unit)
-    return `${prefix}/${resource.file || resource.name}`
+    return `${prefix}/${resource.path || resource.name}`
   }
 
   buildResourceFilePath (resource) {
     const unit = resource.unit
-    const moduleIndex = this.getModuleIndex(unit.module)
-    const unitIndex = this.getUnitIndex(unit)
-    return `${moduleIndex}/${unitIndex}/${resource.file || resource.name}`
+    const module = unit.module
+    const moduleId = this.getModuleId(module)
+    const unitId = module.getUnitId(unit)
+    return `${moduleId}/${unitId}/${resource.path || resource.name}`
   }
 }
 

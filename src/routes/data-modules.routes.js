@@ -14,17 +14,16 @@ const routes = async (fastify) => {
       `${entity} ${moduleIndex} not found`)
   }
 
-  fastify.get('/modules/:moduleIndex/units/:unitIndex/:resourceId',
+  fastify.get('/modules/:moduleId/units/:unitId/:resourceId',
     {
       preValidation: fastify.auth.ensureSignedIn
     },
     (request, reply) => {
-      const { moduleIndex, unitIndex, resourceId } = request.params
-      const modules = request.dataModules.modules
-      const module = modules[moduleIndex] ||
-        entityNotFound('module', moduleIndex)
-      const unit = module.units[unitIndex] ||
-        entityNotFound('unit', unitIndex)
+      const { moduleId, unitId, resourceId } = request.params
+      const module = request.dataModules.findModule(moduleId) ||
+        entityNotFound('module', moduleId)
+      const unit = module.findUnit(unitId) ||
+        entityNotFound('unit', unitId)
       const resource = unit.findResource(resourceId) ||
         entityNotFound('resource', resourceId)
 
@@ -42,16 +41,16 @@ const routes = async (fastify) => {
     }
   )
 
-  fastify.get('/modules/:moduleIndex/units/:unitIndex',
+  fastify.get('/modules/:moduleId/units/:unitId',
     {
       preValidation: fastify.auth.ensureSignedIn
     },
     (request, reply) => {
-      const { moduleIndex, unitIndex } = request.params
-      const module = request.dataModules.modules[moduleIndex] ||
-        entityNotFound('module', moduleIndex)
-      const unit = module.units[unitIndex] ||
-        entityNotFound('unit', unitIndex)
+      const { moduleId, unitId } = request.params
+      const module = request.dataModules.findModule(moduleId) ||
+        entityNotFound('module', moduleId)
+      const unit = module.findUnit(unitId) ||
+        entityNotFound('unit', unitId)
 
       reply.view('unit', {
         unit,

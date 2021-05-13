@@ -12,8 +12,8 @@ class Resource {
     return this.data.name
   }
 
-  get file () {
-    return this.data.file || null
+  get path () {
+    return this.data.path || null
   }
 }
 
