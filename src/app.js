@@ -1,6 +1,5 @@
 require('make-promises-safe')
 require('./config/env').load()
-const path = require ('path')
 
 const fastify = require('fastify')({
   logger: true
@@ -23,6 +22,7 @@ fastify.register(require('./plugins/base.plugin'))
 fastify.register(require('./plugins/auth.plugin'))
 fastify.register(require('./plugins/views.plugin'))
 fastify.register(require('./plugins/data-modules.plugin'))
+fastify.register(require('./plugins/resource-markdown.plugin'))
 
 fastify.register(require('./routes/base.routes'))
 fastify.register(require('./routes/auth.routes'))

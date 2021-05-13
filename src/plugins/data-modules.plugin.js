@@ -2,37 +2,49 @@ const fs = require('fs')
 const path = require ('path')
 const fp = require('fastify-plugin')
 const yaml = require('js-yaml')
+const Module = require('../data-modules/module')
+
+
+const buildModules = (data) => {
+  return data.map((moduleData) => {
+    return new Module(moduleData)
+  })
+}
 
 class Modules {
   constructor(data) {
-    this.moduleData = data
+    this.data = data
+    this.dataModules = buildModules(data)
   }
 
-  get data() {
-    return this.moduleData
+  get modules() {
+    return this.dataModules
   }
 
   getModuleIndex(module) {
-    return this.moduleData.findIndex((_module) => {
-      return _module.name === module.name
-    })
+    return this.modules.indexOf(module)
   }
 
-  getUnitIndex(unit, module) {
-    return module.units.findIndex((_unit) => {
-      return _unit.name === unit.name
-    })
+  getUnitIndex(unit) {
+    return unit.module.units.indexOf(unit)
   }
 
-  buildUnitURL(module, unit) {
-    const moduleIndex = this.getModuleIndex(module)
-    const unitIndex = this.getUnitIndex(unit, module)
+  buildUnitURL(unit) {
+    const moduleIndex = this.getModuleIndex(unit.module)
+    const unitIndex = this.getUnitIndex(unit)
     return `/modules/${moduleIndex}/units/${unitIndex}`
   }
 
-  buildResourceURL(module, unit, resource) {
-    const prefix = this.buildUnitURL(module, unit)
+  buildResourceURL(resource) {
+    const prefix = this.buildUnitURL(resource.unit)
     return `${prefix}/${resource.file || resource.name}`
+  }
+
+  buildResourceFilePath(resource) {
+    const unit = resource.unit
+    const moduleIndex = this.getModuleIndex(unit.module)
+    const unitIndex = this.getUnitIndex(unit)
+    return `${moduleIndex}/${unitIndex}/${resource.file || resource.name}`
   }
 }
 
@@ -45,7 +57,7 @@ const plugin = async (fastify, options, next) => {
     const file = fs.readFileSync(modulesFilePath, 'utf8')
     const doc = await yaml.load(file)
     const modules = new Modules(doc)
-    fastify.decorate('dataModules', modules)
+    fastify.decorateRequest('dataModules', modules)
   } catch (e) {
     console.error(e)
     console.error('Failed reading module manifest file!')
@@ -53,6 +65,6 @@ const plugin = async (fastify, options, next) => {
 }
 
 module.exports = fp(plugin, {
-  name: 'lw-module-manifest',
+  name: 'data-module-manifest',
   dependencies: ['config-checker']
 })

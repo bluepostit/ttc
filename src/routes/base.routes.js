@@ -8,7 +8,7 @@ async function routes(fastify, options) {
     },
     (request, reply) => {
       reply.view('index', {
-        modules: fastify.dataModules,
+        modules: request.dataModules,
       })
     })
 
