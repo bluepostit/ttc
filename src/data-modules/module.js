@@ -1,6 +1,10 @@
 const Unit = require('./unit')
 
 const buildUnits = (data, module) => {
+  if (!data.units) {
+    return []
+  }
+
   const units = data.units.map((unitObj) => {
     return new Unit(unitObj, module)
   })

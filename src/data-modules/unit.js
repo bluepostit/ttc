@@ -1,6 +1,10 @@
 const Resource = require('./resource')
 
 const buildResources = (data, unit) => {
+  if (!data.resources) {
+    return []
+  }
+
   const resources = data.resources.map((resourceObj) => {
     return new Resource(resourceObj, unit)
   })
