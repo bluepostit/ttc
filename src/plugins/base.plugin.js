@@ -22,4 +22,6 @@ const plugin = async (fastify) => {
   })
 }
 
-module.exports = fp(plugin)
+module.exports = fp(plugin, {
+  dependencies: ['config-checker']
+})

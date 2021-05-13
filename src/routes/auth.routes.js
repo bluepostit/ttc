@@ -22,15 +22,15 @@ async function routes(fastify, options) {
     reply.view('login')
   })
 
-  fastify.get('/auth/logout', async (request, reply, next) => {
+  fastify.get('/auth/logout', (request, reply, next) => {
     if (request.session.authenticated) {
-      try {
-        await request.destroySession()
+      request.destroySession((err) => {
+        if (err) {
+          fastify.log.error(err)
+          throw error
+        }
         reply.redirect('/auth/login')
-      } catch (error) {
-        console.error(error)
-        throw error
-      }
+      })
     }
     reply.redirect('/auth/login')
   })
