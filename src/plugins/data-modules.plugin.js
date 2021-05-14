@@ -4,7 +4,10 @@ const fp = require('fastify-plugin')
 const yaml = require('js-yaml')
 const Module = require('../data-modules/module')
 
-const buildModules = (data) => {
+const RELOAD_ONCE_FILE = 'reload-once'
+const RELOAD_ALWAYS_FILE = 'reload-always'
+
+const buildDataModules = (data) => {
   return data.map((moduleData) => {
     return new Module(moduleData)
   })
@@ -13,7 +16,7 @@ const buildModules = (data) => {
 class Modules {
   constructor (data) {
     this.data = data
-    this.dataModules = buildModules(data)
+    this.dataModules = buildDataModules(data)
   }
 
   get modules () {
@@ -69,16 +72,58 @@ class Modules {
   }
 }
 
-const loadModules = (request, done) => {
+const getModulesIndexFilePath = () => {
   const pathSuffix = process.env.MODULE_MANIFEST_PATH
   const pathPrefix = path.join(__dirname, '..', '..')
-  const modulesFilePath = path.join(pathPrefix, pathSuffix)
-  request.log.info(`Reading modules file at ${modulesFilePath}`)
+  return path.join(pathPrefix, pathSuffix)
+}
+
+const getModulesDirPath = () => {
+  const pathSuffix = process.env.MODULE_DATA_PATH
+  const pathPrefix = path.join(__dirname, '..', '..')
+  return path.join(pathPrefix, pathSuffix)
+}
+
+const checkForReloadDirective = async () => {
+  const modulesDir = getModulesDirPath()
+  const reloadOnceFile = path.join(modulesDir, RELOAD_ONCE_FILE)
+  const reloadAlwaysFile = path.join(modulesDir, RELOAD_ALWAYS_FILE)
+
+  try {
+    if (await fs.promises.access(reloadOnceFile, fs.constants.R_OK)) {
+      console.log('Directive found: Reload module manifest once')
+      return true
+    }
+
+    if (await fs.promises.access(reloadAlwaysFile, fs.constants.R_OK)) {
+      console.log('Directive found: Reload module manifest always')
+      return true
+    }
+  } catch (err) {
+    console.log('No reload files found')
+  }
+  return false
+}
+
+const shouldLoadModules = async (request) => {
+  if (!request.dataModules) {
+    request.log.info('request.dataModules is empty')
+    return true
+  }
+  if (!await checkForReloadDirective()) {
+    request.log.info('No reload directives found')
+    return false
+  }
+  return true
+}
+
+const buildModules = (log) => {
+  const modulesFilePath = getModulesIndexFilePath()
+  log.info(`Reading modules file at ${modulesFilePath}`)
   try {
     const file = fs.readFileSync(modulesFilePath, 'utf8')
     const doc = yaml.load(file)
-    request.dataModules = new Modules(doc)
-    done()
+    return new Modules(doc)
   } catch (e) {
     console.error(e)
     console.error('Failed reading module manifest file!')
@@ -86,12 +131,15 @@ const loadModules = (request, done) => {
   }
 }
 
-const plugin = (fastify, _options, next) => {
+const plugin = async (fastify, _options) => {
+  const preHandler = async (request, _reply) => {
+    if (await shouldLoadModules(request)) {
+      const modules = buildModules(request.log)
+      request.dataModules = modules
+    }
+  }
   fastify.decorateRequest('dataModules', null)
-  fastify.addHook('preHandler', (request, _reply, done) => {
-    loadModules(request, done)
-  })
-  next()
+  fastify.decorate('loadDataModulesPreHandler', preHandler)
 }
 
 module.exports = fp(plugin, {

@@ -4,7 +4,8 @@ const fastifyStatic = require('fastify-static')
 async function routes (fastify, options) {
   fastify.get('/',
     {
-      preValidation: fastify.auth.ensureSignedIn
+      preValidation: fastify.auth.ensureSignedIn,
+      preHandler: fastify.loadDataModulesPreHandler
     },
     (request, reply) => {
       reply.view('index', {

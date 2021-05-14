@@ -16,7 +16,8 @@ const routes = async (fastify) => {
 
   fastify.get('/modules/:moduleId/units/:unitId/:resourceId',
     {
-      preValidation: fastify.auth.ensureSignedIn
+      preValidation: fastify.auth.ensureSignedIn,
+      preHandler: fastify.loadDataModulesPreHandler
     },
     (request, reply) => {
       const { moduleId, unitId, resourceId } = request.params
@@ -43,7 +44,8 @@ const routes = async (fastify) => {
 
   fastify.get('/modules/:moduleId/units/:unitId',
     {
-      preValidation: fastify.auth.ensureSignedIn
+      preValidation: fastify.auth.ensureSignedIn,
+      preHandler: fastify.loadDataModulesPreHandler
     },
     (request, reply) => {
       const { moduleId, unitId } = request.params
