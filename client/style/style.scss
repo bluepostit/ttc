@@ -28,9 +28,13 @@ $gray: #222;
 @import './unit.scss';
 @import './resource.scss';
 
+html, body {
+  height: 100% !important;
+}
+
 .doc-content {
-  min-height: 100vh;
-  margin-bottom: 400px;
+  // min-height: 100vh;
+  // margin-bottom: 400px;
 }
 
 .navbar {

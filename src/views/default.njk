@@ -11,7 +11,7 @@
     {% endblock %}
   </title>
 </head>
-<body>
+<body class="h-100 d-flex flex-column">
   <nav class="navbar sticky-top navbar-light">
     <div class="container-fluid">
       <div>
@@ -33,11 +33,18 @@
       {% endif %}
     </div>
   </nav>
-  <div class="container doc-content">
+  <div class="container flex-shrink-0 doc-content">
     {% block content %}
       {{ content }}
     {% endblock %}
   </div>
+  {% block footer %}
+  <footer class="footer mt-auto py-3 bg-light">
+    <div class="container">
+      <span class="text-muted">Place sticky footer content here.</span>
+    </div>
+  </footer>
+  {% endblock %}
   <script type="text/javascript" src="/client/dist/main.js"></script>
 </body>
 </html>
