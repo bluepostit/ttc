@@ -57,6 +57,9 @@
   },
   "nodemonConfig": {
     "ext": "js,json,yaml,njk,scss,env",
-    "watch": ["*.*",".env"]
+    "watch": [
+      "*.*",
+      ".env"
+    ]
   }
 }
