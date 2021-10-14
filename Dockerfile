@@ -16,5 +16,6 @@ RUN npm ci --only=production
 FROM node:14-alpine
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/ .
+COPY secret-key .
 EXPOSE 8080
 CMD [ "node", "src/server.js" ]
