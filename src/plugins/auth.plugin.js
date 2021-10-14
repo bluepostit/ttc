@@ -3,7 +3,7 @@ const fp = require('fastify-plugin')
 const plugin = async (fastify) => {
   const ensureSignedIn = (request, reply, next) => {
     fastify.log.info(`Auth disabled? ${process.env.DISABLE_AUTH}`)
-    if (request.session.authenticated) {
+    if (request.session.get('authenticated')) {
       // Add this info to enable all views to access it as a global
       reply.locals = {
         signedIn: true
@@ -13,6 +13,7 @@ const plugin = async (fastify) => {
       return next()
     }
 
+    request.session.set('postLoginUrl', request.url)
     request.flash('warning', 'You must sign in first')
     reply.redirect('/auth/login')
   }

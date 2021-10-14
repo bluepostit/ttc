@@ -23,14 +23,8 @@ async function routes (fastify, options) {
   })
 
   fastify.get('/auth/logout', (request, reply, next) => {
-    if (request.session.authenticated) {
-      request.destroySession((err) => {
-        if (err) {
-          fastify.log.error(err)
-          throw err
-        }
-        reply.redirect('/auth/login')
-      })
+    if (request.session.get('authenticated')) {
+      request.session.delete()
     }
     reply.redirect('/auth/login')
   })
@@ -48,15 +42,16 @@ async function routes (fastify, options) {
       if (email !== USER.email) {
         throw fastify.httpErrors.unauthorized()
       }
-
       const matchingPassword = await Auth.compare(password, USER.password)
       if (!matchingPassword) {
         throw fastify.httpErrors.unauthorized()
       }
 
-      request.session.authenticated = true
-      console.info('successful authentication')
-      reply.redirect('/')
+      request.session.set('authenticated', true)
+      fastify.log.info('successful authentication')
+      const url = request.session.get('postLoginUrl') || '/'
+      request.session.set('postLoginUrl', null)
+      reply.redirect(url)
     }
   )
 

@@ -5,7 +5,7 @@ const plugin = async (fastify, options) => {
   fastify.register(flash)
 
   const hasContent = (flashes) => {
-    return Object.getOwnPropertyNames(flashes).length > 0
+    return flashes && Object.getOwnPropertyNames(flashes).length > 0
   }
 
   fastify.addHook('preHandler', function (request, reply, done) {
