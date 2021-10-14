@@ -2,6 +2,10 @@ FROM node:14-alpine AS builder
 WORKDIR /usr/src/app
 COPY package*.json ./
 
+# Install build requirements
+RUN apk --update add --no-cache curl git python alpine-sdk \
+  bash autoconf libtool automake
+
 RUN npm ci
 COPY . .
 # This triggers webpack. Then remove all node_modules.
