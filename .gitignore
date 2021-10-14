@@ -3,3 +3,4 @@ node_modules
 logs/*.log*
 data/
 client/dist
+secret-key

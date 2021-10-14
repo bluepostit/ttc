@@ -1,0 +1,9 @@
+{% for flash in flashes['info'] %}
+  {{ flash }}
+{% endfor %}
+
+{% for flash in flashes['warning'] %}
+  <div class="alert alert-warning" role="alert">
+    {{ flash }}
+  </div>
+{% endfor %}

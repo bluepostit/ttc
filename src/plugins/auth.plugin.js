@@ -13,9 +13,8 @@ const plugin = async (fastify) => {
       return next()
     }
 
-    throw fastify.httpErrors.unauthorized(
-      'You must sign in first'
-    )
+    request.flash('warning', 'You must sign in first')
+    reply.redirect('/auth/login')
   }
 
   fastify.decorate('auth', {
