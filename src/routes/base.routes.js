@@ -14,9 +14,9 @@ const getLastUnit = (request) => {
   return unit
 }
 
-// const clearLastUnit = (request) => {
-//   request.session.set('lastUnit', null)
-// }
+const clearLastUnit = (request) => {
+  request.session.set('lastUnit', null)
+}
 
 async function routes (fastify, options) {
   fastify.get('/',
@@ -26,14 +26,24 @@ async function routes (fastify, options) {
     },
     (request, reply) => {
       const lastUnit = getLastUnit(request)
-      // clearLastUnit(request)
-      reply.locals = {
-        lastUnit: lastUnit
-      }
+      reply.locals = reply.locals || {}
+      reply.locals.lastUnit = lastUnit
       reply.view('index', {
-        modules: request.dataModules
+        modules: request.dataModules,
+        noBackButton: true,
+        clearHistoryButton: lastUnit !== null
       })
     })
+
+  fastify.get('/clearHistory',
+    {
+      preValidation: fastify.auth.ensureSignedIn
+    },
+    (request, reply) => {
+      clearLastUnit(request)
+      reply.redirect('/')
+    }
+  )
 
   fastify.register(fastifyStatic, {
     root: path.join('/public'),
