@@ -2,10 +2,16 @@ const path = require('path')
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { InjectManifest } = require('workbox-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const devMode = process.env.NODE_ENV !== 'production'
 
 const plugins = [
+  new HtmlWebpackPlugin({
+    template: path.resolve(__dirname, 'src/views/base.html'),
+    filename: path.resolve(__dirname, 'src/views/base.njk'),
+    publicPath: '/client/dist/'
+  }),
   new MiniCssExtractPlugin({
     filename: devMode ? '[name].css' : '[name].[contenthash].css',
     chunkFilename: devMode ? '[id].css' : '[id].[contenthash].css'
@@ -23,7 +29,7 @@ const plugins = [
 module.exports = {
   entry: './client/src/index.js',
   output: {
-    filename: 'main.js',
+    filename: devMode ? 'main.js' : 'main.[contenthash].js',
     path: path.resolve(__dirname, 'client', 'dist')
   },
   plugins,
