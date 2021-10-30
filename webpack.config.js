@@ -8,7 +8,11 @@ const devMode = process.env.NODE_ENV !== 'production'
 const plugins = [
   new InjectManifest({
     swSrc: './service-worker.js',
-    swDest: 'service-worker.js'
+    swDest: 'service-worker.js',
+    additionalManifestEntries: [
+      { url: '/', revision: null },
+      { url: '/offline', revision: null }
+    ]
   })
 ]
 if (!devMode) {
