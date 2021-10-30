@@ -1,4 +1,4 @@
-import { registerRoute } from 'workbox-routing'
+import { registerRoute, setCatchHandler } from 'workbox-routing'
 import {
   NetworkFirst,
   StaleWhileRevalidate,
@@ -9,11 +9,20 @@ import {
 import { CacheableResponsePlugin } from 'workbox-cacheable-response'
 // Used to limit entries in cache, remove entries after a certain period of time
 import { ExpirationPlugin } from 'workbox-expiration'
-import { precacheAndRoute } from 'workbox-precaching'
+import { precacheAndRoute, matchPrecache } from 'workbox-precaching'
 
 console.log('service worker begins')
 
 precacheAndRoute(self.__WB_MANIFEST) // eslint-disable-line
+
+// Catch routing errors, like if the user is offline
+setCatchHandler(async ({ event }) => {
+  // Return the precached offline page if a document is being requested
+  if (event.request.destination === 'document') {
+    return matchPrecache('/offline')
+  }
+  return Response.error() // eslint-disable-line
+})
 
 // Cache page navigations (html) with a Network First strategy
 registerRoute(
