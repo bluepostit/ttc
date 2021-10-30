@@ -1,9 +1,16 @@
 const path = require('path')
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { InjectManifest } = require('workbox-webpack-plugin')
+
 const devMode = process.env.NODE_ENV !== 'production'
 
-const plugins = []
+const plugins = [
+  new InjectManifest({
+    swSrc: './service-worker.js',
+    swDest: 'service-worker.js'
+  })
+]
 if (!devMode) {
   plugins.push(new MiniCssExtractPlugin())
 }

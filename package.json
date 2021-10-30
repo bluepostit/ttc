@@ -36,7 +36,12 @@
     "markdown-it-highlightjs": "^3.4.0",
     "nunjucks": "^3.2.3",
     "pino-pretty": "^4.7.1",
-    "point-of-view": "^4.14.0"
+    "point-of-view": "^4.14.0",
+    "workbox-cacheable-response": "^6.3.0",
+    "workbox-expiration": "^6.3.0",
+    "workbox-routing": "^6.3.0",
+    "workbox-strategies": "^6.3.0",
+    "workbox-webpack-plugin": "^6.3.0"
   },
   "devDependencies": {
     "bootstrap": "^5.0.0",
