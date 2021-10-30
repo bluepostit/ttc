@@ -1,3 +1,4 @@
+const fs = require('fs/promises')
 const path = require('path')
 const fastifyStatic = require('fastify-static')
 
@@ -61,6 +62,15 @@ async function routes (fastify, options) {
     prefix: '/node_modules/',
     decorateReply: false
   })
+
+  fastify.get('/service-worker.js',
+    async (_request, reply) => {
+      const filePath = path.join(__dirname, '../../public/service-worker.js')
+      const file = await fs.readFile(filePath, { encoding: 'utf-8' })
+      reply.header('Content-Type', 'text/javascript')
+      reply.send(file)
+    }
+  )
 }
 
 module.exports = routes
