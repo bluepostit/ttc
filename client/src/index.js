@@ -11,6 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
 // Load ServiceWorker
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js')
+    navigator.serviceWorker.register('/client/dist/service-worker.js')
   })
 }
