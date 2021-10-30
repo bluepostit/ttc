@@ -29,7 +29,7 @@ const plugins = [
 module.exports = {
   entry: './client/src/index.js',
   output: {
-    filename: 'main.js',
+    filename: devMode ? 'main.js' : 'main.[contenthash].js',
     path: path.resolve(__dirname, 'client', 'dist')
   },
   plugins,
