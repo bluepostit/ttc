@@ -6,6 +6,10 @@ const { InjectManifest } = require('workbox-webpack-plugin')
 const devMode = process.env.NODE_ENV !== 'production'
 
 const plugins = [
+  new MiniCssExtractPlugin({
+    filename: devMode ? '[name].css' : '[name].[contenthash].css',
+    chunkFilename: devMode ? '[id].css' : '[id].[contenthash].css'
+  }),
   new InjectManifest({
     swSrc: './service-worker.js',
     swDest: 'service-worker.js',
@@ -15,9 +19,6 @@ const plugins = [
     ]
   })
 ]
-if (!devMode) {
-  plugins.push(new MiniCssExtractPlugin())
-}
 
 module.exports = {
   entry: './client/src/index.js',
@@ -35,7 +36,7 @@ module.exports = {
       {
         test: /\.s[ac]ss$/i,
         use: [
-          devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+          MiniCssExtractPlugin.loader,
           'css-loader',
           'sass-loader'
         ]
