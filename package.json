@@ -1,7 +1,7 @@
 {
-  "name": "lwtc",
+  "name": "ttc",
   "version": "1.0.0",
-  "description": "Le Wagon Teacher's Companion",
+  "description": "Tech Teacher's Companion",
   "main": "index.js",
   "scripts": {
     "start": "node src/server.js",

@@ -1,13 +1,13 @@
 ---
 version: "3"
 services:
-  lwtc:
-    image: bluepostit/lwtc
-    container_name: lwtc
+  ttc:
+    image: bluepostit/ttc
+    container_name: ttc
     environment:
-      - PORT=${LWTC_PORT}
-      - USER_EMAIL=${LWTC_USER_EMAIL}
-      - USER_PASSWORD=${LWTC_USER_PASSWORD}
+      - PORT=${TTC_PORT}
+      - USER_EMAIL=${TTC_USER_EMAIL}
+      - USER_PASSWORD=${TTC_USER_PASSWORD}
       - SESSION_SECRET=${SESSION_SECRET}
       # Eg. data/modules.yaml
       - MODULE_MANIFEST_PATH=${MODULE_MANIFEST_PATH}

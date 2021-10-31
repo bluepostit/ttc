@@ -4,7 +4,7 @@ const fp = require('fastify-plugin')
 
 const plugin = async (fastify) => {
   fastify.register(require('fastify-secure-session'), {
-    cookieName: 'lwtc-session',
+    cookieName: 'ttc-session',
     key: fs.readFileSync(path.join(__dirname, '../../secret-key')),
     cookie: {
       path: '/',
