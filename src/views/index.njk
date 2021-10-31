@@ -3,34 +3,5 @@
 {% block content %}
 <h1 class="text-center">Modules</h1>
   <div class="accordion" id="accordionIndex">
-    {% for module in modules.modules %}
-      {% set moduleOpen = (lastUnit and lastUnit.module === module) %}
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="module-heading-{{ loop.index0 }}">
-          {% set collapsed = '' if moduleOpen else 'collapsed' %}
-          {% set ariaExpanded = 'true' if moduleOpen else 'false' %}
-          <button class="accordion-button {{ collapsed }}" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#collapse-{{ loop.index0 }}"
-                  aria-expanded="{{ ariaExpanded }}" aria-controls="collapse-{{ loop.index0 }}">
-            {{ module.name }}
-          </button>
-        </h2>
-        {% set show = 'show' if moduleOpen else '' %}
-        <div id="collapse-{{ loop.index0 }}" class="accordion-collapse collapse {{ show }}"
-            aria-labelledby="module-heading-{{ loop.index0 }}"
-            data-bs-parent="#accordionIndex">
-          <div class="accordion-body">
-            <div class="list-group list-group-flush list-group">
-            {% for unit in module.units %}
-              {% set extraClass = 'list-group-item-primary' if lastUnit and lastUnit === unit else '' %}
-              <a href="{{ unit.url }}" class="list-group-item list-group-item-action {{ extraClass }}">
-                {{ loop.index }}. {{ unit.name }}
-              </a>
-            {% endfor %}
-            </div>
-          </div>
-        </div>
-      </div>
-    {% endfor %}
   </div>
 {% endblock %}
