@@ -71,7 +71,10 @@ const routes = async (fastify) => {
     {
       preHandler: fastify.loadDataModulesPreHandler,
       schema: {
-        headers: { $ref: '/modules.headers#' }
+        headers: { $ref: '/modules.headers#' },
+        response: {
+          200: { $ref: '/modules.response.200#' }
+        }
       }
     },
     (request, reply) => {
