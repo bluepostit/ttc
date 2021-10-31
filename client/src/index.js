@@ -1,7 +1,7 @@
 import '../style/style.scss'
 import 'bootstrap/js/dist/collapse'
 
-import { loadIndexPage } from './indexPage'
+import { loadIndexPage } from './index-page'
 
 const setupBackButton = () => {
   const backButton = document.querySelector('.back-button')
