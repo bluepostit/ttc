@@ -5,7 +5,7 @@ const fastify = require('fastify')({
   logger: true
 })
 
-fastify.register(require('./plugins/index.plugin'))
-fastify.register(require('./routes/index.routes'))
+fastify.register(require('./plugins'))
+fastify.register(require('./routes'))
 
 module.exports = fastify
