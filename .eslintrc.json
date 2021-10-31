@@ -1,4 +1,5 @@
 {
+    "root": true,
     "env": {
         "browser": true,
         "commonjs": true,
@@ -12,5 +13,8 @@
         "ecmaVersion": 12
     },
     "rules": {
-    }
+    },
+    "ignorePatterns": [
+        "client/dist"
+    ]
 }
