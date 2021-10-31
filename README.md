@@ -1,4 +1,4 @@
-# LWTC - Le Wagon Teacher's Companion
+# TTC - Tech Teacher's Companion
 
 ## Install
 

@@ -46,7 +46,7 @@ async function routes (fastify, options) {
   )
 
   fastify.register(fastifyStatic, {
-    root: path.join('/public'),
+    root: path.join(__dirname, '../../public'),
     prefix: '/public/'
   })
 
