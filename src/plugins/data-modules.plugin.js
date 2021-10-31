@@ -52,9 +52,7 @@ class Modules {
   }
 
   toJSON () {
-    return {
-      modules: this.dataModules
-    }
+    return this.dataModules
   }
 }
 

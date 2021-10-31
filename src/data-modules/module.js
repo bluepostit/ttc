@@ -76,6 +76,7 @@ class Module {
 
   toJSON () {
     return {
+      id: this.id,
       name: this.name,
       units: this.units
     }

@@ -78,7 +78,11 @@ const routes = async (fastify) => {
       }
     },
     (request, reply) => {
-      reply.send(JSON.stringify(request.dataModules))
+      const data = {
+        modules: request.dataModules,
+        lastUnit: request.session.get('lastUnit')
+      }
+      reply.send(JSON.stringify(data))
     }
   )
 }

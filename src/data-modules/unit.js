@@ -31,11 +31,15 @@ class Unit {
     return this.data.path
   }
 
+  get id () {
+    const module = this.module
+    return module.getUnitId(this)
+  }
+
   get url () {
     const module = this.module
     const moduleId = module.id
-    const unitId = module.getUnitId(this)
-    return `/modules/${moduleId}/units/${unitId}`
+    return `/modules/${moduleId}/units/${this.id}`
   }
 
   get resources () {
@@ -51,6 +55,7 @@ class Unit {
 
   toJSON () {
     return {
+      id: this.id,
       name: this.name,
       url: this.url
     }
