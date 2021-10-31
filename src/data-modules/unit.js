@@ -31,6 +31,13 @@ class Unit {
     return this.data.path
   }
 
+  get url () {
+    const module = this.module
+    const moduleId = module.id
+    const unitId = module.getUnitId(this)
+    return `/modules/${moduleId}/units/${unitId}`
+  }
+
   get resources () {
     return this.dataResources
   }
@@ -40,6 +47,13 @@ class Unit {
       return (resource.name === resourceId) ||
         (resource.path === resourceId)
     })
+  }
+
+  toJSON () {
+    return {
+      name: this.name,
+      url: this.url
+    }
   }
 }
 

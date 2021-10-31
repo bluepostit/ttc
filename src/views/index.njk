@@ -23,8 +23,7 @@
             <div class="list-group list-group-flush list-group">
             {% for unit in module.units %}
               {% set extraClass = 'list-group-item-primary' if lastUnit and lastUnit === unit else '' %}
-              {% set url = modules.buildUnitURL(unit) %}
-              <a href="{{ url }}" class="list-group-item list-group-item-action {{ extraClass }}">
+              <a href="{{ unit.url }}" class="list-group-item list-group-item-action {{ extraClass }}">
                 {{ loop.index }}. {{ unit.name }}
               </a>
             {% endfor %}
