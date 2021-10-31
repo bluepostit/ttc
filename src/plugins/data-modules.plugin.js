@@ -8,8 +8,10 @@ const RELOAD_ONCE_FILE = 'reload-once'
 const RELOAD_ALWAYS_FILE = 'reload-always'
 
 const buildDataModules = (data) => {
-  return data.map((moduleData) => {
-    return new Module(moduleData)
+  return data.map((moduleData, index) => {
+    moduleData.index = index
+    const module = new Module(moduleData)
+    return module
   })
 }
 
@@ -37,38 +39,20 @@ class Modules {
     return module
   }
 
-  /**
-   * Get identifier for this Unit.
-   *
-   * @param {Module} module
-   * @returns the module's `path` property if found, otherwise its index.
-   */
-  getModuleId (module) {
-    if (module.path) {
-      return module.path
-    } else {
-      return this.modules.indexOf(module)
-    }
-  }
-
-  buildUnitURL (unit) {
-    const module = unit.module
-    const moduleId = this.getModuleId(module)
-    const unitId = module.getUnitId(unit)
-    return `/modules/${moduleId}/units/${unitId}`
-  }
-
   buildResourceURL (resource) {
-    const prefix = this.buildUnitURL(resource.unit)
-    return `${prefix}/${resource.path || resource.name}`
+    return `${resource.unit.url}/${resource.path || resource.name}`
   }
 
   buildResourceFilePath (resource) {
     const unit = resource.unit
     const module = unit.module
-    const moduleId = this.getModuleId(module)
+    const moduleId = module.id
     const unitId = module.getUnitId(unit)
     return `${moduleId}/${unitId}/${resource.path || resource.name}`
+  }
+
+  toJSON () {
+    return this.dataModules
   }
 }
 

@@ -1,11 +1,18 @@
 import '../style/style.scss'
 import 'bootstrap/js/dist/collapse'
 
-document.addEventListener('DOMContentLoaded', () => {
+import { loadIndexPage } from './indexPage'
+
+const setupBackButton = () => {
   const backButton = document.querySelector('.back-button')
   backButton && backButton.addEventListener('click', (e) => {
     window.history.back()
   })
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  setupBackButton()
+  loadIndexPage()
 })
 
 // Load ServiceWorker

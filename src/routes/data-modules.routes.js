@@ -66,6 +66,25 @@ const routes = async (fastify) => {
         title: unit.name
       })
     })
+
+  fastify.get('/modules',
+    {
+      preHandler: fastify.loadDataModulesPreHandler,
+      schema: {
+        headers: { $ref: '/modules.headers#' },
+        response: {
+          200: { $ref: '/modules.response.200#' }
+        }
+      }
+    },
+    (request, reply) => {
+      const data = {
+        modules: request.dataModules,
+        lastUnit: request.session.get('lastUnit')
+      }
+      reply.send(JSON.stringify(data))
+    }
+  )
 }
 
 module.exports = routes

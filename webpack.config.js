@@ -3,6 +3,7 @@ const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { InjectManifest } = require('workbox-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { VueLoaderPlugin } = require('vue-loader')
 
 const devMode = process.env.NODE_ENV !== 'production'
 
@@ -23,7 +24,8 @@ const plugins = [
       { url: '/', revision: null },
       { url: '/offline', revision: null }
     ]
-  })
+  }),
+  new VueLoaderPlugin()
 ]
 
 module.exports = {
@@ -58,6 +60,10 @@ module.exports = {
             }
           }
         ]
+      },
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader'
       }
     ]
   }

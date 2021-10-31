@@ -57,6 +57,30 @@ class Module {
       return this.dataUnits.indexOf(unit)
     }
   }
+
+  /**
+   * Get identifier for this Module.
+   *
+   * @param {Module} module
+   * @returns the module's `path` property if found, otherwise its index.
+   */
+  get id () {
+    if (this.path) {
+      return this.path
+    } else if (this.data.index) {
+      return this.data.index
+    } else {
+      return null
+    }
+  }
+
+  toJSON () {
+    return {
+      id: this.id,
+      name: this.name,
+      units: this.units
+    }
+  }
 }
 
 module.exports = Module
