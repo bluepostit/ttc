@@ -1,11 +1,14 @@
 {% extends "base.njk" %}
 
 {% block title %}
-  {{ title }}
+  {{ resource.unit.name }} | {{ resource.name }}
 {% endblock %}
 
 {% block content %}
-<div class="unit-resource">
-  {{ content }}
+<div class="unit-resource"
+     data-unit-id="{{ resource.unit.id }}"
+     data-module-id="{{ resource.unit.module.id }}"
+     data-resource-id="{{ resource.id }}">
+  <div class="content"></div>
 </div>
 {% endblock %}

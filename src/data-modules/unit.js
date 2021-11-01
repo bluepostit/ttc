@@ -57,7 +57,11 @@ class Unit {
     return {
       id: this.id,
       name: this.name,
-      url: this.url
+      url: this.url,
+      module: {
+        name: this.module.name
+      },
+      resources: this.resources
     }
   }
 }

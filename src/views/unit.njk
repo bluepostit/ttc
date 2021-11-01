@@ -1,18 +1,9 @@
 {% extends "base.njk" %}
 
 {% block content %}
-<div class="module-unit">
-  <h1 class="text-center">{{ unit.module.name }}</h1>
-  <h2>{{ unit.name }} </h2>
-  <h3>Resources</h3>
-  <div class="list-group ">
-    {% for resource in unit.resources %}
-      {% set url = modules.buildResourceURL(resource) %}
-
-      <a href="{{ url }}" class="list-group-item list-group-item-action">
-        <i class="bi bi-file-earmark-richtext resource-list-item-icon"></i> {{ resource.name }}
-      </a>
-    {% endfor %}
-  </div>
+<div class="module-unit"
+     data-unit-id="{{ unit.id }}"
+     data-module-id="{{ unit.module.id }}">
+  <div class="content"></div>
 </div>
 {% endblock %}

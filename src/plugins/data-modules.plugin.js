@@ -39,10 +39,6 @@ class Modules {
     return module
   }
 
-  buildResourceURL (resource) {
-    return `${resource.unit.url}/${resource.path || resource.name}`
-  }
-
   buildResourceFilePath (resource) {
     const unit = resource.unit
     const module = unit.module

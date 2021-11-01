@@ -36,7 +36,7 @@ const routes = async (fastify) => {
         const doc = request.parseResourceMarkdown(resource)
         storeUnitInSession(request, moduleId, unitId)
         reply.view('resource', {
-          title: `${resource.unit.name} | ${resource.name}`,
+          resource,
           content: doc
         })
       } catch (e) {
@@ -66,25 +66,6 @@ const routes = async (fastify) => {
         title: unit.name
       })
     })
-
-  fastify.get('/modules',
-    {
-      preHandler: fastify.loadDataModulesPreHandler,
-      schema: {
-        headers: { $ref: '/modules.headers#' },
-        response: {
-          200: { $ref: '/modules.response.200#' }
-        }
-      }
-    },
-    (request, reply) => {
-      const data = {
-        modules: request.dataModules,
-        lastUnit: request.session.get('lastUnit')
-      }
-      reply.send(JSON.stringify(data))
-    }
-  )
 }
 
 module.exports = routes

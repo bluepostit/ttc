@@ -1,7 +1,7 @@
 import '../style/style.scss'
 import 'bootstrap/js/dist/collapse'
 
-import { loadIndexPage } from './index-page'
+import { loadVueForPage } from './vue-loader'
 
 const setupBackButton = () => {
   const backButton = document.querySelector('.back-button')
@@ -12,7 +12,7 @@ const setupBackButton = () => {
 
 document.addEventListener('DOMContentLoaded', () => {
   setupBackButton()
-  loadIndexPage()
+  loadVueForPage()
 })
 
 // Load ServiceWorker

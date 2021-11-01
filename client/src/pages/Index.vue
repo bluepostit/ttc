@@ -11,7 +11,7 @@
 
 <script>
   import { ModuleStore } from '../module-storage'
-  import Module from './Module.vue'
+  import Module from '../components/Module.vue'
 
   export default {
     components: {
@@ -28,6 +28,9 @@
 
     created: function () {
       this.loadLocalData()
+    },
+
+    mounted: function () {
       this.fetchData()
     },
 
@@ -40,7 +43,7 @@
         }
       },
       fetchData: function () {
-        const url = '/modules'
+        const url = '/api/v1/modules'
         fetch(url, {
           headers: {
             Accept: 'application/json'

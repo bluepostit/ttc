@@ -2,7 +2,7 @@ const fp = require('fastify-plugin')
 
 const plugin = async (fastify) => {
   fastify.addSchema({
-    $id: '/modules.headers',
+    $id: '/api/v1/ajax-headers',
     type: 'object',
     properties: {
       accept: {
@@ -14,7 +14,7 @@ const plugin = async (fastify) => {
   })
 
   fastify.addSchema({
-    $id: '/modules.response.200',
+    $id: '/api/v1/modules.response.200',
     type: 'object',
     properties: {
       modules: {
