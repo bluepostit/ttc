@@ -36,7 +36,7 @@ const routes = async (fastify) => {
         const doc = request.parseResourceMarkdown(resource)
         storeUnitInSession(request, moduleId, unitId)
         reply.view('resource', {
-          title: `${resource.unit.name} | ${resource.name}`,
+          resource,
           content: doc
         })
       } catch (e) {

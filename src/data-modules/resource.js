@@ -16,12 +16,17 @@ class Resource {
     return this.data.path || null
   }
 
+  get id () {
+    return this.path || this.name
+  }
+
   get url () {
-    return `${this.unit.url}/${this.path || this.name}`
+    return `${this.unit.url}/${this.id}`
   }
 
   toJSON () {
     return {
+      id: this.id,
       name: this.name,
       url: this.url
     }
