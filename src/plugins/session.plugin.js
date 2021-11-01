@@ -8,9 +8,10 @@ const plugin = async (fastify) => {
     key: fs.readFileSync(path.join(__dirname, '../../secret-key')),
     cookie: {
       path: '/',
-      httpOnly: true
-    },
-    expires: 1800000
+      httpOnly: true,
+      sameSite: true,
+      maxAge: 60 * 60 * 24 * 7 * 4 // 4 weeks
+    }
   })
 }
 
