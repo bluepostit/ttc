@@ -58,6 +58,9 @@ class Unit {
       id: this.id,
       name: this.name,
       url: this.url,
+      module: {
+        name: this.module.name
+      },
       resources: this.resources
     }
   }
