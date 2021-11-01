@@ -15,6 +15,17 @@ class Resource {
   get path () {
     return this.data.path || null
   }
+
+  get url () {
+    return `${this.unit.url}/${this.path || this.name}`
+  }
+
+  toJSON () {
+    return {
+      name: this.name,
+      url: this.url
+    }
+  }
 }
 
 module.exports = Resource
