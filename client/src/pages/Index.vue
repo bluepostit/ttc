@@ -1,11 +1,14 @@
 <template>
-  <div class="accordion" id="accordionIndex">
-    <Module v-for="(module, index) in data.modules"
-            v-bind:module="module"
-            v-bind:index="index"
-            v-bind:key="module.name"
-            v-bind:selectedUnitId="getSelectedUnitId(module)">
-    </Module>
+  <div>
+    <h1 class="text-center">Modules</h1>
+    <div class="accordion" id="accordionIndex">
+      <Module v-for="(module, index) in data.modules"
+              v-bind:module="module"
+              v-bind:index="index"
+              v-bind:key="module.name"
+              v-bind:selectedUnitId="getSelectedUnitId(module)">
+      </Module>
+    </div>
   </div>
 </template>
 

@@ -17,6 +17,7 @@
         <div class="list-group list-group-flush list-group">
           <Unit v-for="(unit, index) in module.units"
                   v-bind:unit="unit"
+                  v-bind:moduleId="module.id"
                   v-bind:index="index"
                   v-bind:key="unit.name"
                   v-bind:selected="isSelected(unit)">

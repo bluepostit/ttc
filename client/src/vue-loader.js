@@ -1,49 +1,36 @@
 import Vue from 'vue'
+import VueRouter from 'vue-router'
 import Index from './pages/Index.vue'
 import Unit from './pages/Unit.vue'
 import Resource from './pages/Resource.vue'
 
-const loadIndexPage = () => {
-  const elementId = '#accordionIndex'
-  if (!document.querySelector(elementId)) {
-    return
-  }
-  return new Vue({
-    el: elementId,
-    render: function (h) {
-      return h(Index)
-    }
-  })
-}
+Vue.use(VueRouter)
 
-const loadUnitPage = () => {
-  const elementId = '.doc-content > .module-unit > .content'
-  if (!document.querySelector(elementId)) {
-    return
+const routes = [
+  {
+    path: '/',
+    name: 'index',
+    component: Index
+  },
+  {
+    path: '/:moduleId/units/:unitId',
+    name: 'unit',
+    component: Unit,
+    props: true
+  },
+  {
+    path: '/:moduleId/units/:unitId/:resourceId',
+    name: 'resource',
+    component: Resource,
+    props: true
   }
-  return new Vue({
-    el: elementId,
-    render: function (h) {
-      return h(Unit)
-    }
-  })
-}
-
-const loadResourcePage = () => {
-  const elementId = '.doc-content > .unit-resource > .content'
-  if (!document.querySelector(elementId)) {
-    return
-  }
-  return new Vue({
-    el: elementId,
-    render: function (h) {
-      return h(Resource)
-    }
-  })
-}
+]
 
 const loadVueForPage = () => {
-  loadIndexPage() || loadUnitPage() || loadResourcePage()
+  const router = new VueRouter({ routes })
+  new Vue({
+    router
+  }).$mount('.doc-content')
 }
 
 export { loadVueForPage }

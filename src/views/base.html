@@ -18,6 +18,7 @@
     {% if flashes %}
       {% include 'flashes.njk' %}
     {% endif %}
+    <router-view></router-view>
     {% block content %}
       {{ content }}
     {% endblock %}
