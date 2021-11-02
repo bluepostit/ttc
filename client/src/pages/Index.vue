@@ -31,6 +31,7 @@
 
     created: function () {
       this.loadLocalData()
+      this.hideBackButton()
     },
 
     mounted: function () {
@@ -45,6 +46,7 @@
           this.data = data
         }
       },
+
       fetchData: function () {
         const url = '/api/v1/modules'
         fetch(url, {
@@ -63,6 +65,11 @@
           return this.data.lastUnit.unitId
         }
         return null
+      },
+
+      hideBackButton: function () {
+        const backButton = document.querySelector('.back-button')
+        backButton.style.display = 'none'
       }
     }
   }
