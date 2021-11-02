@@ -1,19 +1,6 @@
 const path = require('path')
 const fastifyStatic = require('fastify-static')
 
-const getLastUnit = (request) => {
-  const lastUnit = request.session.get('lastUnit')
-  if (!lastUnit) {
-    return null
-  }
-  const module = request.dataModules.findModule(lastUnit.moduleId)
-  if (!module) {
-    return null
-  }
-  const unit = module.findUnit(lastUnit.unitId)
-  return unit
-}
-
 const clearLastUnit = (request) => {
   request.session.set('lastUnit', null)
 }
@@ -21,18 +8,10 @@ const clearLastUnit = (request) => {
 async function routes (fastify, options) {
   fastify.get('/',
     {
-      preValidation: fastify.auth.ensureSignedIn,
-      preHandler: fastify.loadDataModulesPreHandler
+      preValidation: fastify.auth.ensureSignedIn
     },
     (request, reply) => {
-      const lastUnit = getLastUnit(request)
-      reply.locals = reply.locals || {}
-      reply.locals.lastUnit = lastUnit
-      reply.view('index', {
-        modules: request.dataModules,
-        noBackButton: true,
-        clearHistoryButton: lastUnit !== null
-      })
+      reply.view('index')
     })
 
   fastify.get('/clearHistory',
