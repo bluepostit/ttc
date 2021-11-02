@@ -1,8 +1,9 @@
 <template>
-  <a v-bind:href="unit.url"
-     v-bind:class="`list-group-item list-group-item-action ${selected ? 'list-group-item-primary' : ''}`">
-    {{ index + 1 }}. {{ unit.name }}
-  </a>
+  <router-link
+    :to="{ name: 'unit', params: { moduleId, unitId: unit.id } }"
+    v-bind:class="linkClass()">
+      {{ index + 1 }}. {{ unit.name }}
+  </router-link>
 </template>
 
 <script>
@@ -16,9 +17,20 @@
         type: Object,
         required: true
       },
+      moduleId: {
+        type: String,
+        required: true
+      },
       selected: {
         required: true,
         default: false
+      }
+    },
+
+    methods: {
+      linkClass: function () {
+        const extraClass = this.selected ? 'list-group-item-primary' : ''
+        return `list-group-item list-group-item-action ${extraClass}`
       }
     }
   }

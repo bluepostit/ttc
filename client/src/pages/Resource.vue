@@ -1,32 +1,36 @@
 <template>
-  <div v-html="content">
+  <div v-html="content" class="unit-resource">
   </div>
 </template>
 
 <script>
 export default {
+    props: {
+    unitId: {
+      type: String,
+      required: true
+    },
+    moduleId: {
+      type: String,
+      required: true
+    },
+    resourceId: {
+      type: String,
+      required: true
+    }
+  },
+
   data: function () {
     return {
-      moduleId: null,
-      unitId: null,
-      resourceId: null,
       content: ''
     }
   },
 
   mounted: function () {
-    this.setIdsFromHtml()
     this.fetchData()
   },
 
   methods: {
-    setIdsFromHtml: function () {
-      const parentNode = this.$el.parentNode
-      this.moduleId = parentNode.dataset.moduleId
-      this.unitId = parentNode.dataset.unitId
-      this.resourceId = parentNode.dataset.resourceId
-    },
-
     fetchData: function () {
       const url = `/api/v1/modules/${this.moduleId}/units/${this.unitId}/${this.resourceId}`
       fetch(url, {

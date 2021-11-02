@@ -1,11 +1,14 @@
 <template>
-  <div class="accordion" id="accordionIndex">
-    <Module v-for="(module, index) in data.modules"
-            v-bind:module="module"
-            v-bind:index="index"
-            v-bind:key="module.name"
-            v-bind:selectedUnitId="getSelectedUnitId(module)">
-    </Module>
+  <div>
+    <h1 class="text-center">Modules</h1>
+    <div class="accordion" id="accordionIndex">
+      <Module v-for="(module, index) in data.modules"
+              v-bind:module="module"
+              v-bind:index="index"
+              v-bind:key="module.name"
+              v-bind:selectedUnitId="getSelectedUnitId(module)">
+      </Module>
+    </div>
   </div>
 </template>
 
@@ -28,6 +31,7 @@
 
     created: function () {
       this.loadLocalData()
+      this.hideBackButton()
     },
 
     mounted: function () {
@@ -42,6 +46,7 @@
           this.data = data
         }
       },
+
       fetchData: function () {
         const url = '/api/v1/modules'
         fetch(url, {
@@ -60,6 +65,11 @@
           return this.data.lastUnit.unitId
         }
         return null
+      },
+
+      hideBackButton: function () {
+        const backButton = document.querySelector('.back-button')
+        backButton.style.display = 'none'
       }
     }
   }
