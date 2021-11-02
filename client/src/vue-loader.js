@@ -1,10 +1,12 @@
-import Vue from 'vue'
-import router from './router'
-import App from './components/App.vue'
+// Using code-splitting for faster page load.
+// https://webpack.js.org/guides/code-splitting/#dynamic-imports
 
-Vue.config.productionTip = false
+const loadVueForPage = async () => {
+  const { default: Vue } = await import('vue')
+  const { default: router } = await import('./router')
+  const { default: App } = await import('./components/App.vue')
+  Vue.config.productionTip = false
 
-const loadVueForPage = () => {
   new Vue({
     router,
     render (createElement) {
