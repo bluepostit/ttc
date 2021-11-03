@@ -14,10 +14,6 @@ const routes = async (fastify) => {
       `${entity} ${moduleIndex} not found`)
   }
 
-  const storeUnitInSession = (request, moduleId, unitId) => {
-    request.session.set('lastUnit', { moduleId, unitId })
-  }
-
   fastify.get('/modules/:moduleId/units/:unitId/:resourceId',
     {
       preValidation: fastify.auth.ensureSignedIn,
@@ -34,7 +30,6 @@ const routes = async (fastify) => {
 
       try {
         const doc = request.parseResourceMarkdown(resource)
-        storeUnitInSession(request, moduleId, unitId)
         reply.view('resource', {
           resource,
           content: doc
@@ -59,7 +54,6 @@ const routes = async (fastify) => {
       const unit = module.findUnit(unitId) ||
         entityNotFound('unit', unitId)
 
-      storeUnitInSession(request, moduleId, unitId)
       reply.view('unit', {
         unit,
         modules: request.dataModules,

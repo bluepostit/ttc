@@ -1,10 +1,6 @@
 const path = require('path')
 const fastifyStatic = require('fastify-static')
 
-const clearLastUnit = (request) => {
-  request.session.set('lastUnit', null)
-}
-
 async function routes (fastify, options) {
   fastify.get('/',
     {
@@ -13,16 +9,6 @@ async function routes (fastify, options) {
     (request, reply) => {
       reply.view('index')
     })
-
-  fastify.get('/clearHistory',
-    {
-      preValidation: fastify.auth.ensureSignedIn
-    },
-    (request, reply) => {
-      clearLastUnit(request)
-      reply.redirect('/')
-    }
-  )
 
   fastify.register(fastifyStatic, {
     root: path.join(__dirname, '../../public'),

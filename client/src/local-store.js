@@ -23,19 +23,19 @@ function storageAvailable (type) {
   }
 }
 
-export const ModuleStore = {
-  store: (moduleData) => {
+export const LocalStore = {
+  set: (key, data) => {
     if (!storageAvailable('localStorage')) {
       return
     }
-    localStorage.setItem('modules', JSON.stringify(moduleData))
+    localStorage.setItem(key, JSON.stringify(data))
   },
 
-  retrieve: () => {
+  get: (key) => {
     if (!storageAvailable('localStorage')) {
       return
     }
-    const data = localStorage.getItem('modules')
+    const data = localStorage.getItem(key)
     if (data) {
       return JSON.parse(data)
     }

@@ -7,10 +7,6 @@ async function routes (fastify, options) {
     reply.send(JSON.stringify(response))
   }
 
-  const storeUnitInSession = (request, moduleId, unitId) => {
-    request.session.set('lastUnit', { moduleId, unitId })
-  }
-
   const loadUnit = (request, reply) => {
     const { moduleId, unitId } = request.params
     const module = request.dataModules.findModule(moduleId) ||
@@ -18,7 +14,6 @@ async function routes (fastify, options) {
     const unit = module.findUnit(unitId) ||
       entityNotFound('unit', unitId, reply)
 
-    storeUnitInSession(request, moduleId, unitId)
     return unit
   }
 
@@ -35,8 +30,7 @@ async function routes (fastify, options) {
     },
     (request, reply) => {
       const data = {
-        modules: request.dataModules,
-        lastUnit: request.session.get('lastUnit')
+        modules: request.dataModules
       }
       reply.send(JSON.stringify(data))
     }
