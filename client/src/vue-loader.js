@@ -9,13 +9,18 @@ const loadVueForPage = async () => {
 
   Vue.config.productionTip = false
 
+  const componentSelector = '#app'
+  if (!document.querySelector(componentSelector)) {
+    return
+  }
+
   new Vue({
     router,
     store,
     render (createElement) {
       return createElement(App)
     }
-  }).$mount('#app')
+  }).$mount(componentSelector)
 }
 
 export { loadVueForPage }

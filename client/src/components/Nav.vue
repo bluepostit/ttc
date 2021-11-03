@@ -13,17 +13,13 @@
           <a @click.prevent="clearHistory()" v-if="lastUnit && lastUnit.id" href="#">
             <i class="bi bi-clock-history"></i> Clear
           </a>
-        {% if useAuth %}
-          {% if signedIn %}
-            <a href="/auth/logout">
-              <i class="bi bi-door-closed"></i> Sign out
-            </a>
-          {% else %}
-            <a href="/auth/login">
-              <i class="bi bi-door-open"></i> Sign in
-            </a>
-          {% endif %}
-        {% endif %}
+          {{ store.authData }}
+          <a v-if="showSignOut()" href="/auth/logout">
+            <i class="bi bi-door-closed"></i> Sign out
+          </a>
+          <a v-if="showSignIn()" href="/auth/login">
+            <i class="bi bi-door-open"></i> Sign in
+          </a>
       </div>
     </div>
   </nav>
@@ -67,6 +63,14 @@ export default {
     clearHistory: function () {
       this.store.clearLastUnit()
       this.lastUnit = null
+    },
+
+    showSignIn: function () {
+      return this.store.authData.active && !this.store.authData.signedIn
+    },
+
+    showSignOut: function () {
+      return this.store.authData.active && this.store.authData.signedIn
     }
   }
 }

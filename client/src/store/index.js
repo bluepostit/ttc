@@ -108,6 +108,18 @@ class Store {
       })
   }
 
+  fetchAuthData () {
+    const url = '/api/v1/auth-check'
+    fetch(url, {
+      headers: {
+        Accept: 'application/json'
+      }
+    }).then(res => res.json())
+      .then((data) => {
+        this.data.auth = data.auth
+      })
+  }
+
   storeData (modules = true, lastUnit = true) {
     modules && LocalStore.set('modules', this.modules)
     lastUnit && LocalStore.set('lastUnit', this.lastUnit)
@@ -118,8 +130,13 @@ const store = new Store()
 
 export default {
   load () {
+    store.fetchAuthData()
     store.loadLocalData()
     store.fetchData()
+  },
+
+  get authData () {
+    return store.data.auth
   },
 
   get modules () {
