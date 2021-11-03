@@ -2,7 +2,7 @@
   <div>
     <h1 class="text-center">Modules</h1>
     <div class="accordion" id="accordionIndex">
-      <Module v-for="(module, index) in data.modules"
+      <Module v-for="(module, index) in store.modules"
               v-bind:module="module"
               v-bind:index="index"
               v-bind:key="module.name"
@@ -13,7 +13,6 @@
 </template>
 
 <script>
-  import { ModuleStore } from '../module-storage'
   import Module from '../components/Module.vue'
 
   export default {
@@ -22,47 +21,18 @@
     },
     data: function () {
       return {
-        data: {
-          modules: [],
-          lastUnit: null
-        }
+        store: this.$root.$options.store
       }
     },
 
     created: function () {
-      this.loadLocalData()
       this.hideBackButton()
     },
 
-    mounted: function () {
-      this.fetchData()
-    },
-
     methods: {
-      loadLocalData: function () {
-        const data = ModuleStore.retrieve()
-        if (data) {
-          console.log('loading data from local storage')
-          this.data = data
-        }
-      },
-
-      fetchData: function () {
-        const url = '/api/v1/modules'
-        fetch(url, {
-          headers: {
-            Accept: 'application/json'
-          }
-        }).then(res => res.json())
-          .then((data) => {
-            this.data = data
-            ModuleStore.store(data)
-          })
-      },
-
       getSelectedUnitId: function (module) {
-        if (this.data.lastUnit && this.data.lastUnit.moduleId === module.id) {
-          return this.data.lastUnit.unitId
+        if (this.store.lastUnit && this.store.lastUnit.module.id === module.id) {
+          return this.store.lastUnit.id
         }
         return null
       },
