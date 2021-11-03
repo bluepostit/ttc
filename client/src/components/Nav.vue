@@ -13,7 +13,6 @@
           <a @click.prevent="clearHistory()" v-if="lastUnit && lastUnit.id" href="#">
             <i class="bi bi-clock-history"></i> Clear
           </a>
-          {{ store.authData }}
           <a v-if="showSignOut()" href="/auth/logout">
             <i class="bi bi-door-closed"></i> Sign out
           </a>
