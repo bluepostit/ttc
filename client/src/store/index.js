@@ -90,11 +90,10 @@ export default class Store {
     }).then(res => res.json())
       .then((data) => {
         this.data.modules = data.modules
-        if (!this.data.lastUnitData.unitId) {
-          // this.lastUnit = data.lastUnit
-        } else {
+        if (this.data.lastUnitData.unitId) {
           this.loadUnit()
         }
+        // lastUnit should not be affected by data fetch
         this.storeData(true, false)
       })
   }
