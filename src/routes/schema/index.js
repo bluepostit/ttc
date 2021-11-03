@@ -37,16 +37,9 @@ const plugin = async (fastify) => {
           },
           required: ['name']
         }
-      },
-      lastUnit: {
-        type: 'object',
-        properties: {
-          moduleId: { type: 'integer' },
-          unitId: { type: 'integer' }
-        }
       }
     },
-    required: ['modules', 'lastUnit']
+    required: ['modules']
   })
 }
 
