@@ -1,8 +1,8 @@
 import { LocalStore } from '../local-store'
 
-export default class Store {
+class Store {
   constructor () {
-    this.data = {
+    this.emptyData = {
       modules: [],
       lastUnitData: {
         moduleId: null,
@@ -14,8 +14,12 @@ export default class Store {
         resources: [],
         module: { name: null, id: null }
       },
-      signedIn: false
+      auth: {
+        active: false,
+        signedIn: false
+      }
     }
+    this.data = JSON.parse(JSON.stringify(this.emptyData))
     this.loadLocalData()
   }
 
@@ -64,6 +68,12 @@ export default class Store {
     }
   }
 
+  clearLastUnit () {
+    this.data.lastUnitData = JSON.parse(JSON.stringify(this.emptyData.lastUnitData))
+    this.data.lastUnit = JSON.parse(JSON.stringify(this.emptyData.lastUnit))
+    this.storeData(false)
+  }
+
   loadLocalData () {
     console.log('loading module data from local storage')
     const modules = LocalStore.get('modules')
@@ -101,5 +111,33 @@ export default class Store {
   storeData (modules = true, lastUnit = true) {
     modules && LocalStore.set('modules', this.modules)
     lastUnit && LocalStore.set('lastUnit', this.lastUnit)
+  }
+}
+
+const store = new Store()
+
+export default {
+  get modules () {
+    return store.modules
+  },
+
+  set modules (modules) {
+    store.modules = modules
+  },
+
+  get lastUnit () {
+    return store.lastUnit
+  },
+
+  set lastUnit ({ moduleId, unitId }) {
+    store.lastUnit = { moduleId, unitId }
+  },
+
+  loadUnit (moduleId, unitId) {
+    store.loadUnit(moduleId, unitId)
+  },
+
+  clearLastUnit () {
+    store.clearLastUnit()
   }
 }
