@@ -117,6 +117,11 @@ class Store {
 const store = new Store()
 
 export default {
+  load () {
+    store.loadLocalData()
+    store.fetchData()
+  },
+
   get modules () {
     return store.modules
   },

@@ -22,11 +22,7 @@ export default {
   },
 
   created: function () {
-    this.store.loadLocalData()
-  },
-
-  mounted: function () {
-    this.store.fetchData()
+    this.store.load()
   }
 }
 </script>

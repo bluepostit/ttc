@@ -1,11 +1,11 @@
 <template>
   <div class="module-unit">
-    <h1 class="text-center">{{ store.lastUnit.module.name }}</h1>
-    <h2>{{ store.lastUnit.name }} </h2>
+    <h1 class="text-center">{{ unit.module.name }}</h1>
+    <h2>{{ unit.name }} </h2>
     <h3>Resources</h3>
     <div class="list-group ">
       <router-link
-        v-for="(resource, index) in store.lastUnit.resources"
+        v-for="(resource, index) in unit.resources"
         v-bind:key="index"
         :to="{ name: 'resource', params: { moduleId, unitId, resourceId: resource.id }}"
         class="list-group-item list-group-item-action">
@@ -32,12 +32,16 @@ export default {
 
   data: function () {
     return {
-      store: this.$root.$options.store
+      store: this.$root.$options.store,
+      unit: this.$root.$options.store.lastUnit
     }
   },
 
-  created: function () {
-    this.loadData()
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.loadData()
+      vm.unit = vm.store.lastUnit
+    })
   },
 
   methods: {

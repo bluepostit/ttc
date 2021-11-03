@@ -10,7 +10,7 @@
         </router-link>
       </div>
       <div>
-          <a @click="clearHistory" href="#">
+          <a @click.prevent="clearHistory()" v-if="lastUnit && lastUnit.id" href="#">
             <i class="bi bi-clock-history"></i> Clear
           </a>
         {% if useAuth %}
@@ -34,6 +34,7 @@ export default {
   data: function () {
     return {
       store: this.$root.$options.store,
+      lastUnit: this.$root.$options.store.lastUnit,
       currentRoute: this.$root.$router.currentRoute
     }
   },
@@ -41,6 +42,7 @@ export default {
   created: function () {
     this.$root.$router.afterEach((to, from) => {
       this.currentRoute = to
+      this.lastUnit = this.$root.$options.store.lastUnit
     })
   },
 
@@ -64,6 +66,7 @@ export default {
 
     clearHistory: function () {
       this.store.clearLastUnit()
+      this.lastUnit = null
     }
   }
 }
