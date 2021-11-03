@@ -1,4 +1,4 @@
-import { ModuleStore } from '../module-storage'
+import { LocalStore } from '../local-store'
 
 export default class Store {
   constructor () {
@@ -65,16 +65,19 @@ export default class Store {
   }
 
   loadLocalData () {
-    const data = ModuleStore.retrieve()
-    if (data) {
-      console.log('loading data from local storage')
-      this.data.modules = data.modules
-      // We were trying to load a unit's view
-      if (this.data.lastUnitData.unitId) {
-        this.loadUnit()
-      } else {
-        this.lastUnit = data.lastUnit
-      }
+    console.log('loading module data from local storage')
+    const modules = LocalStore.get('modules')
+    if (modules) {
+      this.data.modules = modules
+    }
+
+    // We were trying to load a unit's view
+    if (this.data.lastUnitData.unitId) {
+      return this.loadUnit()
+    }
+    const lastUnit = LocalStore.get('lastUnit')
+    if (lastUnit) {
+      this.data.lastUnit = lastUnit
     }
   }
 
@@ -92,14 +95,12 @@ export default class Store {
         } else {
           this.loadUnit()
         }
-        this.storeData()
+        this.storeData(true, false)
       })
   }
 
-  storeData () {
-    ModuleStore.store({
-      modules: this.modules,
-      lastUnit: this.lastUnit
-    })
+  storeData (modules = true, lastUnit = true) {
+    modules && LocalStore.set('modules', this.modules)
+    lastUnit && LocalStore.set('lastUnit', this.lastUnit)
   }
 }
