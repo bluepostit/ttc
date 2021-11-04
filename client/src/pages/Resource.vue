@@ -27,6 +27,8 @@ export default {
   },
 
   mounted: function () {
+    this.$store.commit('modules/setCurrentUnit',
+      { moduleId: this.moduleId, unitId: this.unitId })
     this.fetchData()
   },
 
