@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 
 export default {
   props: {
@@ -30,23 +31,22 @@ export default {
     }
   },
 
-  data: function () {
-    return {
-      store: this.$root.$options.store,
-      unit: this.$root.$options.store.lastUnit
-    }
+  computed: {
+    ...mapGetters('modules', {
+      unit: 'lastUnit'
+    })
   },
 
   beforeRouteEnter (to, from, next) {
     next(vm => {
       vm.loadData()
-      vm.unit = vm.store.lastUnit
     })
   },
 
   methods: {
     loadData: function () {
-      this.store.loadUnit(this.moduleId, this.unitId)
+      this.$store.commit('modules/setCurrentUnit',
+        { moduleId: this.moduleId, unitId: this.unitId })
     }
   }
 }

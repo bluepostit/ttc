@@ -15,14 +15,9 @@ export default {
     Nav
   },
 
-  data: function () {
-    return {
-      store: this.$root.$options.store
-    }
-  },
-
   created: function () {
-    this.store.load()
+    this.$store.dispatch('auth/load')
+    this.$store.dispatch('modules/load')
   }
 }
 </script>

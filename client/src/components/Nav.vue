@@ -10,13 +10,13 @@
         </router-link>
       </div>
       <div>
-          <a @click.prevent="clearHistory()" v-if="lastUnit && lastUnit.id" href="#">
+          <a @click.prevent="clearHistory()" v-if="hasLastUnit" href="#">
             <i class="bi bi-clock-history"></i> Clear
           </a>
-          <a v-if="showSignOut()" href="/auth/logout">
+          <a v-if="showSignOut" href="/auth/logout">
             <i class="bi bi-door-closed"></i> Sign out
           </a>
-          <a v-if="showSignIn()" href="/auth/login">
+          <a v-if="showSignIn" href="/auth/login">
             <i class="bi bi-door-open"></i> Sign in
           </a>
       </div>
@@ -25,11 +25,11 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   data: function () {
     return {
-      store: this.$root.$options.store,
-      lastUnit: this.$root.$options.store.lastUnit,
       currentRoute: this.$root.$router.currentRoute
     }
   },
@@ -37,7 +37,17 @@ export default {
   created: function () {
     this.$root.$router.afterEach((to, from) => {
       this.currentRoute = to
-      this.lastUnit = this.$root.$options.store.lastUnit
+    })
+  },
+
+  computed: {
+    ...mapState('modules', {
+      hasLastUnit: state => state.lastUnit && state.lastUnit.id
+    }),
+
+    ...mapState('auth', {
+      showSignIn: state => state.active && !state.signedIn,
+      showSignOut: state => state.active && state.signedIn,
     })
   },
 
@@ -60,16 +70,10 @@ export default {
     },
 
     clearHistory: function () {
-      this.store.clearLastUnit()
-      this.lastUnit = null
-    },
-
-    showSignIn: function () {
-      return this.store.authData.active && !this.store.authData.signedIn
-    },
-
-    showSignOut: function () {
-      return this.store.authData.active && this.store.authData.signedIn
+      this.$store.commit('modules/clearLastUnit')
+      if (this.canGoBack()) {
+        this.$root.$router.push({ name: 'index' })
+      }
     }
   }
 }
