@@ -2,7 +2,7 @@
   <nav class="navbar sticky-top navbar-light">
     <div class="container-fluid"><!-- flex -->
       <div>
-        <a @click="goBack" v-if="canGoBack()" class="navbar-brand back-button" href="#">
+        <a @click.prevent="goBack" v-if="canGoBack()" class="navbar-brand back-button" href="#">
           <i class="bi bi-chevron-left"></i>
         </a>
         <router-link :to="{ name: 'index' }" class="navbar-brand">
@@ -13,7 +13,7 @@
           <a @click.prevent="clearHistory()" v-if="hasLastUnit" href="#">
             <i class="bi bi-clock-history"></i> Clear
           </a>
-          <a v-if="showSignOut" href="/auth/logout">
+          <a v-if="showSignOut" @click.prevent="signOut()" href="#">
             <i class="bi bi-door-closed"></i> Sign out
           </a>
           <a v-if="showSignIn" href="/auth/login">
@@ -74,6 +74,11 @@ export default {
       if (this.canGoBack()) {
         this.$root.$router.push({ name: 'index' })
       }
+    },
+
+    signOut: function () {
+      this.$store.commit('modules/clearLocalData')
+      window.location = '/auth/logout'
     }
   }
 }

@@ -39,5 +39,11 @@ export const LocalStore = {
     if (data) {
       return JSON.parse(data)
     }
+  },
+
+  clear: () => {
+    if (storageAvailable('localStorage')) {
+      localStorage.clear()
+    }
   }
 }
