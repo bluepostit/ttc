@@ -7,22 +7,6 @@ import Resource from '../pages/Resource.vue'
 
 Vue.use(VueRouter)
 
-const setupBackButton = (router) => {
-  const backButton = document.querySelector('.back-button')
-  backButton && backButton.addEventListener('click', (e) => {
-    if (router.currentRoute.name === 'unit') {
-      router.push({ name: 'index' })
-      return
-    }
-    router.go(-1)
-  })
-}
-
-const showBackButton = (visible) => {
-  const backButton = document.querySelector('.back-button')
-  backButton.style.display = (visible ? '' : 'none')
-}
-
 const router = new VueRouter({
   routes: [
     {
@@ -51,16 +35,6 @@ const router = new VueRouter({
       return savedPosition
     }
   }
-})
-
-setupBackButton(router)
-router.beforeEach((to, from, next) => {
-  if (to.name === 'index') {
-    showBackButton(false)
-  } else {
-    showBackButton(true)
-  }
-  next()
 })
 
 export default router

@@ -7,7 +7,7 @@ async function routes (fastify, options) {
       preValidation: fastify.auth.ensureSignedIn
     },
     (request, reply) => {
-      reply.view('index')
+      reply.view('single-page-app')
     })
 
   fastify.register(fastifyStatic, {

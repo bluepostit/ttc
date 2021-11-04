@@ -25,21 +25,12 @@
       }
     },
 
-    created: function () {
-      this.hideBackButton()
-    },
-
     methods: {
       getSelectedUnitId: function (module) {
         if (this.store.lastUnit && this.store.lastUnit.module.id === module.id) {
           return this.store.lastUnit.id
         }
         return null
-      },
-
-      hideBackButton: function () {
-        const backButton = document.querySelector('.back-button')
-        backButton.style.display = 'none'
       }
     }
   }

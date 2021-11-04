@@ -17,6 +17,23 @@ async function routes (fastify, options) {
     return unit
   }
 
+  fastify.get('/auth-check',
+    {
+      schema: {
+        headers: { $ref: '/api/v1/ajax-headers#' }
+      }
+    },
+    (request, reply) => {
+      const data = {
+        auth: {
+          active: reply.locals.useAuth,
+          signedIn: reply.locals.signedIn || false
+        }
+      }
+      reply.send(JSON.stringify(data))
+    }
+  )
+
   fastify.get('/modules',
     {
       preValidation: fastify.auth.ensureSignedIn,

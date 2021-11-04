@@ -13,14 +13,6 @@
   </title>
 </head>
 <body>
-  {% include 'nav.njk' %}
-  <div class="container doc-content">
-    {% if flashes %}
-      {% include 'flashes.njk' %}
-    {% endif %}
-    {% block content %}
-      {{ content }}
-    {% endblock %}
-  </div>
+  {% block body %}{% endblock %}
 </body>
 </html>
