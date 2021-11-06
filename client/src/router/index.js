@@ -4,27 +4,48 @@ import VueRouter from 'vue-router'
 import Index from '../pages/Index.vue'
 import Unit from '../pages/Unit.vue'
 import Resource from '../pages/Resource.vue'
+import Login from '../pages/Login.vue'
+
+import store from '../store'
 
 Vue.use(VueRouter)
+
+const needToSignIn = () => {
+  return store.getters['auth/active'] && !store.getters['auth/signedIn']
+}
 
 const router = new VueRouter({
   routes: [
     {
       path: '/',
       name: 'index',
-      component: Index
+      component: Index,
+      meta: {
+        needsAuth: true
+      }
     },
     {
       path: '/:moduleId/units/:unitId',
       name: 'unit',
       component: Unit,
-      props: true
+      props: true,
+      meta: {
+        needsAuth: true
+      }
     },
     {
       path: '/:moduleId/units/:unitId/:resourceId',
       name: 'resource',
       component: Resource,
-      props: true
+      props: true,
+      meta: {
+        needsAuth: true
+      }
+    },
+    {
+      path: '/auth/login',
+      name: 'login',
+      component: Login
     }
   ],
   scrollBehavior: (to, from, savedPosition) => {
@@ -34,6 +55,14 @@ const router = new VueRouter({
       // doesn't seem to work
       return savedPosition
     }
+  }
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.needsAuth) && needToSignIn()) {
+    next({ name: 'login' })
+  } else {
+    next()
   }
 })
 

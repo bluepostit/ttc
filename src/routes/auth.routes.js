@@ -1,21 +1,4 @@
 const Auth = require('../auth')
-const USER = {
-  email: process.env.USER_EMAIL,
-  password: process.env.USER_PASSWORD
-}
-
-const authSchema = {
-  body: {
-    type: 'object',
-    required: ['email', 'password'],
-    properties: {
-      email: {
-        type: 'string',
-        pattern: '\\w[\\w+-.]+@([\\w-]+\\.\\w+)+$'
-      }
-    }
-  }
-}
 
 async function routes (fastify, options) {
   fastify.get('/auth/login', (request, reply) => {
@@ -31,7 +14,9 @@ async function routes (fastify, options) {
 
   fastify.post('/auth/login',
     {
-      schema: authSchema
+      schema: {
+        body: { $ref: '/auth/login#' }
+      }
     },
     async (request, reply) => {
       const { email, password } = request.body
@@ -39,11 +24,10 @@ async function routes (fastify, options) {
         throw fastify.httpErrors.badRequest('You must provide email and password')
       }
 
-      if (email !== USER.email) {
+      if (!Auth.isCorrectEmail(email)) {
         throw fastify.httpErrors.unauthorized()
       }
-      const matchingPassword = await Auth.compare(password, USER.password)
-      if (!matchingPassword) {
+      if (!await Auth.isCorrectPassword(password)) {
         throw fastify.httpErrors.unauthorized()
       }
 

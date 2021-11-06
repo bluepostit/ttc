@@ -13,10 +13,10 @@
           <a @click.prevent="clearHistory()" v-if="hasLastUnit" href="#">
             <i class="bi bi-clock-history"></i> Clear
           </a>
-          <a v-if="showSignOut" @click.prevent="signOut()" href="#">
+          <a v-if="showSignOut" @click.prevent="signOut()" href="/auth/logout">
             <i class="bi bi-door-closed"></i> Sign out
           </a>
-          <a v-if="showSignIn" href="/auth/login">
+          <a v-if="showSignIn" @click.prevent="goToSignIn()" href="/auth/login">
             <i class="bi bi-door-open"></i> Sign in
           </a>
       </div>
@@ -62,7 +62,11 @@ export default {
           newRoute = { name: 'index' }
           break;
       }
-      newRoute && this.$root.$router.push(newRoute)
+      if (newRoute) {
+        this.$root.$router.push(newRoute)
+      } else {
+        window.history.back()
+      }
     },
 
     canGoBack: function () {
@@ -77,8 +81,14 @@ export default {
     },
 
     signOut: function () {
-      this.$store.commit('modules/clearLocalData')
-      window.location = '/auth/logout'
+      this.$store.dispatch('auth/signOut')
+        .then(() => {
+          if (this.showSignIn) {
+            this.$root.$router.push({ name: 'login' })
+          } else if (this.canGoBack()) {
+            this.$root.$router.push({ name: 'index' })
+          }
+        })
     }
   }
 }

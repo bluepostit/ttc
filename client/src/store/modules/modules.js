@@ -11,8 +11,8 @@ const fetchModuleData = async () => {
 }
 
 const storeLocalData = (state, modules = true, lastUnit = true) => {
-  modules && LocalStore.set('modules', state.modules)
-  lastUnit && LocalStore.set('lastUnit', state.lastUnit)
+  modules && state.modules && LocalStore.set('modules', state.modules)
+  lastUnit && state.lastUnit && LocalStore.set('lastUnit', state.lastUnit)
 }
 
 const findUnit = (state, { moduleId, unitId }) => {
@@ -71,6 +71,9 @@ const getters = {
 const mutations = {
   setModules (state, modules) {
     state.modules = modules
+    if (!modules) {
+      modules = []
+    }
     storeLocalData(state, true, false)
   },
 
@@ -93,8 +96,10 @@ const mutations = {
     storeLocalData(state, false)
   },
 
-  clearLocalData () {
+  clear (state) {
     LocalStore.clear()
+    state.modules = []
+    state.lastUnit = getEmptyUnit()
   }
 }
 

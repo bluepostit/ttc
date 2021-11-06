@@ -1,3 +1,5 @@
+const Auth = require('../auth')
+
 async function routes (fastify, options) {
   const entityNotFound = (entity, moduleIndex, reply) => {
     const response = {
@@ -31,6 +33,42 @@ async function routes (fastify, options) {
         }
       }
       reply.send(JSON.stringify(data))
+    }
+  )
+
+  fastify.post('/auth/login',
+    {
+      schema: {
+        body: { $ref: '/auth/login#' }
+      }
+    },
+    async (request, reply) => {
+      const { email, password } = request.body
+      if (!email || !password) {
+        throw fastify.httpErrors.badRequest('You must provide email and password')
+      }
+
+      if (!Auth.isCorrectEmail(email)) {
+        throw fastify.httpErrors.unauthorized()
+      }
+      if (!await Auth.isCorrectPassword(password)) {
+        throw fastify.httpErrors.unauthorized()
+      }
+
+      request.session.set('authenticated', true)
+      fastify.log.info('successful authentication')
+      reply.send(JSON.stringify({
+        signedIn: true
+      }))
+    }
+  )
+
+  fastify.get('/auth/logout',
+    (request, reply) => {
+      if (request.session.get('authenticated')) {
+        request.session.delete()
+      }
+      reply.send(JSON.stringify({}))
     }
   )
 
