@@ -6,7 +6,7 @@
 TARGET_DIR=/path/to/work/tree
 GIT_DIR=$TARGET_DIR/.git
 DOCKER_IMAGE=your-user-name/docker-image-name
-$VERSION_INFO_FILE_NAME=.version-info.yaml
+VERSION_INFO_FILE_NAME=.version-info.yaml
 
 echo ""
 echo "> Updating git working tree"
