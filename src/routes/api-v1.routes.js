@@ -19,7 +19,7 @@ async function routes (fastify, options) {
     return unit
   }
 
-  fastify.get('/auth-check',
+  fastify.get('/handshake',
     {
       schema: {
         headers: { $ref: '/api/v1/ajax-headers#' }
@@ -29,7 +29,8 @@ async function routes (fastify, options) {
       const data = {
         auth: {
           active: reply.locals.useAuth,
-          signedIn: reply.locals.signedIn || false
+          signedIn: reply.locals.signedIn || false,
+          versionInfo: request.versionInfo
         }
       }
       reply.send(JSON.stringify(data))

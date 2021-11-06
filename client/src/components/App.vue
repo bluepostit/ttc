@@ -4,15 +4,18 @@
     <div class="container doc-content">
       <router-view></router-view>
     </div>
+    <Footer></Footer>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import Footer from './Footer.vue'
 import Nav from './Nav.vue'
 
 export default {
   components: {
+    Footer,
     Nav
   },
 

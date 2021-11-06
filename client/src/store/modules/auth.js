@@ -1,5 +1,5 @@
 const fetchAuthData = async () => {
-  const url = '/api/v1/auth-check'
+  const url = '/api/v1/handshake'
   const res = await fetch(url, {
     headers: {
       Accept: 'application/json'
@@ -61,7 +61,8 @@ const fetchSignOut = async () => {
 const state = () => ({
   active: false,
   signedIn: false,
-  errors: []
+  errors: [],
+  versionInfo: { version: null, date: null }
 })
 
 const getters = {
@@ -70,9 +71,10 @@ const getters = {
 }
 
 const mutations = {
-  setAuthData (state, { active, signedIn }) {
+  setAuthData (state, { active, signedIn, versionInfo }) {
     state.active = active
     state.signedIn = signedIn
+    state.versionInfo = versionInfo
   },
 
   setSignedIn (state, signedIn) {

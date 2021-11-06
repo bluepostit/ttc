@@ -13,6 +13,7 @@ const plugin = async (fastify, options) => {
     if (hasContent(flashes)) {
       // This allows access to `flashes` from any view.
       reply.locals = {
+        ...reply.locals,
         flashes
       }
     }
