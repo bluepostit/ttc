@@ -10,6 +10,20 @@ const fetchModuleData = async () => {
     .then(data => data)
 }
 
+const fetchCurrentResourceData = async (state) => {
+  const { moduleId, unitId } = state.currentUnitData
+  const resourceId = state.currentResourceData.id
+
+  const url = `/api/v1/modules/${moduleId}/units/${unitId}/${resourceId}`
+  const res = await fetch(url, {
+    headers: {
+      Accept: 'application/json'
+    }
+  })
+  const data = await res.json()
+  return data
+}
+
 const storeLocalData = (state, modules = true, lastUnit = true) => {
   modules && state.modules && LocalStore.set('modules', state.modules)
   lastUnit && state.lastUnit && LocalStore.set('lastUnit', state.lastUnit)
@@ -40,6 +54,13 @@ const getEmptyUnit = () => {
   }
 }
 
+const getEmptyResource = () => {
+  return {
+    id: null,
+    content: null
+  }
+}
+
 const state = () => ({
   modules: [],
 
@@ -47,6 +68,8 @@ const state = () => ({
     moduleId: null,
     unitId: null
   },
+
+  currentResourceData: getEmptyResource(),
 
   lastUnit: getEmptyUnit()
 })
@@ -68,6 +91,24 @@ const getters = {
   }
 }
 
+const setCurrentUnit = (state, { moduleId, unitId }) => {
+  state.currentUnitData = { moduleId, unitId }
+  const unit = findUnit(state, state.currentUnitData)
+  if (unit) {
+    state.lastUnit = unit
+    storeLocalData(state, false)
+    return true
+  }
+  return false
+}
+
+const loadCurrentResourceContent = async ({ state, commit }) => {
+  const data = await fetchCurrentResourceData(state)
+  if (data.content) {
+    commit('setCurrentResourceContent', data.content)
+  }
+}
+
 const mutations = {
   setModules (state, modules) {
     state.modules = modules
@@ -77,13 +118,16 @@ const mutations = {
     storeLocalData(state, true, false)
   },
 
-  setCurrentUnit (state, { moduleId, unitId }) {
-    state.currentUnitData = { moduleId, unitId }
-    const unit = findUnit(state, state.currentUnitData)
-    if (unit) {
-      state.lastUnit = unit
-      storeLocalData(state, false)
-    }
+  setCurrentUnit,
+
+  setCurrentResource (state, { moduleId, unitId, resourceId }) {
+    setCurrentUnit(state, { moduleId, unitId })
+    state.currentResourceData = getEmptyResource()
+    state.currentResourceData.id = resourceId
+  },
+
+  setCurrentResourceContent (state, content) {
+    state.currentResourceData.content = content
   },
 
   setLastUnit (state, unit) {
@@ -93,6 +137,7 @@ const mutations = {
 
   clearLastUnit (state) {
     state.lastUnit = getEmptyUnit()
+    state.currentResourceData = getEmptyResource()
     storeLocalData(state, false)
   },
 
@@ -100,11 +145,12 @@ const mutations = {
     LocalStore.clear()
     state.modules = []
     state.lastUnit = getEmptyUnit()
+    state.currentResourceData = getEmptyResource()
   }
 }
 
 const actions = {
-  load: async ({ commit, state }) => {
+  load: async ({ state, commit }) => {
     const modules = LocalStore.get('modules')
     commit('setModules', modules)
     const data = await fetchModuleData()
@@ -121,6 +167,15 @@ const actions = {
         commit('setLastUnit', unit)
       }
     }
+
+    if (state.currentResourceData.id) {
+      await loadCurrentResourceContent({ state, commit })
+    }
+  },
+
+  loadResource: async ({ commit, state }, { moduleId, unitId, resourceId }) => {
+    commit('setCurrentResource', { moduleId, unitId, resourceId })
+    loadCurrentResourceContent({ commit, state })
   }
 }
 
