@@ -14,6 +14,7 @@ services:
       # Eg. data
       - MODULE_DATA_PATH=${MODULE_DATA_PATH}
       - DISABLE_AUTH=false
+      - VERSION_FILE_NAME=${VERSION_INFO_FILE_PATH-version-info.yaml}
     volumes:
       - ${MODULE_DATA_HOST_PATH}:/usr/src/app/data
     networks:
