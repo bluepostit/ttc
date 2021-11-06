@@ -52,8 +52,8 @@ class Modules {
   }
 }
 
-const getModulesIndexFilePath = () => {
-  const pathSuffix = process.env.MODULE_MANIFEST_PATH
+const getModulesIndexFilePath = (config) => {
+  const pathSuffix = config.MODULE_MANIFEST_PATH
   const pathPrefix = path.join(__dirname, '..', '..')
   return path.join(pathPrefix, pathSuffix)
 }
@@ -97,8 +97,8 @@ const shouldLoadModules = async (request) => {
   return true
 }
 
-const buildModules = (log) => {
-  const modulesFilePath = getModulesIndexFilePath()
+const buildModules = (config, log) => {
+  const modulesFilePath = getModulesIndexFilePath(config)
   log.info(`Reading modules file at ${modulesFilePath}`)
   try {
     const file = fs.readFileSync(modulesFilePath, 'utf8')
@@ -114,7 +114,7 @@ const buildModules = (log) => {
 const plugin = async (fastify, _options) => {
   const preHandler = async (request, _reply) => {
     if (await shouldLoadModules(request)) {
-      const modules = buildModules(request.log)
+      const modules = buildModules(fastify.config, request.log)
       request.dataModules = modules
     }
   }

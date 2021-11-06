@@ -6,6 +6,7 @@ const plugin = async (fastify) => {
     fastify.log.info(`Auth enabled? ${useAuth} - URL: ${request.url}`)
     const signedIn = request.session.get('authenticated')
     reply.locals = {
+      ...reply.locals,
       useAuth,
       signedIn
     }

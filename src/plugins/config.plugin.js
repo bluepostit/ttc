@@ -42,6 +42,9 @@ const schema = {
     DISABLE_AUTH: {
       type: 'boolean',
       default: false
+    },
+    VERSION_FILE_NAME: {
+      type: 'string'
     }
   }
 }
@@ -55,7 +58,7 @@ const plugin = async (fastify) => {
   fastify.register(fastifyEnv, options)
     .ready((err) => {
       if (err) {
-        console.error(err)
+        fastify.log.error(err)
       } else {
         fastify.log.info('Config validated')
       }

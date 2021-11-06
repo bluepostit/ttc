@@ -5,3 +5,4 @@ data/
 client/dist
 secret-key
 src/views/base.njk
+.version-info*

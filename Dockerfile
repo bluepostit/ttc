@@ -1,6 +1,7 @@
 FROM node:14-alpine AS builder
 WORKDIR /usr/src/app
 COPY package*.json ./
+COPY .version.yaml ./
 
 # Install build requirements
 RUN apk --update add --no-cache curl git python alpine-sdk \

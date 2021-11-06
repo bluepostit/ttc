@@ -29,7 +29,8 @@ async function routes (fastify, options) {
       const data = {
         auth: {
           active: reply.locals.useAuth,
-          signedIn: reply.locals.signedIn || false
+          signedIn: reply.locals.signedIn || false,
+          versionInfo: request.versionInfo
         }
       }
       reply.send(JSON.stringify(data))
