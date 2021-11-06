@@ -17,7 +17,7 @@ const plugin = async (fastify) => {
     if (reply.locals.useAuth && !reply.locals.signedIn) {
       request.session.set('postLoginUrl', request.url)
       request.flash('warning', 'You must sign in first')
-      reply.redirect('/auth/login')
+      reply.redirect('/')
     }
 
     return next()

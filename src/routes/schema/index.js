@@ -1,6 +1,20 @@
 const fp = require('fastify-plugin')
 
 const plugin = async (fastify) => {
+  const EMAIL_REGEX = '\\w[\\w+-.]+@([\\w-]+\\.\\w+)+$'
+
+  fastify.addSchema({
+    $id: '/auth/login',
+    type: 'object',
+    required: ['email', 'password'],
+    properties: {
+      email: {
+        type: 'string',
+        pattern: EMAIL_REGEX
+      }
+    }
+  })
+
   fastify.addSchema({
     $id: '/api/v1/ajax-headers',
     type: 'object',

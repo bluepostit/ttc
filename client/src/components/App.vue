@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Nav from './Nav.vue'
 
 export default {
@@ -15,9 +16,20 @@ export default {
     Nav
   },
 
-  created: function () {
-    this.$store.dispatch('auth/load')
-    this.$store.dispatch('modules/load')
+  computed: {
+    ...mapState('auth', {
+      authActive: state => state.active,
+      signedIn: state => state.active && state.signedIn,
+    })
+  },
+
+  created: async function () {
+    await this.$store.dispatch('auth/load')
+    if (this.authActive && !this.signedIn) {
+      this.$root.$router.push({ name: 'login' })
+    } else {
+      this.$store.dispatch('modules/load')
+    }
   }
 }
 </script>

@@ -3,9 +3,6 @@ const fastifyStatic = require('fastify-static')
 
 async function routes (fastify, options) {
   fastify.get('/',
-    {
-      preValidation: fastify.auth.ensureSignedIn
-    },
     (request, reply) => {
       reply.view('single-page-app')
     })

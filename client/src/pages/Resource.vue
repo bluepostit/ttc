@@ -4,6 +4,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
     props: {
     unitId: {
@@ -20,31 +22,18 @@ export default {
     }
   },
 
-  data: function () {
-    return {
-      content: ''
-    }
+  computed: {
+    ...mapState('modules', {
+      content: state => state.currentResourceData.content
+    })
   },
 
   mounted: function () {
-    this.$store.commit('modules/setCurrentUnit',
-      { moduleId: this.moduleId, unitId: this.unitId })
-    this.fetchData()
-  },
-
-  methods: {
-    fetchData: function () {
-      const url = `/api/v1/modules/${this.moduleId}/units/${this.unitId}/${this.resourceId}`
-      fetch(url, {
-        headers: {
-          Accept: 'application/json'
-        }
-      }).then(res => res.json())
-        .then((data) => {
-          this.content = data.content
-          // ModuleStore.store(data)
-        })
-    }
+    this.$store.dispatch('modules/loadResource',{
+      moduleId: this.moduleId,
+      unitId: this.unitId,
+      resourceId: this.resourceId
+    })
   }
 }
 </script>
