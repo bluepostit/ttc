@@ -14,7 +14,7 @@ git -C $TARGET_DIR pull origin master
 
 cd $TARGET_DIR
 echo "> Generating revision details"
-echo "version: `git rev-parse --short HEAD`\ndate: `date "+%Y-%m-%d %X %Z"`" > $VERSION_INFO_FILE_NAME
+echo "version: `git rev-parse --short HEAD`\ndate: `date "+%Y-%m-%d %X %Z"`" > $TARGET_DIR/$VERSION_INFO_FILE_NAME
 
 echo "> Building Docker image: ${DOCKER_IMAGE}"
 sudo docker build --no-cache . -t $DOCKER_IMAGE
