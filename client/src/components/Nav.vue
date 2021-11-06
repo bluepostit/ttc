@@ -89,6 +89,12 @@ export default {
             this.$root.$router.push({ name: 'index' })
           }
         })
+    },
+
+    goToSignIn: function () {
+      if (this.currentRoute.name !== 'login') {
+        this.$root.$router.push({ name: 'login' })
+      }
     }
   }
 }

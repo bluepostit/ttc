@@ -97,7 +97,7 @@ const actions = {
         await dispatch('modules/load', null, { root: true })
         return true
       } catch (e) {
-        state.errors.push('Something went wrong signing in')
+        state.errors.length === 0 && state.errors.push('Something went wrong signing in')
         return false
       }
     }

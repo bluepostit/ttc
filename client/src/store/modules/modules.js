@@ -2,12 +2,13 @@ import { LocalStore } from '../../local-store'
 
 const fetchModuleData = async () => {
   const url = '/api/v1/modules'
-  return fetch(url, {
+  const res = await fetch(url, {
     headers: {
       Accept: 'application/json'
     }
-  }).then(res => res.json())
-    .then(data => data)
+  })
+  const data = await res.json()
+  return data
 }
 
 const fetchCurrentResourceData = async (state) => {
@@ -122,8 +123,10 @@ const mutations = {
 
   setCurrentResource (state, { moduleId, unitId, resourceId }) {
     setCurrentUnit(state, { moduleId, unitId })
-    state.currentResourceData = getEmptyResource()
-    state.currentResourceData.id = resourceId
+    if (state.currentResourceData.id !== resourceId) {
+      state.currentResourceData = getEmptyResource()
+      state.currentResourceData.id = resourceId
+    }
   },
 
   setCurrentResourceContent (state, content) {

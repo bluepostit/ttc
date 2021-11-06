@@ -32,8 +32,6 @@ export default {
   },
 
   mounted: function () {
-    console.log(`signed in: ${this.signedIn}`)
-    console.log(`auth active: ${this.authActive}`)
     if (this.signedIn || !this.authActive) {
       this.goToIndex()
     }
