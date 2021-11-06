@@ -4,7 +4,6 @@ const fp = require('fastify-plugin')
 const yaml = require('js-yaml')
 
 const plugin = async (fastify) => {
-  console.log(fastify.config)
   const VERSION_FILE_NAME = fastify.config.VERSION_FILE_NAME
   let versionInfo
   if (VERSION_FILE_NAME) {

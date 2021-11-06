@@ -19,7 +19,7 @@ async function routes (fastify, options) {
     return unit
   }
 
-  fastify.get('/auth-check',
+  fastify.get('/handshake',
     {
       schema: {
         headers: { $ref: '/api/v1/ajax-headers#' }
