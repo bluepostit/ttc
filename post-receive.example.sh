@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Copy this file, renamed as `post-receive`, into the `hooks/` directory
 # of your target git repository (deploy).
