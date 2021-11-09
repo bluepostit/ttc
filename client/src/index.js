@@ -1,5 +1,5 @@
 import '../style/style.scss'
-import 'bootstrap/js/dist/collapse'
+import { Collapse } from 'bootstrap' // eslint-disable-line
 
 import { loadVueForPage } from './vue-loader'
 
