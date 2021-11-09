@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TableOfContents v-bind:contents="content"></TableOfContents>
+    <TableOfContents></TableOfContents>
     <div v-html="content" class="unit-resource">
     </div>
   </div>

@@ -22,8 +22,14 @@
 }
 
 #toc-contents {
-  background-color: rgba(0,0,0,0.6);
+  background-color: rgba(0,0,0,0.9);
   color: rgb(240, 240, 240);
+  box-shadow: -2px 2px 5px rgba(0,0,0,0.6);
+  border-radius: 4px;
+}
+
+#toc-contents > ul > li {
+  list-style: none;
 }
 
 #toc-collapsible {
@@ -42,35 +48,38 @@
 <script>
 import { Collapse } from 'bootstrap'
 import tocbot from 'tocbot'
+import { mapState } from 'vuex'
+
 const COLLAPSE_TIMEOUT = 2000
-const AUTO_COLLAPSE = false
+const AUTO_COLLAPSE = true
 
 export default {
-  // Not actually needed. But will trigger an update when they change.
-  props: {
-    contents: {
-      required: true
-    }
-  },
-
   data: function () {
     return {
       collapse: null,
-      expanded: false,
       collapseTimeout: null
     }
   },
 
+  computed: {
+    ...mapState('modules', {
+      content: state => state.currentResourceData.content
+    })
+  },
+
+  watch: {
+    'content': function () {
+      this.updateToc()
+    }
+  },
+
   mounted: function () {
-    this.createToc()
     this.createCollapse()
-    window.setTimeout(() => {
-      tocbot.refresh()
-    }, 200)
+    this.createToc()
   },
 
   updated: function () {
-    tocbot.refresh()
+    this.updateToc()
   },
 
   methods: {
@@ -89,9 +98,13 @@ export default {
       })
     },
 
+    updateToc: function () {
+      tocbot.refresh()
+    },
+
     createCollapse: function () {
       const tocContents = this.$el.querySelector('#toc-contents')
-      const collapse = new Collapse(tocContents)
+      const collapse = new Collapse(tocContents, { toggle: false })
 
       // tocContents.addEventListener('shown.bs.collapse', (e) => {
       //   this.startCollapseTimeout()
