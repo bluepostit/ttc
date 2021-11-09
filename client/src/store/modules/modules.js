@@ -89,7 +89,9 @@ const getters = {
       return state.lastUnit.id
     }
     return null
-  }
+  },
+
+  currentResourceData: state => state.currentResourceData
 }
 
 const setCurrentUnit = (state, { moduleId, unitId }) => {
