@@ -1,20 +1,24 @@
 <template>
   <div id="toc-collapsible">
-    <button class="btn btn-secondary d-block" type="button"
+    <button class="btn btn-outline-secondary d-block" type="button"
             @click.prevent="onToggleClick">
-      Contents
+      <i class="bi bi-card-list"></i>
     </button>
     <nav class="collapse" id="toc-contents">
     </nav>
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 
 #toc-collapsible {
   position: fixed;
   top: 46px;
   right: 0;
+
+  button {
+    margin: 5px 5px 3px auto;
+  }
 }
 
 #toc-contents {
@@ -22,8 +26,16 @@
   color: rgb(240, 240, 240);
 }
 
-button {
-  margin: 5px 5px 3px auto;
+#toc-collapsible {
+  .toc-link::before {
+      display: none;
+      height: 1.8em;
+    }
+  .is-active-link::before {
+    height: 1.6em;
+    display: inline-block;
+    width: 0.3em;
+  }
 }
 </style>
 
@@ -31,6 +43,7 @@ button {
 import { Collapse } from 'bootstrap'
 import tocbot from 'tocbot'
 const COLLAPSE_TIMEOUT = 2000
+const AUTO_COLLAPSE = false
 
 export default {
   // Not actually needed. But will trigger an update when they change.
@@ -84,7 +97,7 @@ export default {
       //   this.startCollapseTimeout()
       // })
       tocContents.addEventListener('pointerleave', (e) => {
-        this.startCollapseTimeout()
+        AUTO_COLLAPSE && this.startCollapseTimeout()
       })
       this.collapse = collapse
     },
