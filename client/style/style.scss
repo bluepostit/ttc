@@ -1,5 +1,6 @@
 @import "bootstrap";
 @import "bootstrap-icons/font/bootstrap-icons.css";
+@import 'tocbot/src/scss/tocbot';
 
 // Favourite dark themes:
 @import 'highlight.js/scss/agate';
@@ -54,4 +55,3 @@ a {
   padding-top: 0.4rem;
   padding-bottom: 0.4rem;
 }
-
