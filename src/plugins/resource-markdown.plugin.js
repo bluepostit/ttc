@@ -1,16 +1,10 @@
 const path = require('path')
 const fs = require('fs')
 const fp = require('fastify-plugin')
-const md = require('markdown-it')
-const emoji = require('markdown-it-emoji')
-const highlightjs = require('markdown-it-highlightjs')
+const MarkdownIt = require('../markdown-it')
 
 const VIEW_PATH_PREFIX = path.join(__dirname, '..', '..')
 const DATA_PATH = process.env.MODULE_DATA_PATH
-
-const MarkdownIt = md({ html: true })
-MarkdownIt.use(emoji)
-MarkdownIt.use(highlightjs)
 
 const parseResourceMarkdown = (request, resource) => {
   const resourceFilePath = request.dataModules.buildResourceFilePath(resource)

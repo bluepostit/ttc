@@ -1,13 +1,17 @@
 <template>
-  <div v-html="content" class="unit-resource">
+  <div>
+    <TableOfContents v-bind:contents="content"></TableOfContents>
+    <div v-html="content" class="unit-resource">
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import TableOfContents from './TableOfContents.vue'
 
 export default {
-    props: {
+  props: {
     unitId: {
       type: String,
       required: true
@@ -22,14 +26,18 @@ export default {
     }
   },
 
+  components: {
+    TableOfContents
+  },
+
   computed: {
     ...mapState('modules', {
       content: state => state.currentResourceData.content
     })
   },
 
-  mounted: function () {
-    this.$store.dispatch('modules/loadResource',{
+  mounted: async function () {
+    await this.$store.dispatch('modules/loadResource',{
       moduleId: this.moduleId,
       unitId: this.unitId,
       resourceId: this.resourceId
