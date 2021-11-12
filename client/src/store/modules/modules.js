@@ -84,6 +84,10 @@ const getters = {
     return state.lastUnit
   },
 
+  getUnit: (state) => ({ moduleId, unitId }) => {
+    return findUnit(state, { moduleId, unitId })
+  },
+
   getSelectedUnitId: (state) => (module) => {
     if (state.lastUnit && state.lastUnit.module.id === module.id) {
       return state.lastUnit.id
@@ -91,7 +95,19 @@ const getters = {
     return null
   },
 
-  currentResourceData: state => state.currentResourceData
+  currentResourceData: state => state.currentResourceData,
+
+  nextResource: (state) => {
+    const unit = state.lastUnit
+    const resourceId = state.currentResourceData.id
+    if (unit.id && resourceId) {
+      const index = unit.resources.findIndex(res => res.id === resourceId)
+      if (index !== null) {
+        const nextResource = unit.resources[index + 1]
+        return nextResource
+      }
+    }
+  }
 }
 
 const setCurrentUnit = (state, { moduleId, unitId }) => {
