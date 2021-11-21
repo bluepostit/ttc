@@ -13,6 +13,10 @@
     4. `MODULE_MANIFEST_PATH` - path to the manifest/'index' file for the content data.
     5. `MODULE_DATA_PATH` - root directory of the content data tree.
 1. See more details for config options in `src/plugins/config.plugin.js`
+1. Generate a secret key:
+    ```bash
+    ./node_modules/.bin/secure-session-gen-key > secret-key
+    ```
 
 ## Develop
 
