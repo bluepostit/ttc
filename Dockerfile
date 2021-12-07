@@ -7,7 +7,7 @@ COPY version-info.yaml ./
 RUN apk --update add --no-cache curl git python3 alpine-sdk \
   bash autoconf libtool automake
 
-RUN npm ci --only=production
+RUN npm ci
 COPY . .
 # This triggers webpack. Then remove all node_modules.
 RUN npm run build && rm -rf node_modules
