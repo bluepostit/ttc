@@ -14,10 +14,6 @@ RUN npm run build && rm -rf node_modules
 # Rebuild for production
 RUN npm ci --only=production
 
-# FROM node:16-alpine
-# WORKDIR /usr/src/app
-# COPY --from=builder /usr/src/app/ .
-
 # Generate secret-key
 RUN ./node_modules/.bin/secure-session-gen-key > secret-key
 
