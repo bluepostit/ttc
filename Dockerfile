@@ -1,22 +1,22 @@
-FROM node:14-alpine AS builder
+FROM node:16-alpine
 WORKDIR /usr/src/app
 COPY package*.json ./
 COPY version-info.yaml ./
 
 # Install build requirements
-RUN apk --update add --no-cache curl git python alpine-sdk \
+RUN apk --update add --no-cache curl git python3 alpine-sdk \
   bash autoconf libtool automake
 
-RUN npm ci
+RUN npm ci --only=production
 COPY . .
 # This triggers webpack. Then remove all node_modules.
 RUN npm run build && rm -rf node_modules
 # Rebuild for production
 RUN npm ci --only=production
 
-FROM node:14-alpine
-WORKDIR /usr/src/app
-COPY --from=builder /usr/src/app/ .
+# FROM node:16-alpine
+# WORKDIR /usr/src/app
+# COPY --from=builder /usr/src/app/ .
 
 # Generate secret-key
 RUN ./node_modules/.bin/secure-session-gen-key > secret-key
