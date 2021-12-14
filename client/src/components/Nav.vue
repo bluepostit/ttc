@@ -5,7 +5,7 @@
         <a @click.prevent="goBack" v-if="canGoBack()" class="navbar-brand back-button" href="#">
           <i class="bi bi-chevron-left"></i>
         </a>
-        <router-link :to="{ name: 'index' }" class="navbar-brand">
+        <router-link :to="{ name: 'root' }" class="navbar-brand">
           <i class="bi bi-house"></i> Home
         </router-link>
       </div>
@@ -41,7 +41,7 @@ export default {
   },
 
   computed: {
-    ...mapState('modules', {
+    ...mapState('nodes', {
       hasLastUnit: state => state.lastUnit && state.lastUnit.id
     }),
 
@@ -59,7 +59,7 @@ export default {
           newRoute = { name: 'unit', params: this.currentRoute.params }
           break;
         case 'unit':
-          newRoute = { name: 'index' }
+          newRoute = { name: 'root' }
           break;
       }
       if (newRoute) {
@@ -70,13 +70,13 @@ export default {
     },
 
     canGoBack: function () {
-      return this.currentRoute.name !== 'index'
+      return this.currentRoute.name !== 'root'
     },
 
     clearHistory: function () {
       this.$store.commit('modules/clearLastUnit')
       if (this.canGoBack()) {
-        this.$root.$router.push({ name: 'index' })
+        this.$root.$router.push({ name: 'root' })
       }
     },
 
@@ -86,7 +86,7 @@ export default {
           if (this.showSignIn) {
             this.$root.$router.push({ name: 'login' })
           } else if (this.canGoBack()) {
-            this.$root.$router.push({ name: 'index' })
+            this.$root.$router.push({ name: 'root' })
           }
         })
     },

@@ -31,7 +31,7 @@ export default {
     if (this.authActive && !this.signedIn) {
       this.$root.$router.push({ name: 'login' })
     } else {
-      this.$store.dispatch('modules/load')
+      this.$store.dispatch('nodes/load')
     }
   }
 }

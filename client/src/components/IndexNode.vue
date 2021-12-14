@@ -1,27 +1,26 @@
 <template>
   <div class="accordion-item">
-    <h2 class="accordion-header" v-bind:id="`module-heading-${index}`">
+    <h2 class="accordion-header" v-bind:id="`node-heading-${index}`">
       <button v-bind:class="`accordion-button ${isActive() ? '' : 'collapsed'}`"
               type="button" data-bs-toggle="collapse"
               v-bind:data-bs-target="`#collapse-${index}`"
               v-bind:aria-expanded="isActive() ? 'true' : 'false'"
               v-bind:aria-controls="`collapse-${index}`">
-            {{ module.name }}
+            {{ node.name }}
       </button>
     </h2>
     <div v-bind:id="`collapse-${index}`"
          v-bind:class="`accordion-collapse collapse ${isActive() ? 'show' : '' }`"
-         v-bind:aria-labelledby="`module-heading-${index}`"
+         v-bind:aria-labelledby="`node-heading-${index}`"
          data-bs-parent="#accordionIndex">
       <div class="accordion-body">
         <div class="list-group list-group-flush list-group">
-          <Unit v-for="(unit, index) in module.units"
-                  v-bind:unit="unit"
-                  v-bind:moduleId="module.id"
+          <IndexNodeChild v-for="(child, index) in node.children"
+                  v-bind:node="child"
                   v-bind:index="index"
-                  v-bind:key="unit.name"
-                  v-bind:selected="isSelected(unit)">
-          </Unit>
+                  v-bind:key="index"
+                  v-bind:selected="isSelected(child)">
+          </IndexNodeChild>
         </div>
       </div>
     </div>
@@ -29,22 +28,19 @@
 </template>
 
 <script>
-  import Unit from './Unit.vue'
+  import IndexNodeChild from './IndexNodeChild.vue'
 
   export default {
     components: {
-      Unit
+      IndexNodeChild
     },
     props: {
       index: {
         type: Number,
         required: true
       },
-      module: {
+      node: {
         type: Object,
-        required: true
-      },
-      selectedUnitId: {
         required: true
       }
     },
@@ -52,12 +48,10 @@
     methods: {
       isActive: function () {
         // True if there is a non-empty selectedUnitId
-        return this.selectedUnitId
+        return false
       },
       isSelected: function (unit) {
-        const selected = this.selectedUnitId &&
-          this.selectedUnitId === unit.id
-        return selected
+        return false
       }
     }
   }
