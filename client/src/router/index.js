@@ -2,8 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Index from '../pages/Index.vue'
-import Unit from '../pages/Unit.vue'
-import Resource from '../pages/Resource.vue'
+import Node from '../pages/Node.vue'
+import FileNode from '../pages/FileNode.vue'
 import Login from '../pages/Login.vue'
 
 import store from '../store'
@@ -18,25 +18,25 @@ const router = new VueRouter({
   routes: [
     {
       path: '/',
-      name: 'index',
+      name: 'root',
       component: Index,
       meta: {
         needsAuth: true
       }
     },
     {
-      path: '/:moduleId/units/:unitId',
-      name: 'unit',
-      component: Unit,
+      path: '/nodes:path/file',
+      name: 'file-node',
+      component: FileNode,
       props: true,
       meta: {
         needsAuth: true
       }
     },
     {
-      path: '/:moduleId/units/:unitId/:resourceId',
-      name: 'resource',
-      component: Resource,
+      path: '/nodes:path',
+      name: 'node',
+      component: Node,
       props: true,
       meta: {
         needsAuth: true
@@ -49,7 +49,7 @@ const router = new VueRouter({
     }
   ],
   scrollBehavior: (to, from, savedPosition) => {
-    if (to.name !== 'index') {
+    if (to.name !== 'root') {
       return { x: 0, y: 0 }
     } else {
       // doesn't seem to work

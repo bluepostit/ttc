@@ -50,7 +50,7 @@ export default {
   },
 
   computed: {
-    ...mapState('modules', {
+    ...mapState('nodes', {
       content: state => state.currentResourceData.content
     }),
 

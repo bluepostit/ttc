@@ -1,5 +1,5 @@
 import auth from './auth'
 import flashes from './flashes'
-import modules from './modules'
+import nodes from './nodes'
 
-export { auth, flashes, modules }
+export { auth, flashes, nodes }
