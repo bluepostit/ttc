@@ -84,7 +84,7 @@ async function routes (fastify, options) {
     },
     (request, reply) => {
       const data = {
-        nodes: request.datTree
+        nodes: request.dataTree
       }
       reply.send(JSON.stringify(data))
     }
