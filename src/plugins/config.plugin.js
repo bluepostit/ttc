@@ -8,8 +8,8 @@ const schema = {
     'USER_EMAIL',
     'USER_PASSWORD',
     'SESSION_SECRET',
-    'MODULE_MANIFEST_PATH',
-    'MODULE_DATA_PATH'
+    'DATA_TREE_MANIFEST_PATH',
+    'DATA_TREE_DATA_PATH'
   ],
   properties: {
     PORT: {
@@ -17,11 +17,11 @@ const schema = {
       pattern: '\\d\\d+',
       default: 3000
     },
-    MODULE_MANIFEST_PATH: {
+    DATA_TREE_MANIFEST_PATH: {
       type: 'string'
       // default: 'data/modules.yml'
     },
-    MODULE_DATA_PATH: {
+    DATA_TREE_DATA_PATH: {
       type: 'string'
     },
     USER_EMAIL: {
