@@ -26,5 +26,5 @@ const plugin = async (fastify, options) => {
 
 module.exports = fp(plugin, {
   name: 'resource-markdown',
-  dependencies: ['config-checker', 'data-module-manifest']
+  dependencies: ['config-checker', 'data-tree']
 })

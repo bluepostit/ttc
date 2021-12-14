@@ -28,10 +28,10 @@ const plugin = async (fastify) => {
   })
 
   fastify.addSchema({
-    $id: '/api/v1/modules.response.200',
+    $id: '/api/v1/nodes.response.200',
     type: 'object',
     properties: {
-      modules: {
+      nodes: {
         type: 'array',
         items: {
           type: 'object',
@@ -53,7 +53,7 @@ const plugin = async (fastify) => {
         }
       }
     },
-    required: ['modules']
+    required: ['nodes']
   })
 }
 
