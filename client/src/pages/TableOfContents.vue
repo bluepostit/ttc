@@ -63,7 +63,7 @@ export default {
 
   computed: {
     ...mapState('nodes', {
-      content: state => state.currentResourceData.content
+      content: state => state.currentNodeContent
     })
   },
 

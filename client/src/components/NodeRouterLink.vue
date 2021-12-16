@@ -1,5 +1,5 @@
 <template>
-    <router-link v-if="node.type && node.type == 'file'"
+    <router-link v-if="node.extension"
       :to="{ name: 'file-node', params: { path: node.absolutePath } }"
       class="list-group-item list-group-item-action">
         <i class="bi bi-file-earmark-richtext resource-list-item-icon"></i>
