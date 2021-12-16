@@ -10,7 +10,8 @@ async function routes (fastify, options) {
   }
 
   const loadDataNode = (request, reply) => {
-    const { path } = request.params
+    const path = request.params['*']
+    request.log.info(`loadDataNode(${path})`)
     const node = request.dataTree.findNode(path) ||
       nodeNotFound(path, reply)
 
@@ -90,7 +91,7 @@ async function routes (fastify, options) {
     }
   )
 
-  fastify.get('/nodes/:path',
+  fastify.get('/nodes/*',
     {
       preValidation: fastify.auth.ensureSignedIn,
       preHandler: fastify.loadDataTreePreHandler,
@@ -101,9 +102,10 @@ async function routes (fastify, options) {
     (request, reply) => {
       const node = loadDataNode(request, reply)
       let response
-      if (node && node.type === 'markdown') {
+      if (node && node.extension) {
         try {
-          const content = request.parseResourceMarkdown(node.absolutePath)
+          const path = request.params['*']
+          const content = request.parseNodeFileContent(path)
           response = {
             content
           }
