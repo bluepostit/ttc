@@ -1,8 +1,8 @@
 <template>
   <div>
     <TableOfContents></TableOfContents>
-    <div v-html="content" class="unit-resource"></div>
-    <div v-if="nextResource">
+    <div v-html="content" v-if="content" class="unit-resource"></div>
+    <!-- <div v-if="nextResource">
       <hr>
       <div class="d-flex justify-content-end align-items-center">
         <div class="d-flex align-items-center btn btn-secondary resource-link">
@@ -10,35 +10,27 @@
           <ResourceLink
             v-bind:moduleId="moduleId"
             v-bind:unitId="unitId"
-            v-bind:resource="nextResource">
+            v-bind:node="nextNode">
           </ResourceLink>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 import ResourceLink from '../components/ResourceLink.vue'
 import TableOfContents from './TableOfContents.vue'
 
 export default {
   beforeRouteUpdate: function (to, from, next) {
-    this.loadResource(to.params.resourceId)
+    this.loadNodeContent(to.params.path)
     next()
   },
 
   props: {
-    unitId: {
-      type: String,
-      required: true
-    },
-    moduleId: {
-      type: String,
-      required: true
-    },
-    resourceId: {
+    path: {
       type: String,
       required: true
     }
@@ -50,25 +42,22 @@ export default {
   },
 
   computed: {
-    ...mapState('nodes', {
-      content: state => state.currentResourceData.content
-    }),
-
-    ...mapGetters('modules', ['nextResource'])
+    ...mapGetters('nodes', {
+      nextNode: 'nextNode',
+      content: 'currentNodeContent'
+    })
   },
 
   methods: {
-    loadResource: async function (resourceId = this.resourceId) {
-      await this.$store.dispatch('modules/loadResource', {
-        moduleId: this.moduleId,
-        unitId: this.unitId,
-        resourceId
+    loadNodeContent: async function (path = this.path) {
+      await this.$store.dispatch('nodes/loadNodeContent', {
+        path
       })
     }
   },
 
   mounted: async function () {
-    this.loadResource()
+    this.loadNodeContent()
   }
 }
 </script>

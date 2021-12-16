@@ -11,19 +11,21 @@ const fetchNodeData = async () => {
   return data
 }
 
-// const fetchCurrentResourceData = async (state) => {
-//   const { moduleId, unitId } = state.currentUnitData
-//   const resourceId = state.currentResourceData.id
+const fetchCurrentNodeContent = async (state) => {
+  const path = state.currentNode.absolutePath
+  if (!path) {
+    return null
+  }
 
-//   const url = `/api/v1/modules/${moduleId}/units/${unitId}/${resourceId}`
-//   const res = await fetch(url, {
-//     headers: {
-//       Accept: 'application/json'
-//     }
-//   })
-//   const data = await res.json()
-//   return data
-// }
+  const url = `/api/v1/nodes${path}`
+  const res = await fetch(url, {
+    headers: {
+      Accept: 'application/json'
+    }
+  })
+  const data = await res.json()
+  return data
+}
 
 const storeLocalData = (state, modules = true, lastUnit = true) => {
   modules && state.modules && LocalStore.set('modules', state.modules)
@@ -35,9 +37,10 @@ const findChildNode = (parent, key, values) => {
     values = [values]
   }
   if (values.length > 1) {
-    const shorterValues = values.slice(0, values.length - 1)
-    const node = findChildNode(parent, key, shorterValues)
-    return findChildNode(node, key, values.slice(1))
+    const firstValues = values.slice(0, values.length - 1)
+    const lastValue = values[values.length - 1]
+    const node = findChildNode(parent, key, firstValues)
+    return findChildNode(node, key, lastValue)
   } else if (values.length === 1) {
     const found = parent.children.find((node) => {
       return node[key] === values[0]
@@ -67,20 +70,13 @@ const findNode = (state, path) => {
 //   }
 // }
 
-// const getEmptyResource = () => {
-//   return {
-//     id: null,
-//     content: null
-//   }
-// }
-
 const state = () => ({
   nodes: {},
-  currentNodePath: null,
   currentNode: {
     parent: {}
-  }
-  // currentResourceData: getEmptyResource()
+  },
+  currentNodePath: null,
+  currentNodeContent: null
 })
 
 const getters = {
@@ -90,6 +86,10 @@ const getters = {
 
   currentNode: (state) => {
     return state.currentNode
+  },
+
+  currentNodeContent: state => {
+    return state.currentNodeContent
   }
 
   // getSelectedUnitId: (state) => (module) => {
@@ -131,12 +131,12 @@ const setCurrentNode = (state, { path = null, node = null }) => {
   return false
 }
 
-// const loadCurrentResourceContent = async ({ state, commit }) => {
-//   const data = await fetchCurrentResourceData(state)
-//   if (data.content) {
-//     commit('setCurrentResourceContent', data.content)
-//   }
-// }
+const loadCurrentNodeContent = async ({ state, commit }) => {
+  const data = await fetchCurrentNodeContent(state)
+  if (data && data.content) {
+    commit('setCurrentNodeContent', data.content)
+  }
+}
 
 const mutations = {
   setNodes (state, nodes) {
@@ -148,6 +148,10 @@ const mutations = {
   },
 
   setCurrentNode,
+
+  setCurrentNodeContent (state, content) {
+    state.currentNodeContent = content
+  },
 
   // setCurrentResource (state, { moduleId, unitId, resourceId }) {
   //   setCurrentUnit(state, { moduleId, unitId })
@@ -187,27 +191,30 @@ const actions = {
     const data = await fetchNodeData()
     commit('setNodes', data.nodes)
 
-    const lastUnit = LocalStore.get('lastUnit')
-    if (lastUnit) {
-      commit('setLastUnit', lastUnit)
-    }
+    // const lastUnit = LocalStore.get('lastUnit')
+    // if (lastUnit) {
+    //   commit('setLastUnit', lastUnit)
+    // }
 
     if (state.currentNodePath) {
       const node = findNode(state, state.currentNodePath)
       if (node) {
         commit('setCurrentNode', { node })
+        if (node.extension) {
+          await loadCurrentNodeContent({ state, commit })
+        }
       }
     }
 
     // if (state.currentResourceData.id) {
     //   await loadCurrentResourceContent({ state, commit })
     // }
-  }
+  },
 
-  // loadResource: async ({ commit, state }, { moduleId, unitId, resourceId }) => {
-  //   commit('setCurrentResource', { moduleId, unitId, resourceId })
-  //   loadCurrentResourceContent({ commit, state })
-  // }
+  loadNodeContent: async ({ commit, state }, { path }) => {
+    commit('setCurrentNode', { path })
+    loadCurrentNodeContent({ commit, state })
+  }
 }
 
 export default {
