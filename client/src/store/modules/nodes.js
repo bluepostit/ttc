@@ -99,8 +99,6 @@ const getters = {
   //   return null
   // },
 
-  // currentResourceData: state => state.currentResourceData,
-
   // nextResource: (state) => {
   //   const unit = state.lastUnit
   //   const resourceId = state.currentResourceData.id
@@ -153,18 +151,6 @@ const mutations = {
     state.currentNodeContent = content
   },
 
-  // setCurrentResource (state, { moduleId, unitId, resourceId }) {
-  //   setCurrentUnit(state, { moduleId, unitId })
-  //   if (state.currentResourceData.id !== resourceId) {
-  //     state.currentResourceData = getEmptyResource()
-  //     state.currentResourceData.id = resourceId
-  //   }
-  // },
-
-  // setCurrentResourceContent (state, content) {
-  //   state.currentResourceData.content = content
-  // },
-
   // setLastUnit (state, unit) {
   //   state.lastUnit = unit
   //   storeLocalData(state, false)
@@ -205,10 +191,6 @@ const actions = {
         }
       }
     }
-
-    // if (state.currentResourceData.id) {
-    //   await loadCurrentResourceContent({ state, commit })
-    // }
   },
 
   loadNodeContent: async ({ commit, state }, { path }) => {
