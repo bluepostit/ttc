@@ -12,7 +12,7 @@ const fetchNodeData = async () => {
 }
 
 const fetchCurrentNodeContent = async (state) => {
-  const path = state.currentNode.absolutePath
+  const path = state.currentNode.node.absolutePath
   if (!path) {
     return null
   }
@@ -73,10 +73,12 @@ const findNode = (state, path) => {
 const state = () => ({
   nodes: {},
   currentNode: {
-    parent: {}
-  },
-  currentNodePath: null,
-  currentNodeContent: null
+    node: {
+      parent: {}
+    },
+    path: null,
+    content: null
+  }
 })
 
 const getters = {
@@ -84,14 +86,17 @@ const getters = {
     return state.nodes
   },
 
-  currentNode: (state) => {
+  currentNodeData: (state) => {
     return state.currentNode
   },
 
-  currentNodeContent: state => {
-    return state.currentNodeContent
-  }
+  currentNode: state => {
+    return state.currentNode.node
+  },
 
+  currentNodeContent: state => {
+    return state.currentNode.content
+  }
   // getSelectedUnitId: (state) => (module) => {
   //   if (state.lastUnit && state.lastUnit.module.id === module.id) {
   //     return state.lastUnit.id
@@ -114,15 +119,15 @@ const getters = {
 
 const setCurrentNode = (state, { path = null, node = null }) => {
   if (node) {
-    state.currentNodePath = node.absolutePath
-    state.currentNode = node
+    state.currentNode.path = node.absolutePath
+    state.currentNode.node = node
     storeLocalData(state, false)
     return true
   }
-  state.currentNodePath = path
+  state.currentNode.path = path
   const foundNode = findNode(state, path)
   if (foundNode) {
-    state.currentNode = foundNode
+    state.currentNode.node = foundNode
     storeLocalData(state, false)
     return true
   }
@@ -148,7 +153,7 @@ const mutations = {
   setCurrentNode,
 
   setCurrentNodeContent (state, content) {
-    state.currentNodeContent = content
+    state.currentNode.content = content
   },
 
   // setLastUnit (state, unit) {
@@ -182,8 +187,8 @@ const actions = {
     //   commit('setLastUnit', lastUnit)
     // }
 
-    if (state.currentNodePath) {
-      const node = findNode(state, state.currentNodePath)
+    if (state.currentNode.path) {
+      const node = findNode(state, state.currentNode.path)
       if (node) {
         commit('setCurrentNode', { node })
         if (node.extension) {
