@@ -18,10 +18,6 @@
       node: {
         type: Object,
         required: true
-      },
-      selected: {
-        required: true,
-        default: false
       }
     },
 
