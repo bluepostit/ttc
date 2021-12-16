@@ -1,7 +1,8 @@
 <template>
   <div class="accordion-item">
     <h2 class="accordion-header" v-bind:id="`node-heading-${index}`">
-      <button v-bind:class="`accordion-button ${isActive() ? '' : 'collapsed'}`"
+      <button v-if="node"
+              v-bind:class="`accordion-button ${isActive() ? '' : 'collapsed'}`"
               type="button" data-bs-toggle="collapse"
               v-bind:data-bs-target="`#collapse-${index}`"
               v-bind:aria-expanded="isActive() ? 'true' : 'false'"
@@ -18,8 +19,7 @@
           <IndexNodeChild v-for="(child, index) in node.children"
                   v-bind:node="child"
                   v-bind:index="index"
-                  v-bind:key="index"
-                  v-bind:selected="isSelected(child)">
+                  v-bind:key="index">
           </IndexNodeChild>
         </div>
       </div>
@@ -28,12 +28,14 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
   import IndexNodeChild from './IndexNodeChild.vue'
 
   export default {
     components: {
       IndexNodeChild
     },
+
     props: {
       index: {
         type: Number,
@@ -45,13 +47,15 @@
       }
     },
 
+    computed: {
+      ...mapGetters('nodes', {
+        isSelectedNode: 'isSelected'
+      })
+    },
+
     methods: {
       isActive: function () {
-        // True if there is a non-empty selectedUnitId
-        return false
-      },
-      isSelected: function (unit) {
-        return false
+        return this.node && this.isSelectedNode(this.node)
       }
     }
   }

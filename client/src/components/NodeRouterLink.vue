@@ -1,7 +1,7 @@
 <template>
     <router-link v-if="node.extension"
       :to="{ name: 'file-node', params: { path: node.absolutePath } }"
-      class="list-group-item list-group-item-action">
+      v-bind:class="linkClass()">
         <i class="bi bi-file-earmark-richtext resource-list-item-icon"></i>
         {{ index + 1 }}. {{ node.name }}
     </router-link>
@@ -13,6 +13,8 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
+
   export default {
     props: {
       index: {
@@ -25,14 +27,16 @@
       }
     },
 
+    computed: {
+      ...mapGetters('nodes', {
+        isSelectedNode: 'isSelected'
+      })
+    },
+
     methods: {
       linkClass: function () {
-        const extraClass = '' //this.selected ? 'list-group-item-primary' : ''
+        const extraClass = this.isSelectedNode(this.node) ? 'list-group-item-primary' : ''
         return `list-group-item list-group-item-action ${extraClass}`
-      },
-
-      fileClass: function () {
-        return
       }
     }
   }

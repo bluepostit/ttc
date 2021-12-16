@@ -78,7 +78,8 @@ const state = () => ({
     },
     path: null,
     content: null
-  }
+  },
+  lastFileNode: null
 })
 
 const getters = {
@@ -96,13 +97,12 @@ const getters = {
 
   currentNodeContent: state => {
     return state.currentNode.content
+  },
+
+  isSelected: state => node => {
+    return state.lastFileNode &&
+      (state.lastFileNode.indexOf(node.absolutePath) === 0)
   }
-  // getSelectedUnitId: (state) => (module) => {
-  //   if (state.lastUnit && state.lastUnit.module.id === module.id) {
-  //     return state.lastUnit.id
-  //   }
-  //   return null
-  // },
 
   // nextResource: (state) => {
   //   const unit = state.lastUnit
@@ -138,6 +138,7 @@ const loadCurrentNodeContent = async ({ state, commit }) => {
   const data = await fetchCurrentNodeContent(state)
   if (data && data.content) {
     commit('setCurrentNodeContent', data.content)
+    commit('setLastFileNode')
   }
 }
 
@@ -156,10 +157,9 @@ const mutations = {
     state.currentNode.content = content
   },
 
-  // setLastUnit (state, unit) {
-  //   state.lastUnit = unit
-  //   storeLocalData(state, false)
-  // },
+  setLastFileNode (state) {
+    state.lastFileNode = state.currentNode.path
+  },
 
   // clearLastUnit (state) {
   //   state.lastUnit = getEmptyUnit()
@@ -182,15 +182,11 @@ const actions = {
     const data = await fetchNodeData()
     commit('setNodes', data.nodes)
 
-    // const lastUnit = LocalStore.get('lastUnit')
-    // if (lastUnit) {
-    //   commit('setLastUnit', lastUnit)
-    // }
-
     if (state.currentNode.path) {
       const node = findNode(state, state.currentNode.path)
       if (node) {
         commit('setCurrentNode', { node })
+        // It's a file node:
         if (node.extension) {
           await loadCurrentNodeContent({ state, commit })
         }
