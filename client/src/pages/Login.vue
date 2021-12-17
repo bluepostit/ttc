@@ -61,7 +61,7 @@ export default {
     },
 
     goToIndex: function () {
-      this.$root.$router.push({ name: 'index' })
+      this.$root.$router.push({ name: 'root' })
     }
   }
 }
