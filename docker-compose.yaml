@@ -10,13 +10,13 @@ services:
       - USER_PASSWORD=${TTC_USER_PASSWORD}
       - SESSION_SECRET=${SESSION_SECRET}
       # Eg. data/modules.yaml
-      - MODULE_MANIFEST_PATH=${MODULE_MANIFEST_PATH}
+      - DATA_TREE_MANIFEST_PATH=${DATA_TREE_MANIFEST_PATH}
       # Eg. data
-      - MODULE_DATA_PATH=${MODULE_DATA_PATH}
+      - DATA_TREE_DATA_PATH=${DATA_TREE_DATA_PATH}
       - DISABLE_AUTH=false
       - VERSION_FILE_NAME=${VERSION_INFO_FILE_PATH-version-info.yaml}
     volumes:
-      - ${MODULE_DATA_HOST_PATH}:/usr/src/app/data
+      - ${DATA_TREE_DATA_HOST_PATH}:/usr/src/app/data
     networks:
       - swag
     restart: unless-stopped
