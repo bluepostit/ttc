@@ -132,19 +132,19 @@ const getters = {
   isSelected: state => node => {
     return state.lastFileNode &&
       (state.lastFileNode.indexOf(node.absolutePath) === 0)
-  }
+  },
 
-  // nextResource: (state) => {
-  //   const unit = state.lastUnit
-  //   const resourceId = state.currentResourceData.id
-  //   if (unit.id && resourceId) {
-  //     const index = unit.resources.findIndex(res => res.id === resourceId)
-  //     if (index !== null) {
-  //       const nextResource = unit.resources[index + 1]
-  //       return nextResource
-  //     }
-  //   }
-  // }
+  nextNode: state => {
+    if (!state.lastFileNode) {
+      return null
+    }
+    const currentNode = findNode(state, state.lastFileNode)
+    if (!currentNode || !currentNode.parent) {
+      return null
+    }
+    const parent = findNode(state, currentNode.parent.absolutePath)
+    return parent.children[currentNode._index + 1]
+  }
 }
 
 const mutations = {
