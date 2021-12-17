@@ -1,13 +1,13 @@
 <template>
-  <div>
-    <h1 class="text-center">Modules</h1>
+  <div v-if="rootNode">
+    <h1 class="text-center">{{ rootNode.name }}</h1>
     <div class="accordion" id="accordionIndex">
-      <Module v-for="(module, index) in modules"
-              v-bind:module="module"
+      <IndexNode v-for="(node, index) in rootNode.children"
+              v-bind:node="node"
               v-bind:index="index"
-              v-bind:key="module.name"
-              v-bind:selectedUnitId="getSelectedUnitId(module)">
-      </Module>
+              v-bind:key="node.name"
+      >
+      </IndexNode>
     </div>
   </div>
 </template>
@@ -15,20 +15,20 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 
-  import Module from '../components/Module.vue'
+  import IndexNode from '../components/IndexNode.vue'
 
   export default {
     components: {
-      Module
+      IndexNode
     },
 
     computed: {
-      ...mapState({
-        modules: state => state.modules.modules,
-        lastUnit: state => state.modules.lastUnit
+      ...mapState('nodes', {
+        rootNode: state => state.nodes,
+        // lastUnit: state => state.modules.lastUnit
       }),
 
-      ...mapGetters('modules', ['getSelectedUnitId'])
+      // ...mapGetters('nodes', ['getSelectedUnitId'])
     }
   }
 </script>

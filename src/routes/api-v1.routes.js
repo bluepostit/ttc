@@ -1,22 +1,21 @@
 const Auth = require('../auth')
 
 async function routes (fastify, options) {
-  const entityNotFound = (entity, moduleIndex, reply) => {
+  const nodeNotFound = (path, reply) => {
     const response = {
       code: 404,
-      error: `${entity} ${moduleIndex} not found`
+      error: `Node at '${path}' could not be found`
     }
     reply.send(JSON.stringify(response))
   }
 
-  const loadUnit = (request, reply) => {
-    const { moduleId, unitId } = request.params
-    const module = request.dataModules.findModule(moduleId) ||
-      entityNotFound('module', moduleId, reply)
-    const unit = module.findUnit(unitId) ||
-      entityNotFound('unit', unitId, reply)
+  const loadDataNode = (request, reply) => {
+    const path = request.params['*']
+    request.log.info(`loadDataNode(${path})`)
+    const node = request.dataTree.findNode(path) ||
+      nodeNotFound(path, reply)
 
-    return unit
+    return node
   }
 
   fastify.get('/handshake',
@@ -73,67 +72,55 @@ async function routes (fastify, options) {
     }
   )
 
-  fastify.get('/modules',
+  fastify.get('/nodes',
     {
       preValidation: fastify.auth.ensureSignedIn,
-      preHandler: fastify.loadDataModulesPreHandler,
+      preHandler: fastify.loadDataTreePreHandler,
       schema: {
         headers: { $ref: '/api/v1/ajax-headers#' },
         response: {
-          200: { $ref: '/api/v1/modules.response.200#' }
+          200: { $ref: '/api/v1/nodes.response.200#' }
         }
       }
     },
     (request, reply) => {
       const data = {
-        modules: request.dataModules
+        nodes: request.dataTree
       }
       reply.send(JSON.stringify(data))
     }
   )
 
-  fastify.get('/modules/:moduleId/units/:unitId/:resourceId',
+  fastify.get('/nodes/*',
     {
       preValidation: fastify.auth.ensureSignedIn,
-      preHandler: fastify.loadDataModulesPreHandler,
+      preHandler: fastify.loadDataTreePreHandler,
       schema: {
         headers: { $ref: '/api/v1/ajax-headers#' }
       }
     },
     (request, reply) => {
-      const unit = loadUnit(request, reply)
-      const { resourceId } = request.params
-      const resource = unit.findResource(resourceId) ||
-        entityNotFound('resource', resourceId)
+      const node = loadDataNode(request, reply)
       let response
-      try {
-        const content = request.parseResourceMarkdown(resource)
-        response = {
-          content
+      if (node && node.extension) {
+        try {
+          const path = request.params['*']
+          const content = request.parseNodeFileContent(path)
+          response = {
+            content
+          }
+        } catch (e) {
+          console.log(e)
+          console.error('Failed reading file!')
+          response = {
+            code: 500,
+            error: 'Error processing document'
+          }
         }
-      } catch (e) {
-        console.log(e)
-        console.error('Failed reading file!')
-        response = {
-          code: 500,
-          error: 'Error processing document'
-        }
+      } else {
+        response = node || null
       }
       reply.send(JSON.stringify(response))
-    }
-  )
-
-  fastify.get('/modules/:moduleId/units/:unitId',
-    {
-      preValidation: fastify.auth.ensureSignedIn,
-      preHandler: fastify.loadDataModulesPreHandler,
-      schema: {
-        headers: { $ref: '/api/v1/ajax-headers#' }
-      }
-    },
-    (request, reply) => {
-      const unit = loadUnit(request, reply)
-      reply.send(JSON.stringify({ unit }))
     }
   )
 }

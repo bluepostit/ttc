@@ -1,29 +1,23 @@
 <template>
-  <router-link
-    :to="{ name: 'unit', params: { moduleId, unitId: unit.id } }"
-    v-bind:class="linkClass()">
-      {{ index + 1 }}. {{ unit.name }}
-  </router-link>
+  <NodeRouterLink v-bind:node="node" v-bind:index="index"></NodeRouterLink>
 </template>
 
 <script>
+  import NodeRouterLink from './NodeRouterLink.vue'
+
   export default {
+    components: {
+      NodeRouterLink
+    },
+
     props: {
       index: {
         type: Number,
         required: true
       },
-      unit: {
+      node: {
         type: Object,
         required: true
-      },
-      moduleId: {
-        type: String,
-        required: true
-      },
-      selected: {
-        required: true,
-        default: false
       }
     },
 

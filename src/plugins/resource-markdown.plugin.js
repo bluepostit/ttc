@@ -4,27 +4,26 @@ const fp = require('fastify-plugin')
 const MarkdownIt = require('../markdown-it')
 
 const VIEW_PATH_PREFIX = path.join(__dirname, '..', '..')
-const DATA_PATH = process.env.MODULE_DATA_PATH
+const DATA_PATH = process.env.DATA_TREE_DATA_PATH
 
-const parseResourceMarkdown = (request, resource) => {
-  const resourceFilePath = request.dataModules.buildResourceFilePath(resource)
-  let docPath = path.join(VIEW_PATH_PREFIX, DATA_PATH, resourceFilePath)
+const parseNodeFileContent = (request, filePath) => {
+  let docPath = path.join(VIEW_PATH_PREFIX, DATA_PATH, filePath)
   if (!docPath.endsWith('.md')) {
     docPath += '.md'
   }
-  request.log.info(`Resource file: ${docPath}`)
+  request.log.info(`Node file: ${docPath}`)
   const file = fs.readFileSync(docPath, 'utf8')
   const doc = MarkdownIt.render(file)
   return doc
 }
 
 const plugin = async (fastify, options) => {
-  fastify.decorateRequest('parseResourceMarkdown', function (resource) {
-    return parseResourceMarkdown(this, resource)
+  fastify.decorateRequest('parseNodeFileContent', function (filePath) {
+    return parseNodeFileContent(this, filePath)
   })
 }
 
 module.exports = fp(plugin, {
   name: 'resource-markdown',
-  dependencies: ['config-checker', 'data-module-manifest']
+  dependencies: ['config-checker', 'data-tree']
 })

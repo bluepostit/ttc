@@ -96,7 +96,7 @@ const actions = {
     if (state.active && !state.signedIn) {
       try {
         await postSignIn({ state, commit }, { email, password })
-        await dispatch('modules/load', null, { root: true })
+        await dispatch('nodes/load', null, { root: true })
         return true
       } catch (e) {
         state.errors.length === 0 && state.errors.push('Something went wrong signing in')
@@ -109,7 +109,7 @@ const actions = {
   signOut: async ({ state, commit }) => {
     await fetchSignOut({ state, commit })
     commit('setSignedIn', false)
-    commit('modules/clear', null, { root: true })
+    commit('nodes/clear', null, { root: true })
   }
 }
 

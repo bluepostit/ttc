@@ -5,12 +5,12 @@
         <a @click.prevent="goBack" v-if="canGoBack()" class="navbar-brand back-button" href="#">
           <i class="bi bi-chevron-left"></i>
         </a>
-        <router-link :to="{ name: 'index' }" class="navbar-brand">
+        <router-link :to="{ name: 'root' }" class="navbar-brand">
           <i class="bi bi-house"></i> Home
         </router-link>
       </div>
       <div>
-          <a @click.prevent="clearHistory()" v-if="hasLastUnit" href="#">
+          <a @click.prevent="clearHistory()" v-if="hasLastFileNode" href="#">
             <i class="bi bi-clock-history"></i> Clear
           </a>
           <a v-if="showSignOut" @click.prevent="signOut()" href="/auth/logout">
@@ -41,8 +41,8 @@ export default {
   },
 
   computed: {
-    ...mapState('modules', {
-      hasLastUnit: state => state.lastUnit && state.lastUnit.id
+    ...mapState('nodes', {
+      hasLastFileNode: state => state.lastFileNode
     }),
 
     ...mapState('auth', {
@@ -59,7 +59,7 @@ export default {
           newRoute = { name: 'unit', params: this.currentRoute.params }
           break;
         case 'unit':
-          newRoute = { name: 'index' }
+          newRoute = { name: 'root' }
           break;
       }
       if (newRoute) {
@@ -70,13 +70,13 @@ export default {
     },
 
     canGoBack: function () {
-      return this.currentRoute.name !== 'index'
+      return this.currentRoute.name !== 'root'
     },
 
     clearHistory: function () {
-      this.$store.commit('modules/clearLastUnit')
+      this.$store.commit('nodes/clearLastFileNode')
       if (this.canGoBack()) {
-        this.$root.$router.push({ name: 'index' })
+        this.$root.$router.push({ name: 'root' })
       }
     },
 
@@ -86,7 +86,7 @@ export default {
           if (this.showSignIn) {
             this.$root.$router.push({ name: 'login' })
           } else if (this.canGoBack()) {
-            this.$root.$router.push({ name: 'index' })
+            this.$root.$router.push({ name: 'root' })
           }
         })
     },

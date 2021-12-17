@@ -4,8 +4,7 @@
             @click.prevent="onToggleClick">
       <i class="bi bi-card-list"></i>
     </button>
-    <nav class="collapse" id="toc-contents">
-    </nav>
+    <nav class="collapse" id="toc-contents"></nav>
   </div>
 </template>
 
@@ -48,7 +47,7 @@
 <script>
 import { Collapse } from 'bootstrap'
 import tocbot from 'tocbot'
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 
 const COLLAPSE_TIMEOUT = 2000
 const AUTO_COLLAPSE = true
@@ -62,8 +61,8 @@ export default {
   },
 
   computed: {
-    ...mapState('modules', {
-      content: state => state.currentResourceData.content
+    ...mapGetters('nodes', {
+      content: 'currentNodeContent'
     })
   },
 
@@ -90,7 +89,7 @@ export default {
 
       tocbot.init({
         tocSelector: '#toc-contents',
-        contentSelector: '.unit-resource',
+        contentSelector: '.node-content',
         headingSelector: 'h1, h2, h3, h4, h5',
         collapseDepth: 1,
         orderedList: false,
