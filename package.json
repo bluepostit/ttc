@@ -51,6 +51,7 @@
     "workbox-webpack-plugin": "^6.3.0"
   },
   "devDependencies": {
+    "@types/bootstrap": "^5.1.6",
     "bootstrap": "^5.0.0",
     "css-loader": "^5.2.4",
     "eslint": "^7.26.0",
