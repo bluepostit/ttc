@@ -27,9 +27,17 @@ const fetchCurrentNodeContent = async (state) => {
   return data
 }
 
-const storeLocalData = (state, modules = true, lastUnit = true) => {
-  modules && state.modules && LocalStore.set('modules', state.modules)
-  lastUnit && state.lastUnit && LocalStore.set('lastUnit', state.lastUnit)
+const storeLocalData = (state, keys) => {
+  keys.forEach(key => {
+    LocalStore.set(key, state[key])
+  })
+}
+
+const loadLocalData = (commit, key, mutation) => {
+  const data = LocalStore.get(key)
+  if (data) {
+    commit(mutation, data)
+  }
 }
 
 const findChildNode = (parent, key, values) => {
@@ -70,15 +78,17 @@ const findNode = (state, path) => {
 //   }
 // }
 
+const getEmptyCurrentNode = () => ({
+  node: {
+    parent: {}
+  },
+  path: null,
+  content: null
+})
+
 const state = () => ({
   nodes: {},
-  currentNode: {
-    node: {
-      parent: {}
-    },
-    path: null,
-    content: null
-  },
+  currentNode: getEmptyCurrentNode(),
   lastFileNode: null
 })
 
@@ -121,14 +131,14 @@ const setCurrentNode = (state, { path = null, node = null }) => {
   if (node) {
     state.currentNode.path = node.absolutePath
     state.currentNode.node = node
-    storeLocalData(state, false)
+    storeLocalData(state, ['currentNode'])
     return true
   }
   state.currentNode.path = path
   const foundNode = findNode(state, path)
   if (foundNode) {
     state.currentNode.node = foundNode
-    storeLocalData(state, false)
+    storeLocalData(state, ['currentNode'])
     return true
   }
   return false
@@ -148,7 +158,7 @@ const mutations = {
     if (!nodes) {
       nodes = null
     }
-    storeLocalData(state, true, false)
+    storeLocalData(state, ['nodes'])
   },
 
   setCurrentNode,
@@ -157,15 +167,16 @@ const mutations = {
     state.currentNode.content = content
   },
 
-  setLastFileNode (state) {
-    state.lastFileNode = state.currentNode.path
+  setLastFileNode (state, path = state.currentNode.path) {
+    state.lastFileNode = path
+    storeLocalData(state, ['lastFileNode'])
   },
 
-  // clearLastUnit (state) {
-  //   state.lastUnit = getEmptyUnit()
-  //   state.currentResourceData = getEmptyResource()
-  //   storeLocalData(state, false)
-  // },
+  clearLastFileNode (state) {
+    state.lastFileNode = null
+    state.currentNode = getEmptyCurrentNode()
+    storeLocalData(state, ['lastFileNode', 'currentNode'])
+  },
 
   clear (state) {
     LocalStore.clear()
@@ -177,8 +188,15 @@ const mutations = {
 
 const actions = {
   load: async ({ state, commit }) => {
-    const nodes = LocalStore.get('nodes')
-    commit('setNodes', nodes)
+    // Load data from local storage
+    loadLocalData(commit, 'nodes', 'setNodes')
+    loadLocalData(commit, 'lastFileNode', 'setLastFileNode')
+    const currentNode = LocalStore.get('currentNode')
+    if (currentNode) {
+      setCurrentNode(state, currentNode)
+    }
+
+    // Now load them from the server
     const data = await fetchNodeData()
     commit('setNodes', data.nodes)
 
