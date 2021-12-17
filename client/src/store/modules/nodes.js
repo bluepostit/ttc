@@ -218,6 +218,7 @@ const actions = {
 
   loadNodeContent: async ({ commit, state }, { path }) => {
     commit('setCurrentNode', { path })
+    commit('setCurrentNodeContent', null)
     loadCurrentNodeContent({ commit, state })
   }
 }
