@@ -7,6 +7,13 @@ async function routes (fastify, options) {
       reply.view('single-page-app')
     })
 
+  // Static route for data assets
+  fastify.register(fastifyStatic, {
+    root: path.join(__dirname, '../../data/assets'),
+    prefix: '/data/assets/',
+    decorateReply: false
+  })
+
   fastify.register(fastifyStatic, {
     root: path.join(__dirname, '../../public'),
     prefix: '/public/'
