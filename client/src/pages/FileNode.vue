@@ -1,11 +1,17 @@
 <template>
-  <div>
+  <div v-if="content">
     <TableOfContents></TableOfContents>
     <div v-html="content" class="node-content"></div>
     <div v-if="nextNode">
       <hr>
       <FileNodeLink v-bind:node="nextNode" />
     </div>
+  </div>
+  <div v-else class="d-flex flex-column justify-content-center align-items-center spinner-wrapper">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <span class="mt-1">Loading...</span>
   </div>
 </template>
 
