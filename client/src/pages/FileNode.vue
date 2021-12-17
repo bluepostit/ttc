@@ -1,7 +1,7 @@
 <template>
   <div>
     <TableOfContents></TableOfContents>
-    <div v-html="content" v-if="content" class="unit-resource"></div>
+    <div v-html="content" class="unit-resource"></div>
     <!-- <div v-if="nextResource">
       <hr>
       <div class="d-flex justify-content-end align-items-center">
@@ -21,7 +21,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import ResourceLink from '../components/ResourceLink.vue'
-import TableOfContents from './TableOfContents.vue'
+import TableOfContents from '../components/TableOfContents.vue'
 
 export default {
   beforeRouteUpdate: function (to, from, next) {
