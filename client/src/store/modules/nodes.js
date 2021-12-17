@@ -67,6 +67,14 @@ const findNode = (state, path) => {
   return node
 }
 
+const findNextFileNode = (state, currentFileNode) => {
+  if (!currentFileNode || !currentFileNode.parent) {
+    return null
+  }
+  const parent = findNode(state, currentFileNode.parent.absolutePath)
+  return parent.children[currentFileNode._index + 1]
+}
+
 const getEmptyCurrentNode = () => ({
   node: {
     parent: {}
@@ -93,7 +101,8 @@ const setCurrentNode = (state, { path = null, node = null }) => {
 }
 
 const loadCurrentNodeContent = async ({ state, commit }) => {
-  const path = state.currentNode.node.absolutePath
+  const currentNode = state.currentNode.node
+  const path = currentNode.absolutePath
   if (!path) {
     return null
   }
@@ -101,6 +110,8 @@ const loadCurrentNodeContent = async ({ state, commit }) => {
   if (data && data.content) {
     commit('setCurrentNodeContent', data.content)
     commit('setLastFileNode')
+    const nextFileNode = findNextFileNode(state, currentNode)
+    commit('setNextFileNode', nextFileNode)
   }
 }
 
@@ -109,7 +120,8 @@ const loadCurrentNodeContent = async ({ state, commit }) => {
 const state = () => ({
   nodes: {},
   currentNode: getEmptyCurrentNode(),
-  lastFileNode: null
+  lastFileNode: null,
+  nextFileNode: null
 })
 
 const getters = {
@@ -135,15 +147,7 @@ const getters = {
   },
 
   nextNode: state => {
-    if (!state.lastFileNode) {
-      return null
-    }
-    const currentNode = findNode(state, state.lastFileNode)
-    if (!currentNode || !currentNode.parent) {
-      return null
-    }
-    const parent = findNode(state, currentNode.parent.absolutePath)
-    return parent.children[currentNode._index + 1]
+    return state.nextFileNode
   }
 }
 
@@ -167,10 +171,16 @@ const mutations = {
     storeLocalData(state, ['lastFileNode'])
   },
 
+  setNextFileNode (state, node) {
+    state.nextFileNode = node
+    storeLocalData(state, ['nextFileNode'])
+  },
+
   clearLastFileNode (state) {
     state.lastFileNode = null
+    state.nextFileNode = null
     state.currentNode = getEmptyCurrentNode()
-    storeLocalData(state, ['lastFileNode', 'currentNode'])
+    storeLocalData(state, ['lastFileNode', 'nextFileNode', 'currentNode'])
   },
 
   clear (state) {
