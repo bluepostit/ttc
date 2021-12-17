@@ -1,6 +1,8 @@
 import { LocalStore } from '../../local-store'
 
-const fetchNodeData = async () => {
+/** AJAX: fetch data **/
+
+const fetchAllNodes = async () => {
   const url = '/api/v1/nodes'
   const res = await fetch(url, {
     headers: {
@@ -11,12 +13,7 @@ const fetchNodeData = async () => {
   return data
 }
 
-const fetchCurrentNodeContent = async (state) => {
-  const path = state.currentNode.node.absolutePath
-  if (!path) {
-    return null
-  }
-
+const fetchNodeContent = async (path) => {
   const url = `/api/v1/nodes${path}`
   const res = await fetch(url, {
     headers: {
@@ -26,6 +23,8 @@ const fetchCurrentNodeContent = async (state) => {
   const data = await res.json()
   return data
 }
+
+/** LocalStorage: store and retrieve data **/
 
 const storeLocalData = (state, keys) => {
   keys.forEach(key => {
@@ -39,6 +38,8 @@ const loadLocalData = (commit, key, mutation) => {
     commit(mutation, data)
   }
 }
+
+/** Utility functions to find and work with nodes **/
 
 const findChildNode = (parent, key, values) => {
   if (!Array.isArray(values)) {
@@ -66,18 +67,6 @@ const findNode = (state, path) => {
   return node
 }
 
-// const getEmptyUnit = () => {
-//   return {
-//     id: null,
-//     name: null,
-//     resources: [],
-//     module: {
-//       name: null,
-//       id: null
-//     }
-//   }
-// }
-
 const getEmptyCurrentNode = () => ({
   node: {
     parent: {}
@@ -85,6 +74,37 @@ const getEmptyCurrentNode = () => ({
   path: null,
   content: null
 })
+
+const setCurrentNode = (state, { path = null, node = null }) => {
+  if (node) {
+    state.currentNode.path = node.absolutePath
+    state.currentNode.node = node
+    storeLocalData(state, ['currentNode'])
+    return true
+  }
+  state.currentNode.path = path
+  const foundNode = findNode(state, path)
+  if (foundNode) {
+    state.currentNode.node = foundNode
+    storeLocalData(state, ['currentNode'])
+    return true
+  }
+  return false
+}
+
+const loadCurrentNodeContent = async ({ state, commit }) => {
+  const path = state.currentNode.node.absolutePath
+  if (!path) {
+    return null
+  }
+  const data = await fetchNodeContent(path)
+  if (data && data.content) {
+    commit('setCurrentNodeContent', data.content)
+    commit('setLastFileNode')
+  }
+}
+
+/** State module's components */
 
 const state = () => ({
   nodes: {},
@@ -127,31 +147,6 @@ const getters = {
   // }
 }
 
-const setCurrentNode = (state, { path = null, node = null }) => {
-  if (node) {
-    state.currentNode.path = node.absolutePath
-    state.currentNode.node = node
-    storeLocalData(state, ['currentNode'])
-    return true
-  }
-  state.currentNode.path = path
-  const foundNode = findNode(state, path)
-  if (foundNode) {
-    state.currentNode.node = foundNode
-    storeLocalData(state, ['currentNode'])
-    return true
-  }
-  return false
-}
-
-const loadCurrentNodeContent = async ({ state, commit }) => {
-  const data = await fetchCurrentNodeContent(state)
-  if (data && data.content) {
-    commit('setCurrentNodeContent', data.content)
-    commit('setLastFileNode')
-  }
-}
-
 const mutations = {
   setNodes (state, nodes) {
     state.nodes = nodes
@@ -179,10 +174,9 @@ const mutations = {
   },
 
   clear (state) {
-    LocalStore.clear()
     state.nodes = {}
-    // state.lastUnit = getEmptyUnit()
-    // state.currentResourceData = getEmptyResource()
+    this.commit('nodes/clearLastFileNode')
+    LocalStore.clear()
   }
 }
 
@@ -197,7 +191,7 @@ const actions = {
     }
 
     // Now load them from the server
-    const data = await fetchNodeData()
+    const data = await fetchAllNodes()
     commit('setNodes', data.nodes)
 
     if (state.currentNode.path) {
