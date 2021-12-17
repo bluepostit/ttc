@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const fp = require('fastify-plugin')
 const yaml = require('js-yaml')
-const TreeNode = require('data-tree')
+const TreeNode = require('@bluepostit/data-tree')
 
 class DataTree {
   constructor (data) {
