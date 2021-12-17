@@ -10,7 +10,7 @@
         </router-link>
       </div>
       <div>
-          <a @click.prevent="clearHistory()" v-if="hasLastUnit" href="#">
+          <a @click.prevent="clearHistory()" v-if="hasLastFileNode" href="#">
             <i class="bi bi-clock-history"></i> Clear
           </a>
           <a v-if="showSignOut" @click.prevent="signOut()" href="/auth/logout">
@@ -42,7 +42,7 @@ export default {
 
   computed: {
     ...mapState('nodes', {
-      hasLastUnit: state => state.lastUnit && state.lastUnit.id
+      hasLastFileNode: state => state.lastFileNode
     }),
 
     ...mapState('auth', {
@@ -74,7 +74,7 @@ export default {
     },
 
     clearHistory: function () {
-      this.$store.commit('modules/clearLastUnit')
+      this.$store.commit('nodes/clearLastFileNode')
       if (this.canGoBack()) {
         this.$root.$router.push({ name: 'root' })
       }
