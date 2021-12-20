@@ -75,7 +75,10 @@ async function routes (fastify, options) {
   fastify.get('/nodes',
     {
       preValidation: fastify.auth.ensureSignedIn,
-      preHandler: fastify.loadDataTreePreHandler,
+      preHandler: [
+        fastify.loadCacheDb,
+        fastify.loadDataTreePreHandler
+      ],
       schema: {
         headers: { $ref: '/api/v1/ajax-headers#' },
         response: {
@@ -95,8 +98,8 @@ async function routes (fastify, options) {
     {
       preValidation: fastify.auth.ensureSignedIn,
       preHandler: [
-        fastify.loadDataTreePreHandler,
-        fastify.loadCacheDb
+        fastify.loadCacheDb,
+        fastify.loadDataTreePreHandler
       ],
       schema: {
         headers: { $ref: '/api/v1/ajax-headers#' }
