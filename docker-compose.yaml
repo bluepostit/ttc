@@ -19,7 +19,7 @@ services:
     volumes:
       - ${DATA_TREE_DATA_HOST_PATH}:/usr/src/app/data
       # Allows the mapping of the cache directory to a volume
-      - ${CACHE_DIR_HOST_PATH-./cache}:./cache
+      - ${CACHE_DIR_HOST_PATH-./cache}:/usr/src/app/cache
     networks:
       - swag
     restart: unless-stopped
