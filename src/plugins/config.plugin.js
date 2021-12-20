@@ -9,7 +9,8 @@ const schema = {
     'USER_PASSWORD',
     'SESSION_SECRET',
     'DATA_TREE_MANIFEST_PATH',
-    'DATA_TREE_DATA_PATH'
+    'DATA_TREE_DATA_PATH',
+    'CACHE_DB_PATH'
   ],
   properties: {
     PORT: {
@@ -45,6 +46,9 @@ const schema = {
     },
     VERSION_FILE_NAME: {
       type: 'string'
+    },
+    CACHE_DB_PATH: {
+      type: 'string'
     }
   }
 }
@@ -54,15 +58,14 @@ const options = {
   schema
 }
 
-const plugin = async (fastify) => {
-  fastify.register(fastifyEnv, options)
-    .ready((err) => {
-      if (err) {
-        fastify.log.error(err)
-      } else {
-        fastify.log.info('Config validated')
-      }
-    })
+const plugin = async fastify => {
+  fastify.register(fastifyEnv, options).ready(err => {
+    if (err) {
+      fastify.log.error(err)
+    } else {
+      fastify.log.info('Config validated')
+    }
+  })
 }
 
 module.exports = fp(plugin, {

@@ -12,6 +12,7 @@ const plugin = async (fastify) => {
   fastify.register(require('./auth.plugin'))
   fastify.register(require('./views.plugin'))
   fastify.register(require('./data-tree.plugin'))
+  fastify.register(require('./cache-db.plugin'))
   fastify.register(require('./resource-markdown.plugin'))
   fastify.register(require('./version-info.plugin'))
 }

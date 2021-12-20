@@ -7,3 +7,4 @@ secret-key
 src/views/base.njk
 .version-info*
 version-info*
+cache.db*
