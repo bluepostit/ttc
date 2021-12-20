@@ -15,6 +15,7 @@ services:
       - DATA_TREE_DATA_PATH=${DATA_TREE_DATA_PATH}
       - DISABLE_AUTH=false
       - VERSION_FILE_NAME=${VERSION_INFO_FILE_PATH-version-info.yaml}
+      - CACHE_DB_PATH=${CACHE_DB_PATH-cache/cache.db}
     volumes:
       - ${DATA_TREE_DATA_HOST_PATH}:/usr/src/app/data
     networks:
