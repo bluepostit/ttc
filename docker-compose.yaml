@@ -18,6 +18,8 @@ services:
       - CACHE_DB_PATH=${CACHE_DB_PATH-cache/cache.db}
     volumes:
       - ${DATA_TREE_DATA_HOST_PATH}:/usr/src/app/data
+      # Allows the mapping of the cache directory to a volume
+      - ${CACHE_DIR_HOST_PATH-./cache}:./cache
     networks:
       - swag
     restart: unless-stopped
