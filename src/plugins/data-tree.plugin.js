@@ -36,12 +36,22 @@ const shouldLoadDataTree = (request) => {
   return true
 }
 
-const buildDataTree = (config, log) => {
+const loadDataTree = (request, config) => {
   const dataTreeFilePath = getDataTreeManifestFilePath(config)
-  log.info(`Reading data-tree file at ${dataTreeFilePath}`)
+  request.log.info(`Loading data-tree file ${dataTreeFilePath}`)
+
+  // Is it in the cache?
+  const doc = request.cacheDb.get(dataTreeFilePath)
+  if (doc) {
+    request.log.info('found cache')
+    return new DataTree(doc)
+  }
+
   try {
     const file = fs.readFileSync(dataTreeFilePath, 'utf8')
     const doc = yaml.load(file)
+    // Cache it
+    request.cacheDb.put(dataTreeFilePath, doc)
     return new DataTree(doc)
   } catch (e) {
     console.error(e)
@@ -53,7 +63,7 @@ const buildDataTree = (config, log) => {
 const plugin = async (fastify, _options) => {
   const preHandler = async (request, _reply) => {
     if (shouldLoadDataTree(request)) {
-      const tree = buildDataTree(fastify.config, request.log)
+      const tree = loadDataTree(request, fastify.config)
       request.dataTree = tree
     }
   }
@@ -63,5 +73,5 @@ const plugin = async (fastify, _options) => {
 
 module.exports = fp(plugin, {
   name: 'data-tree',
-  dependencies: ['config-checker']
+  dependencies: ['config-checker', 'cache-db']
 })
