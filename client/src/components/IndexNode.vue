@@ -19,7 +19,8 @@
           <IndexNodeChild v-for="(child, index) in node.children"
                   v-bind:node="child"
                   v-bind:index="index"
-                  v-bind:key="index">
+                  v-bind:key="index"
+                  v-bind:numbered="shouldNumberChildren()">
           </IndexNodeChild>
         </div>
       </div>
@@ -56,6 +57,16 @@
     methods: {
       isActive: function () {
         return this.node && this.isSelectedNode(this.node)
+      },
+
+      shouldNumberChildren: function () {
+        if (this.node.numberedChildren) {
+          return true
+        }
+        if (this.node.numberedChildren === undefined) {
+          return true
+        }
+        return false
       }
     }
   }
