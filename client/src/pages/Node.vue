@@ -52,7 +52,6 @@ export default {
 
   methods: {
     setCurrentNode: function (path = this.path) {
-      console.log('setCurrentNode', path)
       this.$store.commit('nodes/setCurrentNode', { path })
     }
   }
