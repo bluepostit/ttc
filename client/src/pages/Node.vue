@@ -44,9 +44,16 @@ export default {
     })
   },
 
+  beforeRouteUpdate (to, from, next) {
+    this.setCurrentNode(to.params.path)
+    next()
+
+  },
+
   methods: {
-    setCurrentNode: function () {
-      this.$store.commit('nodes/setCurrentNode', { path: this.path })
+    setCurrentNode: function (path = this.path) {
+      console.log('setCurrentNode', path)
+      this.$store.commit('nodes/setCurrentNode', { path })
     }
   }
 }
