@@ -1,6 +1,7 @@
 <template>
   <div v-if="content">
     <TableOfContents></TableOfContents>
+      <FileNodeLink v-if="nextNode" v-bind:node="nextNode" />
     <div v-html="content" class="node-content"></div>
     <div v-if="nextNode">
       <hr>
