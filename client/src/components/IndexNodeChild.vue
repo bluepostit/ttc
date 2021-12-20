@@ -1,5 +1,9 @@
 <template>
-  <NodeRouterLink v-bind:node="node" v-bind:index="index"></NodeRouterLink>
+  <NodeRouterLink
+    v-bind:node="node"
+    v-bind:index="index"
+    v-bind:numbered="numbered">
+  </NodeRouterLink>
 </template>
 
 <script>
@@ -18,6 +22,10 @@
       node: {
         type: Object,
         required: true
+      },
+      numbered: {
+        type: Boolean,
+        default: true
       }
     },
 

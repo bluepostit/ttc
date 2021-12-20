@@ -3,12 +3,12 @@
       :to="{ name: 'file-node', params: { path: node.absolutePath } }"
       v-bind:class="linkClass()">
         <i class="bi bi-file-earmark-richtext resource-list-item-icon"></i>
-        {{ index + 1 }}. {{ node.name }}
+        {{ textContent() }}
     </router-link>
     <router-link v-else
       :to="{ name: 'node', params: { path: node.absolutePath } }"
       v-bind:class="linkClass()">
-        {{ index + 1 }}. {{ node.name }}
+        {{ textContent() }}
     </router-link>
 </template>
 
@@ -24,6 +24,10 @@
       node: {
         type: Object,
         required: true
+      },
+      numbered: {
+        type: Boolean,
+        default: true
       }
     },
 
@@ -37,6 +41,14 @@
       linkClass: function () {
         const extraClass = this.isSelectedNode(this.node) ? 'list-group-item-primary' : ''
         return `list-group-item list-group-item-action ${extraClass}`
+      },
+
+      textContent: function () {
+        let text = this.node.name
+        if (this.numbered) {
+          text = `${this.index + 1}. ${text}`
+        }
+        return text
       }
     }
   }
