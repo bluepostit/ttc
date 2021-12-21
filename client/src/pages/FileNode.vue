@@ -10,12 +10,12 @@
     <div v-if="content" v-html="content" class="node-content"></div>
     <div v-else class="d-flex flex-column justify-content-center align-items-center spinner-wrapper">
       <span class="mt-1">This file is empty</span>
-      <div v-if="nextNode">
+      <div v-if="nextNode && nextNode.extension">
         <hr>
         <FileNodeLink v-bind:node="nextNode" />
       </div>
     </div>
-    <div v-if="content && nextNode">
+    <div v-if="content && nextNode && nextNode.extension">
       <hr>
       <FileNodeLink v-bind:node="nextNode" />
     </div>
@@ -48,7 +48,7 @@ export default {
 
   computed: {
     ...mapGetters('nodes', {
-      nextNode: state => state.nextNode && state.nextNode.extension ? state.nextNode : null,
+      nextNode: 'nextNode',
       content: 'currentNodeContent'
     })
   },
