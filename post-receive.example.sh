@@ -15,7 +15,7 @@ cd $TARGET_DIR
 
 echo "> Generating version info YAML"
 VERSION_STRING=`git rev-parse --short HEAD`
-DATE_STRING=`date "+%Y-%m-%d %X %Z"`
+DATE_STRING=`date "+%d-%m-%Y @ %R UCT%z"`
 echo -e "version: \"${VERSION_STRING}\" \ndate: \"${DATE_STRING}\"" > $VERSION_INFO_FILE_NAME
 
 echo "> Building Docker image: ${DOCKER_IMAGE}"
