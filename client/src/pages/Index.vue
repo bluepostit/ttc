@@ -5,7 +5,7 @@
       <IndexNode v-for="(node, index) in rootNode.children"
               v-bind:node="node"
               v-bind:index="index"
-              v-bind:key="node.name"
+              v-bind:key="node.name || node.path"
       >
       </IndexNode>
     </div>
