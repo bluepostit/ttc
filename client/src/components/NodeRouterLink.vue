@@ -44,7 +44,7 @@
       },
 
       textContent: function () {
-        let text = this.node.name
+        let text = this.node.name || this.node.path
         if (this.numbered) {
           text = `${this.index + 1}. ${text}`
         }

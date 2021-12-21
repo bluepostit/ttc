@@ -1,5 +1,12 @@
 <template>
-  <div class="accordion-item">
+  <div v-if="node && node.extension">
+    <NodeRouterLink
+      v-bind:node="node"
+      v-bind:index="index"
+      v-bind:numbered="false">
+    </NodeRouterLink>
+  </div>
+  <div v-else class="accordion-item">
     <h2 class="accordion-header" v-bind:id="`node-heading-${index}`">
       <button v-if="node"
               v-bind:class="`accordion-button ${isActive() ? '' : 'collapsed'}`"
@@ -7,7 +14,7 @@
               v-bind:data-bs-target="`#collapse-${index}`"
               v-bind:aria-expanded="isActive() ? 'true' : 'false'"
               v-bind:aria-controls="`collapse-${index}`">
-            {{ node.name }}
+            {{ node.name || node.path }}
       </button>
     </h2>
     <div v-bind:id="`collapse-${index}`"
@@ -31,10 +38,12 @@
 <script>
   import { mapGetters } from 'vuex'
   import IndexNodeChild from './IndexNodeChild.vue'
+  import NodeRouterLink from './NodeRouterLink.vue'
 
   export default {
     components: {
-      IndexNodeChild
+      IndexNodeChild,
+      NodeRouterLink
     },
 
     props: {

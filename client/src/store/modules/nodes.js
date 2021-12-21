@@ -107,7 +107,7 @@ const loadCurrentNodeContent = async ({ state, commit }) => {
     return null
   }
   const data = await fetchNodeContent(path)
-  if (data && data.content) {
+  if (data && (data.content !== null && data.content !== undefined)) {
     commit('setCurrentNodeContent', data.content)
     commit('setLastFileNode')
     const nextFileNode = findNextFileNode(state, currentNode)
