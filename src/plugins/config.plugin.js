@@ -49,6 +49,10 @@ const schema = {
     },
     CACHE_DB_PATH: {
       type: 'string'
+    },
+    CACHE_ENABLED: {
+      type: 'boolean',
+      default: true
     }
   }
 }

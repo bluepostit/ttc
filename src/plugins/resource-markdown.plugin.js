@@ -11,16 +11,18 @@ const parseNodeFileContent = (request, filePath) => {
   request.log.info(`Node file: ${docPath}`)
 
   // Is it found in the cache db?
-  const cached = request.cacheDb.get(filePath)
-  if (cached) {
-    request.log.info('Found cache')
-    return cached
+  if (request.cacheDb) {
+    const cached = request.cacheDb.get(filePath)
+    if (cached) {
+      request.log.info('Found cache')
+      return cached
+    }
   }
 
   const file = fs.readFileSync(docPath, 'utf8')
   const doc = MarkdownIt.render(file)
   // Cache it
-  request.cacheDb.put(filePath, doc)
+  request.cacheDb && request.cacheDb.put(filePath, doc)
   return doc
 }
 

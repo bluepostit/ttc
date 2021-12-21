@@ -3,6 +3,9 @@ const fp = require('fastify-plugin')
 const { open } = require('lmdb')
 
 const openDb = (config) => {
+  if (!config.CACHE_ENABLED) {
+    return null
+  }
   const dbPath = path.join(__dirname, '..', '..', config.CACHE_DB_PATH)
   const options = {
     encoding: 'json'
