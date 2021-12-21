@@ -41,17 +41,19 @@ const loadDataTree = (request, config) => {
   request.log.info(`Loading data-tree file ${dataTreeFilePath}`)
 
   // Is it in the cache?
-  const doc = request.cacheDb.get(dataTreeFilePath)
-  if (doc) {
-    request.log.info('found cache')
-    return new DataTree(doc)
+  if (request.cacheDb) {
+    const doc = request.cacheDb.get(dataTreeFilePath)
+    if (doc) {
+      request.log.info('found cache')
+      return new DataTree(doc)
+    }
   }
 
   try {
     const file = fs.readFileSync(dataTreeFilePath, 'utf8')
     const doc = yaml.load(file)
     // Cache it
-    request.cacheDb.put(dataTreeFilePath, doc)
+    request.cacheDb && request.cacheDb.put(dataTreeFilePath, doc)
     return new DataTree(doc)
   } catch (e) {
     console.error(e)
