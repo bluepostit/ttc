@@ -1,7 +1,6 @@
 node_modules
 .env*
 logs/*.log*
-data/
 client/dist
 secret-key
 src/views/base.njk
