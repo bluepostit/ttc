@@ -6,17 +6,14 @@
 TARGET_DIR=/path/to/work/tree
 GIT_DIR=$TARGET_DIR/.git
 DOCKER_IMAGE=your-user-name/docker-image-name
-VERSION_INFO_FILE_NAME=version-info.yaml
 
 echo ""
 echo "> Updating git working tree"
 git -C $TARGET_DIR pull origin master
-cd $TARGET_DIR
 
-echo "> Generating version info YAML"
-VERSION_STRING=`git rev-parse --short HEAD`
-DATE_STRING=`date "+%d-%m-%Y @ %R UCT%z"`
-echo -e "version: \"${VERSION_STRING}\" \ndate: \"${DATE_STRING}\"" > $VERSION_INFO_FILE_NAME
+../deploy/generate-version-info.sh
+
+cd $TARGET_DIR
 
 echo "> Building Docker image: ${DOCKER_IMAGE}"
 sudo docker build --no-cache . -t $DOCKER_IMAGE
