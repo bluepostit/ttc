@@ -1,10 +1,22 @@
-PORT=3000
+####### MANDATORY CONFIG VARIABLES: #######
+
+# Add your login email address here:
 USER_EMAIL=
+# Add your HASHED login password here.
+# To hash a password, run `bin/hash-password <your password>`
 USER_PASSWORD=
+# Add a string of random characters to help make the session's encoding unique
 SESSION_SECRET=
-MODULE_MANIFEST_PATH=data/modules.yaml
-MODULE_DATA_PATH=data
-MODULE_DATA_HOST_PATH=data
-DISABLE_AUTH=true
-VERSION_INFO_FILE_PATH=version-info.yaml
-CACHE_DB_PATH=cache.db
+
+####### OPTIONAL CONFIG VARIABLES: #######
+# Each variable is listed with its default vaule.
+# Only uncomment/add these if you need the app to behave differently.
+
+# PORT=3000
+# DATA_TREE_DATA_PATH=data
+# DATA_TREE_MANIFEST_PATH=data/manifest.yaml
+# DISABLE_AUTH=false
+# FRIENDLY_ERRORS=false
+# CACHE_ENABLED=true
+# CACHE_DB_PATH=cache
+# VERSION_FILE_NAME=version-info.yaml

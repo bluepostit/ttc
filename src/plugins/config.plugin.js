@@ -16,7 +16,7 @@ const schema = {
     },
     DATA_TREE_MANIFEST_PATH: {
       type: 'string',
-      default: 'data/manifest.yml'
+      default: 'data/manifest.yaml'
     },
     DATA_TREE_DATA_PATH: {
       type: 'string',
