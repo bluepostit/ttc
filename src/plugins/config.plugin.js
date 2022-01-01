@@ -4,13 +4,9 @@ const fastifyEnv = require('fastify-env')
 const schema = {
   type: 'object',
   required: [
-    'PORT',
     'USER_EMAIL',
     'USER_PASSWORD',
-    'SESSION_SECRET',
-    'DATA_TREE_MANIFEST_PATH',
-    'DATA_TREE_DATA_PATH',
-    'CACHE_DB_PATH'
+    'SESSION_SECRET'
   ],
   properties: {
     PORT: {
@@ -19,11 +15,12 @@ const schema = {
       default: 3000
     },
     DATA_TREE_MANIFEST_PATH: {
-      type: 'string'
-      // default: 'data/modules.yml'
+      type: 'string',
+      default: 'data/manifest.yaml'
     },
     DATA_TREE_DATA_PATH: {
-      type: 'string'
+      type: 'string',
+      default: 'data'
     },
     USER_EMAIL: {
       type: 'string',
@@ -38,17 +35,20 @@ const schema = {
       minLength: 32
     },
     FRIENDLY_ERRORS: {
-      type: 'boolean'
+      type: 'boolean',
+      default: false
     },
     DISABLE_AUTH: {
       type: 'boolean',
       default: false
     },
     VERSION_FILE_NAME: {
-      type: 'string'
+      type: 'string',
+      default: 'version-info.yaml'
     },
     CACHE_DB_PATH: {
-      type: 'string'
+      type: 'string',
+      default: 'cache'
     },
     CACHE_ENABLED: {
       type: 'boolean',
@@ -62,14 +62,13 @@ const options = {
   schema
 }
 
-const plugin = async fastify => {
-  fastify.register(fastifyEnv, options).ready(err => {
-    if (err) {
-      fastify.log.error(err)
-    } else {
-      fastify.log.info('Config validated')
-    }
-  })
+const plugin = async (fastify) => {
+  try {
+    await fastify.register(fastifyEnv, options)
+    fastify.log.info('Config validated')
+  } catch (error) {
+    fastify.log.error(error)
+  }
 }
 
 module.exports = fp(plugin, {
