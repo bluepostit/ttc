@@ -4,13 +4,9 @@ const fastifyEnv = require('fastify-env')
 const schema = {
   type: 'object',
   required: [
-    'PORT',
     'USER_EMAIL',
     'USER_PASSWORD',
-    'SESSION_SECRET',
-    'DATA_TREE_MANIFEST_PATH',
-    'DATA_TREE_DATA_PATH',
-    'CACHE_DB_PATH'
+    'SESSION_SECRET'
   ],
   properties: {
     PORT: {
