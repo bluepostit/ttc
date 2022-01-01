@@ -1,0 +1,26 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# For Docker, you need to set:
+# - TTC_DOCKER_WORK_TREE - the working tree dir
+# - TTC_DOCKER_IMAGE_NAME - the full image name, eg. "my_user_name/my_image_name"
+
+if [ -n "$TTC_DOCKER_WORK_TREE" ]; then
+  GIT_DIR=$TTC_DOCKER_WORK_TREE/.git
+
+  echo ""
+  echo "> Updating git working tree"
+  git -C $TTC_DOCKER_WORK_TREE pull origin master
+
+  cd $TTC_DOCKER_WORK_TREE
+
+  echo "> Building Docker image: ${TTC_DOCKER_IMAGE_NAME}"
+  sudo docker build --no-cache . -t ${TTC_DOCKER_IMAGE_NAME}
+
+  echo "> Restarting container."
+  sudo docker-compose down && sudo docker-compose up -d
+
+  echo "Done"
+else
+  generate_version_info
+fi

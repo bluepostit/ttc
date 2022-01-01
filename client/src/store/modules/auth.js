@@ -87,9 +87,13 @@ const mutations = {
 }
 
 const actions = {
-  load: async ({ commit }) => {
+  load: async ({ state, commit }) => {
     const data = await fetchAuthData()
-    commit('setAuthData', data.auth)
+    const newData = {
+      ...state,
+      ...data.auth
+    }
+    commit('setAuthData', newData)
   },
 
   signIn: async ({ state, commit, dispatch }, { email, password }) => {
