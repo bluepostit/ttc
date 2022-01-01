@@ -9,7 +9,8 @@
     "dev:start": "nodemon src/server.js | pino-pretty",
     "dev:build": "webpack --mode=development --watch",
     "dev:eslint": "eslint -c .eslintrc.json *.js client/src",
-    "build": "NODE_ENV=production ./node_modules/.bin/webpack --mode=production",
+    "gen-secret-key": "./node_modules/.bin/secure-session-gen-key > secret-key",
+    "build": "NODE_ENV=production ./node_modules/.bin/webpack --mode=production && npm run gen-secret-key",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install"
   },
