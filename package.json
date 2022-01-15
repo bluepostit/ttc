@@ -12,7 +12,7 @@
     "gen-secret-key": "./node_modules/.bin/secure-session-gen-key > secret-key",
     "build": "NODE_ENV=production ./node_modules/.bin/webpack --mode=production && npm run gen-secret-key",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky install"
+    "prepare": "./node_modules/.bin/husky install"
   },
   "author": "",
   "license": "ISC",
