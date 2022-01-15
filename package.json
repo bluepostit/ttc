@@ -34,6 +34,7 @@
     "fastify-secure-session": "^2.3.1",
     "fastify-sensible": "^3.1.1",
     "fastify-static": "^4.0.1",
+    "husky": "^7.0.4",
     "js-yaml": "^4.1.0",
     "lmdb": "^2.1.0-beta4",
     "make-promises-safe": "^5.1.0",
@@ -75,8 +76,7 @@
     "vue-router": "^3.5.3",
     "vue-template-compiler": "^2.6.14",
     "webpack": "^5.36.2",
-    "webpack-cli": "^4.7.0",
-    "husky": "^7.0.0"
+    "webpack-cli": "^4.7.0"
   },
   "nodemonConfig": {
     "ext": "js,json,yaml,njk,scss,env",
