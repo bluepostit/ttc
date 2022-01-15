@@ -53,20 +53,32 @@ export default {
 
   methods: {
     goBack: function () {
-      let newRoute
-      switch (this.currentRoute.name) {
-        case 'resource':
-          newRoute = { name: 'unit', params: this.currentRoute.params }
-          break;
-        case 'unit':
-          newRoute = { name: 'root' }
-          break;
-      }
-      if (newRoute) {
-        this.$root.$router.push(newRoute)
+      const nextRoute = this.getNextRoute()
+      if (nextRoute) {
+        this.$router.push(nextRoute)
       } else {
         window.history.back()
       }
+    },
+
+    getNextRoute: function () {
+      const routeName = this.currentRoute.name
+      let nextRoute
+      if (routeName === 'node' || routeName == 'file-node') {
+        const currentNode = this.$store.getters['nodes/currentNode']
+        const parentNode = currentNode.parent
+        if (parentNode) {
+          if (parentNode.absolutePath) {
+            nextRoute = {
+              name: 'node',
+              params: { path: parentNode.absolutePath }
+            }
+          } else {
+            nextRoute = { name: 'root' }
+          }
+        }
+      }
+      return nextRoute
     },
 
     canGoBack: function () {
