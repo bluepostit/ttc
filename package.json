@@ -38,7 +38,7 @@
     "js-yaml": "^4.1.0",
     "lmdb": "^2.1.0-beta4",
     "make-promises-safe": "^5.1.0",
-    "markdown-it": "^12.0.6",
+    "markdown-it": "^12.3.2",
     "markdown-it-anchor": "^8.4.1",
     "markdown-it-emoji": "^2.0.0",
     "markdown-it-highlightjs": "^3.4.0",
