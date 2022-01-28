@@ -1,5 +1,15 @@
 # TTC - Tech Teacher's Companion
 
+## About
+- TTC is a mobile-first app to manage a tree-like hierarchy of teaching notes
+- It reads and parses your MarkDown notes into easy-to-read HTML, and presents them to you in an easily navigable structure
+- The server is built on NodeJS with Fastify
+- The client is built on Vue with Vue Router and Vuex, using SASS and WebPack
+- The app caches your rendered notes with LMDB for speed and responsiveness
+- It keeps your place in your notes tree, highlighting the path to your last viewed note
+- It shows an auto-generated table of contents on each note
+- It adds links to help you move to the next note in the current level/series
+
 ## Install
 
 1. Clone the source code
