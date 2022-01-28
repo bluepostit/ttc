@@ -16,7 +16,12 @@ SESSION_SECRET=
 # DATA_TREE_DATA_PATH=data
 # DATA_TREE_MANIFEST_PATH=data/manifest.yaml
 # DISABLE_AUTH=false
+
+# Change this to true if you want to see more developer-friendly errors on failure. Good for development.
 # FRIENDLY_ERRORS=false
+
+# Set this to false to disable caching of your notes. Useful for development.
 # CACHE_ENABLED=true
+
 # CACHE_DB_PATH=cache
 # VERSION_FILE_NAME=version-info.yaml

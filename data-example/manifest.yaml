@@ -1,0 +1,20 @@
+---
+name: Courses
+children:
+  - name: How to Code
+    path: how-to-code
+    numberedChildren: false
+    children:
+      - name: "1. Thinking in Code"
+        path: "thinking-in-code"
+        children:
+          - name: Basics
+            path: basics
+            children:
+              - name: Introduction
+                path: intro.md
+              - name: A Brief Review
+                path: review.md
+
+      - name: "2. Output and Input"
+        path: input-output.md

@@ -4,10 +4,9 @@ const fp = require('fastify-plugin')
 const MarkdownIt = require('../markdown-it')
 
 const VIEW_PATH_PREFIX = path.join(__dirname, '..', '..')
-const DATA_PATH = process.env.DATA_TREE_DATA_PATH
 
-const parseNodeFileContent = (request, filePath) => {
-  const docPath = path.join(VIEW_PATH_PREFIX, DATA_PATH, filePath)
+const parseNodeFileContent = (request, dataPath, filePath) => {
+  const docPath = path.join(VIEW_PATH_PREFIX, dataPath, filePath)
   request.log.info(`Node file: ${docPath}`)
 
   // Is it found in the cache db?
@@ -26,9 +25,10 @@ const parseNodeFileContent = (request, filePath) => {
   return doc
 }
 
-const plugin = async (fastify, options) => {
+const plugin = async (fastify, _options) => {
   fastify.decorateRequest('parseNodeFileContent', function (filePath) {
-    return parseNodeFileContent(this, filePath)
+    const dataPath = fastify.config.DATA_TREE_DATA_PATH
+    return parseNodeFileContent(this, dataPath, filePath)
   })
 }
 
