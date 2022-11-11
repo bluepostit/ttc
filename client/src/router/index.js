@@ -25,7 +25,7 @@ const router = new VueRouter({
       }
     },
     {
-      path: '/nodes:path/file',
+      path: '/files:path',
       name: 'file-node',
       component: FileNode,
       props: true,
