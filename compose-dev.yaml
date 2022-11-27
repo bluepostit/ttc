@@ -1,0 +1,21 @@
+version: '3.7'
+services:
+  ttc:
+    build:
+      context: .
+    ports:
+      - 8088:8088
+      - 9229:9229
+    environment:
+      - PORT=8088
+      - USER_EMAIL=${USER_EMAIL}
+      - USER_PASSWORD=${USER_PASSWORD}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - DISABLE_AUTH=true
+      - VERSION_FILE_NAME=${VERSION_INFO_FILE_PATH-version-info.yaml}
+      - CACHE_DB_PATH=${CACHE_DB_PATH-cache/cache.db}
+    volumes:
+      - ./data:/usr/src/app/data
+      # Allows the mapping of the cache directory to a volume
+      - ${CACHE_DIR_HOST_PATH-./cache}:/usr/src/app/cache
+      - ./:/code
