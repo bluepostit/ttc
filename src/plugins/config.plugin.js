@@ -3,11 +3,7 @@ const fastifyEnv = require('fastify-env')
 
 const schema = {
   type: 'object',
-  required: [
-    'USER_EMAIL',
-    'USER_PASSWORD',
-    'SESSION_SECRET'
-  ],
+  required: ['USER_EMAIL', 'USER_PASSWORD', 'SESSION_SECRET', 'COOKIE_KEY'],
   properties: {
     PORT: {
       type: 'string',
@@ -29,6 +25,9 @@ const schema = {
     USER_PASSWORD: {
       type: 'string',
       minLength: 8
+    },
+    COOKIE_KEY: {
+      type: 'string'
     },
     SESSION_SECRET: {
       type: 'string',
@@ -62,7 +61,7 @@ const options = {
   schema
 }
 
-const plugin = async (fastify) => {
+const plugin = async fastify => {
   try {
     await fastify.register(fastifyEnv, options)
     fastify.log.info('Config validated')
