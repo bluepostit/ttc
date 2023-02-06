@@ -8,3 +8,4 @@ src/views/base.njk
 version-info*
 cache.db*
 cache/*.mdb
+.vscode
